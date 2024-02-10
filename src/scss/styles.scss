@@ -1,0 +1,11 @@
+ @font-face {
+     font-family: "fontdiner";
+     src: url("/assets/fonts/Fontdiner_Swanky/FontdinerSwanky-Regular.ttf") format(truetype);
+ }
+
+ .font-fontdiner {
+     font-family: "fontdiner", Verdana, Geneva, Tahoma, sans-serif;
+ }
+
+ @import "variables";
+ @import "../../node_modules/bootstrap/scss/bootstrap.scss";

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Your profile">
+    <title>CrochetMe | Profile page</title>
+    <link type="image/x-icon" rel="stylesheet" href="/favicon.ico">
+
+    <!-- <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css"> -->
+
+    <!-- <link rel="stylesheet" href="/node_modules/bootstrap-icons/font/bootstrap-icons.min.css"> -->
+    <link rel="stylesheet" href="/assets/lib/bootstrap-icons.min.css">
+
+    <link rel="stylesheet" href="/dist/css/styles.css">
+
+    <!-- <script defer src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script> -->
+    <script defer src="/assets/lib/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+    <div class="container bg-white">
+
+        <header class="border-bottom border-1">
+            <nav class="navbar navbar-expand-lg bg-body-tertiary bg-light sticky-top">
+                <div class="container-fluid d-flex">
+                    <p class="h2"><a class="navbar-brand fw-bold font-fontdiner" href="/feed/index.html">CrochetME</a>
+                    </p>
+                    <div class="collapse navbar-collapse justify-content-end" id="navMenuHamburger">
+                        <div class="navbar-nav">
+                            <a class="nav-link  active" aria-current="page" href="#">Profile page</a>
+                            <a class="nav-link " href="/feed/index.html">Feed page</a>
+                            <a class="nav-link" href="/">Logout</a>
+                        </div>
+                    </div>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navMenuHamburger" aria-controls="navMenuHamburger" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
+            </nav>
+            <div class="row align-items-center py-4">
+                <div class="col-md-4 d-flex justify-content-center">
+                    <img src="/assets/img/profile-img.jpg" class="img-fluid rounded-circle d-block me-1"
+                        alt="User image" width="200">
+                </div>
+                <div class="col-md-4">
+                    <div class="vstack justify-content-end text-center">
+                        <h1 class="h3">Fernanda Gomes</h1>
+                        <div>
+                            Lorem ipsum dolor sit amet,
+                            eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="vstack gap-2 text-center">
+                        <div class="hstack gap-3 justify-content-center">
+                            <div class="d-flex flex-column">
+                                <span> 4 </span>
+                                <span>Posts</span>
+                            </div>
+                            <div class="d-flex flex-column">
+                                <span> 26 </span>
+                                <span>Followers</span>
+                            </div>
+                            <div class="d-flex flex-column">
+                                <span> 101</span>
+                                <span>Following</span>
+                            </div>
+                        </div>
+                        <button type="button" role="button" class="btn btn-primary">Follow</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="row my-4">
+            <div class="col-md-6 order-2 order-md-1">
+                <div class="d-flex justify-content-between">
+                    <ul class="nav my-1">
+                        <li class="nav-item">
+                            <span class="border-bottom border-primary border-5 px-1">Posts</span>
+                        </li>
+                    </ul>
+                    <div>
+                    </div>
+                </div>
+
+                <article class="card mb-3 border-0 shadow-sm">
+                    <div class="card-header border-0 vstack gap-2 bg-white">
+                        <div class="hstack gap-2">
+                            <img src="/assets/img/profile-img.jpg" alt="User image"
+                                class="rounded-circle img-fluid me-1" width="50">
+                            <div>
+                                <h5 class="mb-1">Fernanda Gomes</h5>
+                                <p class="card-text"><small class="text-body-secondary">Sep 24, 2023</small></p>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                                tempor incididunt ut labore et dolore magna aliqua.</p>
+                        </div>
+                    </div>
+                    <img src="/assets/img/profile-page-content-1.jpg" class="card-img-top" alt="Post image">
+                    <div class="card-body d-flex justify-content-between">
+                        <div>
+                            <i class="bi bi-heart fs-2 pe-2"></i>
+                            <i class="bi bi-chat-square fs-2 pe-2"></i>
+                        </div>
+                        <div>
+                            <i class="bi bi-send-arrow-up fs-2"></i>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="card mb-3 border-0 shadow-sm">
+                    <div class="card-header border-0 vstack gap-2 bg-white">
+                        <div class="hstack gap-2">
+                            <img src="/assets/img/profile-img.jpg" alt="User image"
+                                class="rounded-circle img-fluid me-1" width="50">
+                            <div>
+                                <h5 class="mb-1">Fernanda Gomes</h5>
+                                <p class="card-text"><small class="text-body-secondary">Sep 24, 2023</small></p>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                                tempor incididunt ut labore et dolore magna aliqua.</p>
+                        </div>
+                    </div>
+                    <img src="/assets/img/profile-page-content-2.jpg" class="card-img-top" alt="Post image">
+                    <div class="card-body d-flex justify-content-between">
+                        <div>
+                            <i class="bi bi-heart fs-2 pe-2"></i>
+                            <i class="bi bi-chat-square fs-2 pe-2"></i>
+                        </div>
+                        <div>
+                            <i class="bi bi-send-arrow-up fs-2"></i>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="card mb-3 border-0 shadow-sm">
+                    <div class="card-header border-0 vstack gap-2 bg-white">
+                        <div class="hstack gap-2">
+                            <img src="/assets/img/profile-img.jpg" alt="User image"
+                                class="rounded-circle img-fluid me-1" width="50">
+                            <div>
+                                <h5 class="mb-1">Fernanda Gomes</h5>
+                                <p class="card-text"><small class="text-body-secondary">Sep 24, 2023</small></p>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                                tempor incididunt ut labore et dolore magna aliqua.</p>
+                        </div>
+                    </div>
+                    <img src="/assets/img/profile-page-content-3.jpg" class="card-img-top" alt="Post image">
+                    <div class="card-body d-flex justify-content-between">
+                        <div>
+                            <i class="bi bi-heart fs-2 pe-2"></i>
+                            <i class="bi bi-chat-square fs-2 pe-2"></i>
+                        </div>
+                        <div>
+                            <i class="bi bi-send-arrow-up fs-2"></i>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="card mb-3 border-0 shadow-sm">
+                    <div class="card-header border-0 vstack gap-2 bg-white">
+                        <div class="hstack gap-2">
+                            <img src="/assets/img/profile-img.jpg" alt="User image"
+                                class="rounded-circle img-fluid me-1" width="50">
+                            <div>
+                                <h5 class="mb-1">Fernanda Gomes</h5>
+                                <p class="card-text"><small class="text-body-secondary">Sep 24, 2023</small></p>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                                tempor incididunt ut labore et dolore magna aliqua.</p>
+                        </div>
+                    </div>
+                    <img src="/assets/img/profile-page-content-4.jpg" class="card-img-top" alt="Post image">
+                    <div class="card-body d-flex justify-content-between">
+                        <div>
+                            <i class="bi bi-heart fs-2 pe-2"></i>
+                            <i class="bi bi-chat-square fs-2 pe-2"></i>
+                        </div>
+                        <div>
+                            <i class="bi bi-send-arrow-up"></i>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </main>
+
+        <footer class="bg-secondary text-white text-center bg-gray-700 vstack">
+            <span> Copyright© 2024 CrochetME.</span>
+            <span>All Rights Reserved</span>
+        </footer>
+
+    </div>
+</body>
+
+</html>

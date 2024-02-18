@@ -77,7 +77,7 @@ registerForm?.addEventListener("submit", async (ev) => {
 loginForm?.addEventListener("submit", async (ev) => {
   ev.preventDefault(); // prevent the page from refreshing
 
-  const form = /** @type {HTMLFormElement} */ (ev.currentTarget); //?
+  const form = /** @type {HTMLFormElement} */ (ev.currentTarget); // casting, forza il tipo
 
   const email = form.elements["loginEmail"].value; // Get element input email
   const password = form.elements["loginPassword"].value; // Get element input password

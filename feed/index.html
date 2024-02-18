@@ -19,6 +19,7 @@
     <script defer src="/assets/lib/bootstrap.bundle.min.js"></script>
 
     <script defer type="module" src="/src/js/posts.mjs"></script>
+    <script defer type="module" src="/src/js/createPost.mjs"></script>
 </head>
 
 <body>
@@ -64,11 +65,15 @@
                         </li>
                     </ul>
                     <div>
-                        <div class="dropdown">
+                        <div id="filter" class="dropdown">
                             <button class="btn btn-light dropdown-toggle shadow-none" type="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                                 Newest
                             </button>
+
+                            <!-- <select id="orderBy">
+                                <option value="name">name</option>
+                            </select> -->
 
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="#">Newest</a></li>
@@ -110,7 +115,7 @@
                 </div>
             </div>
             <aside class="col-md-5 order-1 order-md-2 offset-md-1">
-                <form action="#" method="post">
+                <form action="#" method="post" id="createPost">
                     <div class="card mb-3 border-0 shadow-sm">
                         <h1 class="card-title text-center h2">Create a new post</h1>
                         <div class="card-header hstack border-0 gap-2 bg-white">
@@ -120,19 +125,23 @@
                         </div>
                         <div class="card-body">
                             <div class="mb-3">
-                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
+                                <!-- todo: -->
+                                <input type="text" id="postTitle" class="form-control" placeholder="Title">
+
+                                <textarea class="form-control" id="postText" rows="3"
                                     placeholder="Say something..."></textarea>
                             </div>
                             <div class="input-group">
                                 <div class="input-group-text" id="btnGroupAddon"><i class="bi bi-images"></i></div>
-                                <input type="text" class="form-control" placeholder="Paste the picture url"
-                                    aria-label="Input group example" aria-describedby="btnGroupAddon">
+                                <input type="text" id="postImageUrl" class="form-control"
+                                    placeholder="Paste the picture url" aria-label="Input group example"
+                                    aria-describedby="btnGroupAddon">
                             </div>
                         </div>
                         <div class="card-footer border-0 hstack gap-3 justify-content-end bg-white">
                             <!-- <button type="button" class="btn btn-light text-nowrap">Add image</button> -->
-                            <button type="button" class="btn btn-light">Cancel</button>
-                            <button type="button" class="btn btn-primary">Post</button>
+                            <button type="cancel" class="btn btn-light">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Post</button>
                         </div>
                     </div>
                 </form>

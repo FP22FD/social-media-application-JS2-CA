@@ -2,7 +2,7 @@
 
 import { API_KEY, API_BASE, API_POSTS, API_PARAMS } from "./settings.mjs"; // import settings
 
-// -------------Function to handle user key -------------------------
+// -------------------------types-----------------------------
 
 /** @typedef {object} GetSocialPostsResponse
  * @property {object[]} data
@@ -145,3 +145,16 @@ async function updatePosts(data) {
 }
 
 displayPosts().then(console.log);
+
+// ------------------------------------------------------------
+
+// document.querySelector("#orderBy").addEventListener("change", handleOrderBy);
+
+// function handleOrderBy(event) {
+//   const oby = event.target.value;
+
+//   if (oby === "name") {
+//     data.sort((a, b) => (a.id.toLowerCase() > b.id.toLowerCase() ? 1 : -1));
+//   }
+//   updatePosts(data);
+// }

@@ -1,8 +1,8 @@
-// ---------------------------settings------------------------
+// ---------------------------1. settings------------------------
 
-import { API_KEY, API_BASE, API_POSTS, API_PARAMS } from "./settings.mjs"; // import settings
+import { API_KEY, API_BASE, API_POSTS, API_PARAMS } from "./settings.mjs";
 
-// -------------------------types-----------------------------
+// -------------------------2. types-----------------------------
 
 /** @typedef {object} GetSocialPostsResponse
  * @property {object[]} data
@@ -41,6 +41,8 @@ import { API_KEY, API_BASE, API_POSTS, API_PARAMS } from "./settings.mjs"; // im
 /** @type {GetSocialPostsResponse["data"]} */
 let data = [];
 
+// -------------3. Function to handle user key -------------------------//
+
 /**
  * @param {string} key
  */
@@ -50,7 +52,8 @@ function load(key) {
   return value;
 }
 
-// ---------------Function to display error messages------------------
+// ---------------4. Function to display error messages------------------//
+
 /**
  * @param {boolean} visible
  * @param {string} text
@@ -61,46 +64,70 @@ function displayError(visible, text) {
 
   if (visible === true) {
     error.style.display = "block";
-    error.innerHTML = text;
+    error.innerHTML = text; // // Add the the DomSanitizer 
   } else {
     error.style.display = "none";
   }
 }
-// -------------Function to display posts -------------------------
 
-async function displayPosts() {
+// -----------------6. Function to display spinner-------------------------//
+
+/**
+ * @param {boolean} spinnerVisible
+ */
+function displaySpinner(spinnerVisible) {
+  /** @type {HTMLDivElement} */
+  const spinner = document.querySelector("#spinner");
+
+  if (spinnerVisible === true) {
+    spinner.style.display = "block";
+  } else {
+    spinner.style.display = "none";
+  }
+}
+
+displaySpinner(false);//ok
+
+// -------------5. Function to display posts -------------------------
+
+export async function displayPosts() {
   try {
-    const response = await fetch(API_BASE + API_POSTS + API_PARAMS, {
+
+    const url = API_BASE + API_POSTS + API_PARAMS;
+
+    const response = await fetch(url, { // await fetch(API_BASE + API_POSTS + API_PARAMS, {
       headers: {
         Authorization: `Bearer ${load("token")}`,
         "X-Noroff-API-Key": API_KEY,
         "Content-Type": "application/json", //https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type
       },
+      // method: "GET",  is needed ?
     });
 
     /** @type {GetSocialPostsResponse} */
     const postsData = await response.json();
 
     data = postsData.data;
-    console.log(data);
-  } catch (e) {
+    // console.log(data);
+
+  } catch (ev) {
     displayError(true, "Could not show the posts!");
   } finally {
-    // displaySpinner(false);
+    displaySpinner(false);
   }
-
   updatePosts(data);
 }
 
-// -------------Function to update posts -------------------------
+// -------------6. Function to update posts -------------------------
 
 /**
  * @param {GetSocialPostsResponse["data"]} data
  */
 async function updatePosts(data) {
+
   /** @type {HTMLDivElement} */
   const posts = document.querySelector("#posts");
-  posts.innerHTML = "";
+  posts.innerHTML = ""; // // Add the the DomSanitizer 
 
   for (let i = 0; i < data.length; i++) {
     const item = data[i];
@@ -110,7 +137,7 @@ async function updatePosts(data) {
 
     const post = /** @type {HTMLDivElement} */ (template.content.cloneNode(true));
 
-    post.querySelector("h5").innerText = item.author.name;
+    post.querySelector("h5").innerText = item.author.name + item.id; // + item.id
 
     /** @type {HTMLImageElement} */
     const authorImg = post.querySelector("#authorImg");
@@ -124,7 +151,9 @@ async function updatePosts(data) {
     } else {
       img.style.display = "none";
     }
-    post.querySelector("#bodyPost").innerHTML = item.body;
+
+    post.querySelector("#bodyTitle").innerHTML = item.title; // // Add the the DomSanitizer 
+    post.querySelector("#bodyPost").innerHTML = item.body; // // Add the the DomSanitizer 
 
     let date = new Date(item.created);
 
@@ -138,15 +167,18 @@ async function updatePosts(data) {
     // `BCP 47 language tag` => no-NO
     let dateString = date.toLocaleDateString("no-NO", options);
 
-    post.querySelector("#datePost").innerHTML = dateString;
+    post.querySelector("#datePost").innerHTML = dateString; // Add the the DomSanitizer 
 
     posts.appendChild(post);
+
+    displaySpinner(false); //ok, ma deve stare dentro il container "posts
   }
 }
 
-displayPosts().then(console.log);
+displayPosts();
+// displayPosts().then(console.log);
 
-// ------------------------------------------------------------
+// ----------------------to do: sort filter----------------------------
 
 // document.querySelector("#orderBy").addEventListener("change", handleOrderBy);
 

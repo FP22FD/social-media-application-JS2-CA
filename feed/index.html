@@ -18,7 +18,7 @@
     <!-- <script defer src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script> -->
     <script defer src="/assets/lib/bootstrap.bundle.min.js"></script>
 
-    <script defer type="module" src="/src/js/posts.mjs"></script>
+    <script defer type="module" src="/src/js/feedPosts.mjs"></script>
     <script defer type="module" src="/src/js/createPost.mjs"></script>
 </head>
 
@@ -71,9 +71,13 @@
                                 Newest
                             </button>
 
+                            <!--------------- To Do: function to sort posts ----------------------->
+
                             <!-- <select id="orderBy">
                                 <option value="name">name</option>
                             </select> -->
+
+                            <!-------------------------------------------------------------------->
 
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="#">Newest</a></li>
@@ -83,7 +87,18 @@
                     </div>
                 </div>
                 <div>
-                    <div id="posts"></div>
+                    <div id="posts">
+                        <div id="spinner" class="align-self-center m-3">
+                            <div class="spinner-grow spinner-grow-sm spinner-border-sm text-secondary" role="status">
+                            </div>
+                            <div class="spinner-grow spinner-grow-sm spinner-border-sm text-secondary fs-6"
+                                role="status">
+                            </div>
+                            <div class="spinner-grow spinner-grow-sm spinner-border-sm text-secondary fs-6"
+                                role="status">
+                            </div>
+                        </div>
+                    </div>
                     <template id="post">
                         <article class="card mb-3 border-0 shadow-sm">
                             <div class="card-header border-0 vstack gap-2 bg-white">
@@ -97,6 +112,7 @@
                                     </div>
                                 </div>
                                 <div>
+                                    <p id="bodyTitle"></p>
                                     <p id="bodyPost" class="card-text"></p>
                                 </div>
                             </div>
@@ -111,10 +127,13 @@
                                 </div>
                             </div>
                         </article>
+
                     </template>
                 </div>
             </div>
             <aside class="col-md-5 order-1 order-md-2 offset-md-1">
+
+                <!------------------- To Do: form validation HTML ----------------->
                 <form action="#" method="post" id="createPost">
                     <div class="card mb-3 border-0 shadow-sm">
                         <h1 class="card-title text-center h2">Create a new post</h1>
@@ -123,13 +142,15 @@
                                 class="rounded-circle img-fluid me-1" width="50">
                             <h5 class="mb-1 h6">Fernanda Gomes</h5>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body d-flex flex-column ">
                             <div class="mb-3">
-                                <!-- todo: -->
-                                <input type="text" id="postTitle" class="form-control" placeholder="Title">
+                                <div class="mb-3">
+                                    <input type="text" class="form-control" id="postTitle" placeholder="Title" required
+                                        minlength="2" maxlength="45" name="email">
+                                </div>
+                                <textarea class="form-control" id="postText" rows="3" placeholder="Say something..."
+                                    minlength="5" maxlength="130" name="textarea"></textarea>
 
-                                <textarea class="form-control" id="postText" rows="3"
-                                    placeholder="Say something..."></textarea>
                             </div>
                             <div class="input-group">
                                 <div class="input-group-text" id="btnGroupAddon"><i class="bi bi-images"></i></div>
@@ -137,14 +158,36 @@
                                     placeholder="Paste the picture url" aria-label="Input group example"
                                     aria-describedby="btnGroupAddon">
                             </div>
+
+                            <div id="error" class="error invalid-feedback"></div>
+                            <div id="statusMsg" class="valid-feedback"></div>
+
+                            <div id="spinner" class="align-self-center m-3">
+                                <div class="spinner-grow spinner-grow-sm spinner-border-sm text-secondary"
+                                    role="status">
+                                </div>
+                                <div class="spinner-grow spinner-grow-sm spinner-border-sm text-secondary fs-6"
+                                    role="status">
+                                </div>
+                                <div class="spinner-grow spinner-grow-sm spinner-border-sm text-secondary fs-6"
+                                    role="status">
+                                </div>
+                            </div>
                         </div>
+
+
                         <div class="card-footer border-0 hstack gap-3 justify-content-end bg-white">
                             <!-- <button type="button" class="btn btn-light text-nowrap">Add image</button> -->
-                            <button type="cancel" class="btn btn-light">Cancel</button>
+
+                            <button type="reset" class="btn btn-light">Cancel</button>
                             <button type="submit" class="btn btn-primary">Post</button>
                         </div>
                     </div>
                 </form>
+                <!-- ------------------------------------------------------------------------ -->
+
+                <div id="error" class="error invalid-feedback">
+                </div>
             </aside>
         </main>
         <footer class="bg-secondary text-white text-center bg-gray-700 vstack">

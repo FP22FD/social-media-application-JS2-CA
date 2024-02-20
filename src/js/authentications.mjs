@@ -1,8 +1,8 @@
-// ---------------------------settings------------------------
+// ---------------------------1. settings------------------------
 
 import { API_KEY, API_BASE, API_AUTH, API_REGISTER, API_LOGIN, API_POSTS } from "./settings.mjs"; // import settings
 
-// -------------------------types-----------------------------
+// -------------------------2. types-----------------------------
 
 // generated via https://transform.tools/json-to-jsdoc
 
@@ -40,7 +40,109 @@ import { API_KEY, API_BASE, API_AUTH, API_REGISTER, API_LOGIN, API_POSTS } from 
  * @property {number} statusCode
  */
 
-// --------------------event----------------------------------
+// -------------3. Function to handle user key -------------------------
+
+/**
+ * @param {string} key
+ */
+// function load(key) {
+//   const storedKey = localStorage.getItem(key);
+//   const value = storedKey ? JSON.parse(storedKey) : null;
+//   return value;
+// }
+
+/**
+ * @param {string} key
+ * @param {(string|object)} value
+ */
+function save(key, value) {
+  localStorage.setItem(key, JSON.stringify(value));
+}
+
+/**
+//  * @param {string} key
+ */
+// function remove(key) {
+
+//   localStorage.removeItem(key);
+// }
+
+// ---------------4. Class to handle form submission error-----------
+
+class ErrorHandler {
+  _response;
+
+  /** @param {Response} response */
+  constructor(response) {
+    this._response = response;
+  }
+
+  async getErrorMessage() {
+    if (this._response.ok) {
+      return "";
+    }
+
+    let errorMessage = "";
+
+    if (this._response.status === 400) {
+      /** @type {BadRequestResponse} */
+      const data = await this._response.json();
+      errorMessage = data.errors[0].message;
+    } else if (this._response.status === 401) {
+      errorMessage = "Invalid username or password or you do not have an account yet!";
+    } else {
+      errorMessage = "Unknown error! Please retry later.";
+    }
+
+    return errorMessage;
+  }
+}
+
+// ---------------4. Function to display error messages------------------
+/**
+ * @param {boolean} visible
+ * @param {string} text
+ */
+function displayError(visible, text) {
+  /** @type {HTMLDivElement} */
+  const error = document.querySelector("#error");
+
+  if (visible === true) {
+    error.style.display = "block";
+    error.innerHTML = text; // Add the the DomSanitizer 
+  } else {
+    error.style.display = "none";
+  }
+}
+
+// -----------------5. Function to display spinner-------------------------
+
+/**
+ * @param {boolean} spinnerRegister
+ * @param {boolean} spinnerLogin
+ */
+function displaySpinner(spinnerRegister, spinnerLogin) {
+  /** @type {HTMLDivElement} */ //To avoid msg error -> "Property "style" does not exist on type "Element".
+  const sr = document.querySelector("#spinnerRegister"); // selecting spinner element
+
+  if (spinnerRegister === true) {
+    sr.style.display = "block";
+  } else {
+    sr.style.display = "none";
+  }
+
+  /** @type {HTMLDivElement} */
+  const sl = document.querySelector("#spinnerLogin");
+
+  if (spinnerLogin === true) {
+    sl.style.display = "block";
+  } else {
+    sl.style.display = "none";
+  }
+}
+
+
+// --------------------6. Event----------------------------------
 
 const registerForm = document.querySelector("#register-form"); // Selecting register form
 const loginForm = document.querySelector("#login-form"); // selecting login form
@@ -77,7 +179,8 @@ registerForm?.addEventListener("submit", async (ev) => {
 loginForm?.addEventListener("submit", async (ev) => {
   ev.preventDefault(); // prevent the page from refreshing
 
-  const form = /** @type {HTMLFormElement} */ (ev.currentTarget); // casting, forza il tipo
+  // This is called Casting or Type Casting ("force way to ignore type errors"): https://dev.to/samuel-braun/boost-your-javascript-with-jsdoc-typing-3hb3
+  const form = /** @type {HTMLFormElement} */ (ev.currentTarget);
 
   const email = form.elements["loginEmail"].value; // Get element input email
   const password = form.elements["loginPassword"].value; // Get element input password
@@ -90,7 +193,7 @@ loginForm?.addEventListener("submit", async (ev) => {
   window.location.href = "/profile/index.html"; //redirecting user to the specified url
 });
 
-// ------------------------register------------------------------
+// ------------------------7. register------------------------------
 
 /**
  * @async
@@ -128,15 +231,17 @@ async function register(name, email, psw) {
     const eh = new ErrorHandler(response); // Call the class "Errorhandler" and create a new object to show for response
     const msg = await eh.getErrorMessage(); // await the "eh" for get the method "getErrorMessage" into the class
     displayError(true, msg); //call the function to show the error message
+
     return null;
-  } catch (e) {
+
+  } catch (ev) {
     displayError(true, "Could not register the account!");
   } finally {
     displaySpinner(false, false);
   }
 }
 
-// -----------------------------login-------------------------------
+// -----------------------------8. login | Master function-------------------------------
 /**
  * @param {string} email
  * @param {string} password
@@ -153,10 +258,10 @@ async function login(email, password) {
     };
 
     const response = await fetch(url, {
-      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
+      method: "POST",
       body: JSON.stringify(request),
     });
 
@@ -169,112 +274,16 @@ async function login(email, password) {
       save("profile", profile);
       return userInfo;
     }
+
     const eh = new ErrorHandler(response);
     const msg = await eh.getErrorMessage();
+
     displayError(true, msg);
     return null;
-  } catch (e) {
+
+  } catch (ev) {
     displayError(true, "Could not login! Please retry later.");
   } finally {
     displaySpinner(false, false);
-  }
-}
-
-// -------------Function to handle user key -------------------------
-
-/**
- * @param {string} key
- */
-function load(key) {
-  const storedKey = localStorage.getItem(key);
-  const value = storedKey ? JSON.parse(storedKey) : null;
-  return value;
-}
-
-/**
- * @param {string} key
- * @param {(string|object)} value
- */
-function save(key, value) {
-  localStorage.setItem(key, JSON.stringify(value));
-}
-
-/**
- * @param {string} key
- */
-function remove(key) {
-  localStorage.removeItem(key);
-}
-
-// ---------------Class to handle form submission error-----------
-
-class ErrorHandler {
-  _response;
-
-  /** @param {Response} response */
-  constructor(response) {
-    this._response = response;
-  }
-
-  async getErrorMessage() {
-    if (this._response.ok) {
-      return "";
-    }
-
-    let errorMessage = "";
-
-    if (this._response.status === 400) {
-      /** @type {BadRequestResponse} */
-      const data = await this._response.json();
-      errorMessage = data.errors[0].message;
-    } else if (this._response.status === 401) {
-      errorMessage = "Invalid username or password or you do not have an account yet!";
-    } else {
-      errorMessage = "Unknown error! Please retry later.";
-    }
-
-    return errorMessage;
-  }
-}
-// ---------------Function to display error messages------------------
-/**
- * @param {boolean} visible
- * @param {string} text
- */
-function displayError(visible, text) {
-  /** @type {HTMLDivElement} */
-  const error = document.querySelector("#error");
-
-  if (visible === true) {
-    error.style.display = "block";
-    error.innerHTML = text;
-  } else {
-    error.style.display = "none";
-  }
-}
-
-// -----------------Function to display spinner-------------------------
-
-/**
- * @param {boolean} spinnerRegister
- * @param {boolean} spinnerLogin
- */
-function displaySpinner(spinnerRegister, spinnerLogin) {
-  /** @type {HTMLDivElement} */ //To avoid msg error -> "Property "style" does not exist on type "Element".
-  const sr = document.querySelector("#spinnerRegister"); // selecting spinner element
-
-  if (spinnerRegister === true) {
-    sr.style.display = "block";
-  } else {
-    sr.style.display = "none";
-  }
-
-  /** @type {HTMLDivElement} */
-  const sl = document.querySelector("#spinnerLogin");
-
-  if (spinnerLogin === true) {
-    sl.style.display = "block";
-  } else {
-    sl.style.display = "none";
   }
 }

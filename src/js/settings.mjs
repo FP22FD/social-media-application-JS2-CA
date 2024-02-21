@@ -8,4 +8,4 @@ export const API_AUTH = "/auth";
 
 export const API_POSTS = "/social/posts";
 
-export const API_PARAMS = "?_author=true";
+export const API_GET_POSTS_PARAMS = "?_author=true&limit=10";

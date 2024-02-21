@@ -47,11 +47,11 @@ function load(key) {
  */
 function displayError(visible, text) {
   /** @type {HTMLDivElement} */
-  const error = document.querySelector("#error");
+  const error = document.querySelector("#errorCreatePost");
 
   if (visible === true) {
     error.style.display = "block";
-    error.innerHTML = text; // // Add the the DomSanitizer 
+    error.innerHTML = text;
   } else {
     error.style.display = "none";
   }
@@ -81,7 +81,7 @@ function statusMsg(visible, text) {
  */
 function displaySpinner(spinnerVisible) {
   /** @type {HTMLDivElement} */
-  const spinner = document.querySelector("#spinner");
+  const spinner = document.querySelector("#spinnerCreatePost");
 
   if (spinnerVisible === true) {
     spinner.style.display = "block";
@@ -92,17 +92,16 @@ function displaySpinner(spinnerVisible) {
 
 displaySpinner(false);
 
-// --------------7. function to create a post request | Master child-----------------------
+// --------------7. function to create a post request | Master child------------
 
 /** @param {CreatePostRequest} postData */
 async function createPost(postData) {
   try {
     displaySpinner(true);
-    // console.log(postData)
 
     const url = API_BASE + API_POSTS;
 
-    const response = await fetch(url, { // await fetch( API_BASE + API_POSTS,{
+    const response = await fetch(url, {
       headers: {
         Authorization: `Bearer ${load("token")}`,
         "X-Noroff-API-Key": API_KEY,
@@ -112,10 +111,8 @@ async function createPost(postData) {
       body: JSON.stringify(postData),
     });
 
-    // console.log(response);
     // debugger;
     const post = await response.json();
-    // console.log(post);
 
     return post;
 
@@ -126,17 +123,16 @@ async function createPost(postData) {
   }
 }
 
-// -------------8. Test if the function createPost works | Automatic output post when you refresh -----------
+// ---8. Test the function createPost | Automatic output post when you refresh ----
 
 // createPost({
 //   title: "Example post",
 //   body: "Example post body",
 // });
 
-// -------------9. function to display a post request--------------------------
+// -------------9. function to display a post request-----------------------------
 
 const form = document.querySelector("#createPost");
-displaySpinner(false);
 
 
 if (form) {
@@ -179,6 +175,8 @@ if (form) {
 
   } catch (ev) {
     displayError(true, "Could not create a post!");
+  } finally {
+    displaySpinner(false);
   }
 }
 

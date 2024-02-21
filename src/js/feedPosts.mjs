@@ -1,6 +1,7 @@
 // ---------------------------1. settings------------------------
 
-import { API_KEY, API_BASE, API_POSTS, API_PARAMS } from "./settings.mjs";
+import { API_KEY, API_BASE, API_POSTS, API_GET_POSTS_PARAMS } from "./settings.mjs";
+// import { ErrorHandler } from "./authentications.mjs";
 
 // -------------------------2. types-----------------------------
 
@@ -41,6 +42,13 @@ import { API_KEY, API_BASE, API_POSTS, API_PARAMS } from "./settings.mjs";
 /** @type {GetSocialPostsResponse["data"]} */
 let data = [];
 
+/** @typedef {object} BadRequestResponse
+ * @property {object[]} errors
+ * @property {string} errors.message
+ * @property {string} status
+ * @property {number} statusCode
+ */
+
 // -------------3. Function to handle user key -------------------------//
 
 /**
@@ -60,11 +68,11 @@ function load(key) {
  */
 function displayError(visible, text) {
   /** @type {HTMLDivElement} */
-  const error = document.querySelector("#error");
+  const error = document.querySelector("#errorPosts");
 
   if (visible === true) {
     error.style.display = "block";
-    error.innerHTML = text; // // Add the the DomSanitizer 
+    error.innerHTML = text;
   } else {
     error.style.display = "none";
   }
@@ -77,7 +85,8 @@ function displayError(visible, text) {
  */
 function displaySpinner(spinnerVisible) {
   /** @type {HTMLDivElement} */
-  const spinner = document.querySelector("#spinner");
+  const spinner = document.querySelector("#spinnerPosts");
+
 
   if (spinnerVisible === true) {
     spinner.style.display = "block";
@@ -86,48 +95,100 @@ function displaySpinner(spinnerVisible) {
   }
 }
 
-displaySpinner(false);//ok
+displaySpinner(false);
+
+// -------------------------------------------------------------------------//
+
+class ErrorHandler {
+  _response;
+
+  /** @param {Response} response */
+  constructor(response) {
+    this._response = response;
+  }
+
+  async getErrorMessage() {
+    if (this._response.ok) {
+      return "";
+    }
+
+    let errorMessage = "";
+
+    if (this._response.status === 400) {
+      /** @type {BadRequestResponse} */
+      const data = await this._response.json();
+      errorMessage = data.errors[0].message;
+    } else if (this._response.status === 401) {
+      errorMessage = "Invalid username or password or you do not have an account yet!";
+    } else {
+      errorMessage = "Unknown error! Please retry later.";
+    }
+
+    return errorMessage;
+  }
+}
 
 // -------------5. Function to display posts -------------------------
 
 export async function displayPosts() {
   try {
+    displaySpinner(true);
 
-    const url = API_BASE + API_POSTS + API_PARAMS;
+    const url = API_BASE + API_POSTS + API_GET_POSTS_PARAMS;
 
-    const response = await fetch(url, { // await fetch(API_BASE + API_POSTS + API_PARAMS, {
+    const response = await fetch(url, {
+
       headers: {
         Authorization: `Bearer ${load("token")}`,
         "X-Noroff-API-Key": API_KEY,
         "Content-Type": "application/json", //https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type
       },
-      // method: "GET",  is needed ?
+      method: "GET",
     });
 
-    /** @type {GetSocialPostsResponse} */
-    const postsData = await response.json();
+    // debugger;
 
-    data = postsData.data;
-    // console.log(data);
+    if (response.ok) {
+
+      /** @type {GetSocialPostsResponse} */
+      const postsData = await response.json();
+      data = postsData.data;
+
+      updatePosts(data);
+      return data;
+    }
+
+    const eh = new ErrorHandler(response);
+    const msg = await eh.getErrorMessage();
+    displayError(true, msg);
+
+    return null;
 
   } catch (ev) {
     displayError(true, "Could not show the posts!");
   } finally {
     displaySpinner(false);
   }
-  updatePosts(data);
+}
+
+// -------------6. Function to sanitize inputs innerHTML --------------
+
+/** @param {string} html */
+function sanitize(html) {
+  // @ts-ignore
+  return DOMPurify.sanitize(html);
 }
 
 // -------------6. Function to update posts -------------------------
 
 /**
  * @param {GetSocialPostsResponse["data"]} data
- */
+*/
 async function updatePosts(data) {
 
   /** @type {HTMLDivElement} */
   const posts = document.querySelector("#posts");
-  posts.innerHTML = ""; // // Add the the DomSanitizer 
+  posts.innerHTML = "";
 
   for (let i = 0; i < data.length; i++) {
     const item = data[i];
@@ -152,8 +213,8 @@ async function updatePosts(data) {
       img.style.display = "none";
     }
 
-    post.querySelector("#bodyTitle").innerHTML = item.title; // // Add the the DomSanitizer 
-    post.querySelector("#bodyPost").innerHTML = item.body; // // Add the the DomSanitizer 
+    post.querySelector("#bodyTitle").innerHTML = sanitize(item.title);
+    post.querySelector("#bodyPost").innerHTML = sanitize(item.body);
 
     let date = new Date(item.created);
 
@@ -167,16 +228,16 @@ async function updatePosts(data) {
     // `BCP 47 language tag` => no-NO
     let dateString = date.toLocaleDateString("no-NO", options);
 
-    post.querySelector("#datePost").innerHTML = dateString; // Add the the DomSanitizer 
+    post.querySelector("#datePost").innerHTML = dateString;
 
     posts.appendChild(post);
-
-    displaySpinner(false); //ok, ma deve stare dentro il container "posts
   }
 }
 
-displayPosts();
-// displayPosts().then(console.log);
+displayPosts().then(console.log);
+
+
+
 
 // ----------------------to do: sort filter----------------------------
 

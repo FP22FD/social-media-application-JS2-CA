@@ -141,6 +141,15 @@ function displaySpinner(spinnerRegister, spinnerLogin) {
   }
 }
 
+// --------------------6. Event----------------------------------
+
+// function cleanData(userInput) {
+//   console.log(userInput)
+//   return DOMPurify.sanitize(userInput);
+
+// }
+
+// cleanData("");
 
 // --------------------6. Event----------------------------------
 

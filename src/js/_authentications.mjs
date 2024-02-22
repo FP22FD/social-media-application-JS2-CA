@@ -1,6 +1,7 @@
 // ---------------------------1. settings------------------------
 
-import { API_KEY, API_BASE, API_AUTH, API_REGISTER, API_LOGIN, API_POSTS } from "./settings.mjs"; // import settings
+import { API_BASE, API_AUTH, API_REGISTER, API_LOGIN } from "./settings.mjs";
+import { save, ErrorHandler } from "./shared.mjs";
 
 // -------------------------2. types-----------------------------
 
@@ -45,11 +46,11 @@ import { API_KEY, API_BASE, API_AUTH, API_REGISTER, API_LOGIN, API_POSTS } from 
 /**
  * @param {string} key
  */
-// function load(key) {
-//   const storedKey = localStorage.getItem(key);
-//   const value = storedKey ? JSON.parse(storedKey) : null;
-//   return value;
-// }
+function load(key) {
+  const storedKey = localStorage.getItem(key);
+  const value = storedKey ? JSON.parse(storedKey) : null;
+  return value;
+}
 
 /**
  * @param {string} key
@@ -60,12 +61,12 @@ function save(key, value) {
 }
 
 /**
-//  * @param {string} key
+ * @param {string} key
  */
-// function remove(key) {
+function remove(key) {
 
-//   localStorage.removeItem(key);
-// }
+  localStorage.removeItem(key);
+}
 
 // ---------------4. Class to handle form submission error-----------
 
@@ -98,7 +99,7 @@ class ErrorHandler {
   }
 }
 
-// ---------------4. Function to display error messages------------------
+// // ---------------4. Function to display error messages------------------
 /**
  * @param {boolean} visible
  * @param {string} text
@@ -109,13 +110,13 @@ function displayError(visible, text) {
 
   if (visible === true) {
     error.style.display = "block";
-    error.innerHTML = text; // Add the the DomSanitizer 
+    error.innerHTML = text;
   } else {
     error.style.display = "none";
   }
 }
 
-// -----------------5. Function to display spinner-------------------------
+// // -----------------5. Function to display spinner-------------------------
 
 /**
  * @param {boolean} spinnerRegister
@@ -123,7 +124,7 @@ function displayError(visible, text) {
  */
 function displaySpinner(spinnerRegister, spinnerLogin) {
   /** @type {HTMLDivElement} */ //To avoid msg error -> "Property "style" does not exist on type "Element".
-  const sr = document.querySelector("#spinnerRegister"); // selecting spinner element
+  const sr = document.querySelector("#spinnerRegister");
 
   if (spinnerRegister === true) {
     sr.style.display = "block";
@@ -143,18 +144,8 @@ function displaySpinner(spinnerRegister, spinnerLogin) {
 
 // --------------------6. Event----------------------------------
 
-// function cleanData(userInput) {
-//   console.log(userInput)
-//   return DOMPurify.sanitize(userInput);
-
-// }
-
-// cleanData("");
-
-// --------------------6. Event----------------------------------
-
-const registerForm = document.querySelector("#register-form"); // Selecting register form
-const loginForm = document.querySelector("#login-form"); // selecting login form
+const registerForm = document.querySelector("#register-form");
+const loginForm = document.querySelector("#login-form");
 
 displaySpinner(false, false);
 
@@ -163,13 +154,13 @@ registerForm?.addEventListener("submit", async (ev) => {
 
   const form = /** @type {HTMLFormElement} */ (ev.currentTarget);
 
-  const name = form.elements["username"].value; // Selecting input elements
+  const name = form.elements["username"].value;
   const email = form.elements["emailAddress"].value;
   const password = form.elements["password"].value;
   const confirmPassword = form.elements["confirmPassword"].value;
 
   if (password !== confirmPassword) {
-    displayError(true, "The passwords have to match!"); // If condition to handle password
+    displayError(true, "The passwords have to match!");
     return;
   }
   const response = await register(name, email, password);
@@ -177,40 +168,40 @@ registerForm?.addEventListener("submit", async (ev) => {
     return;
   }
 
-  const profile = await login(email, password); // ?
+  const profile = await login(email, password);
   if (profile === null) {
     return;
   }
 
-  window.location.href = "/profile/index.html"; //redirecting user to the specified url
+  window.location.href = "/profile/index.html";
 });
 
 loginForm?.addEventListener("submit", async (ev) => {
-  ev.preventDefault(); // prevent the page from refreshing
+  ev.preventDefault();
 
   // This is called Casting or Type Casting ("force way to ignore type errors"): https://dev.to/samuel-braun/boost-your-javascript-with-jsdoc-typing-3hb3
   const form = /** @type {HTMLFormElement} */ (ev.currentTarget);
 
-  const email = form.elements["loginEmail"].value; // Get element input email
-  const password = form.elements["loginPassword"].value; // Get element input password
+  const email = form.elements["loginEmail"].value;
+  const password = form.elements["loginPassword"].value;
 
-  const profile = await login(email, password); // await for login function that return email and password to execute this condition
+  const profile = await login(email, password);
   // debugger;
   if (profile === null) {
     return;
   }
-  window.location.href = "/profile/index.html"; //redirecting user to the specified url
+  window.location.href = "/profile/index.html";
 });
 
-// ------------------------7. register------------------------------
+// // ------------------------7. register------------------------------
 
-/**
- * @async
- * @param {string} name
- * @param {string} email
- * @param {string} psw
- * @return {Promise<RegisterResponse|null>}
- */
+// /**
+//  * @async
+//  * @param {string} name
+//  * @param {string} email
+//  * @param {string} psw
+//  * @return {Promise<RegisterResponse|null>}
+//  */
 async function register(name, email, psw) {
   try {
     displaySpinner(true, false);
@@ -223,23 +214,23 @@ async function register(name, email, psw) {
     };
 
     const response = await fetch(url, {
-      // fetch a resource from serve and return a Promise that resolves into a Response object
+
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(request), //Converts the value of variable "request" object to string
+      body: JSON.stringify(request),
     });
 
     if (response.ok) {
       /** @type {RegisterResponse} */
-      const data = await response.json(); // handle the response status
+      const data = await response.json();
       return data;
     }
 
-    const eh = new ErrorHandler(response); // Call the class "Errorhandler" and create a new object to show for response
-    const msg = await eh.getErrorMessage(); // await the "eh" for get the method "getErrorMessage" into the class
-    displayError(true, msg); //call the function to show the error message
+    const eh = new ErrorHandler(response);
+    const msg = await eh.getErrorMessage();
+    displayError(true, msg);
 
     return null;
 
@@ -250,7 +241,7 @@ async function register(name, email, psw) {
   }
 }
 
-// -----------------------------8. login | Master function-------------------------------
+// // -----------------------------8. login | Master function-------------------------------
 /**
  * @param {string} email
  * @param {string} password

@@ -1,7 +1,8 @@
 // ---------------------------1. settings------------------------
 
-import { API_KEY, API_BASE, API_POSTS } from "./settings.mjs";
-import { displayPosts } from "./feedPosts.mjs";
+import { API_KEY, API_BASE, API_POSTS } from "../settings.mjs";
+import { displayPosts } from "../feed/feedPosts.mjs";
+import { load } from "../shared/storage.mjs";
 
 // -------------------------2. types-----------------------------
 
@@ -29,18 +30,18 @@ import { displayPosts } from "./feedPosts.mjs";
  * @property {number} data._count.reactions
  */
 
-// -------------3. Function to handle user key -------------------------//
+// -------------3. Function to handle user key -------------------------
 
-/**
- * @param {string} key
- */
-function load(key) {
-  const storedKey = localStorage.getItem(key);
-  const value = storedKey ? JSON.parse(storedKey) : null;
-  return value;
-}
+// /**
+//  * @param {string} key
+//  */
+// function load(key) {
+//   const storedKey = localStorage.getItem(key);
+//   const value = storedKey ? JSON.parse(storedKey) : null;
+//   return value;
+// }
 
-// ---------------4. Function to display error messages------------------//
+// ---------------4. Function to display error messages------------------
 /**
  * @param {boolean} visible
  * @param {string|null} text
@@ -57,7 +58,7 @@ function displayError(visible, text) {
   }
 }
 
-// ---------------5. Function to display status messages------------------//
+// ---------------5. Function to display status messages------------------
 /**
  * @param {boolean} visible
  * @param {string} text
@@ -68,13 +69,13 @@ function statusMsg(visible, text) {
 
   if (visible === true) {
     status.style.display = "block";
-    status.innerHTML = text; // // Add the the DomSanitizer 
+    status.innerHTML = text;
   } else {
     status.style.display = "none";
   }
 }
 
-// -----------------6. Function to display spinner-------------------------//
+// -----------------6. Function to display spinner-------------------------
 
 /**
  * @param {boolean} spinnerVisible
@@ -92,7 +93,7 @@ function displaySpinner(spinnerVisible) {
 
 displaySpinner(false);
 
-// --------------7. function to create a post request | Master child------------
+// --------------7. function to create a post request | Master child----------
 
 /** @param {CreatePostRequest} postData */
 async function createPost(postData) {

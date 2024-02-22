@@ -1,7 +1,9 @@
 // ---------------------------1. settings------------------------
 
-import { API_KEY, API_BASE, API_POSTS, API_GET_POSTS_PARAMS } from "./settings.mjs";
-// import { ErrorHandler } from "./authentications.mjs";
+import { API_KEY, API_BASE, API_POSTS, API_GET_POSTS_PARAMS } from "../settings.mjs";
+import { load } from "../shared/storage.mjs";
+import { ErrorHandler } from "../shared/errorHandler.mjs";
+import { sanitize } from "../shared/sanitize.mjs";
 
 // -------------------------2. types-----------------------------
 
@@ -51,14 +53,14 @@ let data = [];
 
 // -------------3. Function to handle user key -------------------------//
 
-/**
- * @param {string} key
- */
-function load(key) {
-  const storedKey = localStorage.getItem(key);
-  const value = storedKey ? JSON.parse(storedKey) : null;
-  return value;
-}
+// /**
+//  * @param {string} key
+//  */
+// function load(key) {
+//   const storedKey = localStorage.getItem(key);
+//   const value = storedKey ? JSON.parse(storedKey) : null;
+//   return value;
+// }
 
 // ---------------4. Function to display error messages------------------//
 
@@ -99,34 +101,34 @@ displaySpinner(false);
 
 // -------------------------------------------------------------------------//
 
-class ErrorHandler {
-  _response;
+// class ErrorHandler {
+//   _response;
 
-  /** @param {Response} response */
-  constructor(response) {
-    this._response = response;
-  }
+//   /** @param {Response} response */
+//   constructor(response) {
+//     this._response = response;
+//   }
 
-  async getErrorMessage() {
-    if (this._response.ok) {
-      return "";
-    }
+//   async getErrorMessage() {
+//     if (this._response.ok) {
+//       return "";
+//     }
 
-    let errorMessage = "";
+//     let errorMessage = "";
 
-    if (this._response.status === 400) {
-      /** @type {BadRequestResponse} */
-      const data = await this._response.json();
-      errorMessage = data.errors[0].message;
-    } else if (this._response.status === 401) {
-      errorMessage = "Invalid username or password or you do not have an account yet!";
-    } else {
-      errorMessage = "Unknown error! Please retry later.";
-    }
+//     if (this._response.status === 400) {
+//       /** @type {BadRequestResponse} */
+//       const data = await this._response.json();
+//       errorMessage = data.errors[0].message;
+//     } else if (this._response.status === 401) {
+//       errorMessage = "Invalid username or password or you do not have an account yet!";
+//     } else {
+//       errorMessage = "Unknown error! Please retry later.";
+//     }
 
-    return errorMessage;
-  }
-}
+//     return errorMessage;
+//   }
+// }
 
 // -------------5. Function to display posts -------------------------
 
@@ -173,11 +175,11 @@ export async function displayPosts() {
 
 // -------------6. Function to sanitize inputs innerHTML --------------
 
-/** @param {string} html */
-function sanitize(html) {
-  // @ts-ignore
-  return DOMPurify.sanitize(html);
-}
+// /** @param {string} html */
+// function sanitize(html) {
+//   // @ts-ignore
+//   return DOMPurify.sanitize(html);
+// }
 
 // -------------6. Function to update posts -------------------------
 

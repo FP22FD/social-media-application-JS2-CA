@@ -190,7 +190,20 @@ export async function updatePosts(data) {
       }
 
       post.querySelector("#bodyTitle").innerHTML = sanitize(item.title);
-      post.querySelector("#bodyPost").innerHTML = sanitize(item.body);
+
+      const textLimit = 120;
+      const bodyText = post.querySelector("#viewPost");
+      let bodyTextSanitized = sanitize(item.body);
+
+      // post.querySelector("#bodyPost").innerHTML = sanitize(item.body);
+      if (bodyTextSanitized.length > textLimit) {
+        let htmlBody = bodyTextSanitized.substring(0, textLimit);
+        htmlBody += `... <br><a href="./postdetails.html?id=${item.id}" class="link-offset-2 link-underline link-underline-opacity-0">Read More<a/>`;
+        bodyText.innerHTML = htmlBody;
+      } else {
+        bodyText.innerHTML = sanitize(item.body);
+      }
+
 
       let date = new Date(item.created);
 
@@ -221,13 +234,16 @@ displayPosts();
 
 // ----------------------to do: sort filter----------------------------
 
-// document.querySelector("#orderBy").addEventListener("change", handleOrderBy);
+// /** @type {HTMLSelectElement} */
+// const filter = document.querySelector("#orderBy")
+// filter.addEventListener("click", handleOrderBy);
 
-// function handleOrderBy(event) {
-//   const oby = event.target.value;
 
-//   if (oby === "name") {
-//     data.sort((a, b) => (a.id.toLowerCase() > b.id.toLowerCase() ? 1 : -1));
-//   }
-//   updatePosts(data);
+// function handleOrderBy(ev) {
+
+//   data.sort((v1, v2) => {
+//     // return -1
+//     // return 0
+//     // return 1;
+//   })
 // }

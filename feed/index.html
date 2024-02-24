@@ -20,7 +20,7 @@
 
     <script defer type="module" src="/src/js/feed/feedPosts.mjs"></script>
     <script defer type="module" src="/src/js/posts/createPost.mjs"></script>
-    <!-- <script defer type="module" src="/src/js/shared/errorHandler.mjs"></script> -->
+    <script defer type="module" src="/src/js/feed/search.mjs"></script>
 
     <!-- <script src="https://cdn.jsdelivr.net/npm/jsdom@24.0.0/lib/api.min.js"></script> -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.8/purify.min.js"></script>
@@ -41,15 +41,18 @@
                         </div>
                     </div>
 
-                    <div class="d-flex" role="search">
-                        <div class="input-group input-group-sm">
-                            <input type="search" class="form-control" placeholder="Search" aria-label="Search"
-                                aria-describedby="btn-search">
-                            <button class="btn btn-secondary border-0" type="button" id="btn-search"
-                                aria-label="Search">
-                                <i class="bi bi-search"></i>
-                            </button>
-                        </div>
+                    <div class="d-flex flex-column text-center" role="search">
+                        <form action="/feed" method="get">
+                            <div class="input-group input-group-sm">
+                                <input id="search" type="search" class="form-control" placeholder="Search"
+                                    aria-label="Search" aria-describedby="btn-search" required minlength="1"
+                                    maxlength="45" name="search">
+                                <button id="btn" class="btn btn-secondary border-0" type="submit" aria-label="Search">
+                                    <i class="bi bi-search"></i>
+                                </button>
+                            </div>
+                        </form>
+                        <div id="errorSearch" class="error invalid-feedback"></div>
                     </div>
 
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -90,19 +93,20 @@
                         </div>
                     </div>
                 </div>
+
+                <div id="spinnerPosts" class="gap-1 text-center my-5 py-5">
+                    <div class="spinner-grow spinner-grow-sm spinner-border-sm text-secondary" role="status">
+                    </div>
+                    <div class="spinner-grow spinner-grow-sm spinner-border-sm text-secondary fs-6" role="status">
+                    </div>
+                    <div class="spinner-grow spinner-grow-sm spinner-border-sm text-secondary fs-6" role="status">
+                    </div>
+                </div>
+
+                <div id="errorPosts" class="error invalid-feedback text-center my-5 py-5">
+                </div>
+
                 <div class="d-flex justify-content-center">
-
-                    <div id="spinnerPosts" class="gap-1 m-5 p-5">
-                        <div class="spinner-grow spinner-grow-sm spinner-border-sm text-secondary" role="status">
-                        </div>
-                        <div class="spinner-grow spinner-grow-sm spinner-border-sm text-secondary fs-6" role="status">
-                        </div>
-                        <div class="spinner-grow spinner-grow-sm spinner-border-sm text-secondary fs-6" role="status">
-                        </div>
-                    </div>
-
-                    <div id="errorPosts" class="error invalid-feedback text-center my-5 py-5">
-                    </div>
 
                     <div id="posts"></div>
 

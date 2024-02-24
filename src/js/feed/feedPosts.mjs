@@ -1,4 +1,5 @@
 // ---------------------------1. settings------------------------
+// document.body.style.backgroundColor = "red";
 
 import { API_KEY, API_BASE, API_POSTS, API_GET_POSTS_PARAMS } from "../settings.mjs";
 import { load } from "../shared/storage.mjs";
@@ -68,7 +69,7 @@ let data = [];
  * @param {boolean} visible
  * @param {string} text
  */
-function displayError(visible, text) {
+export function displayError(visible, text) {
   /** @type {HTMLDivElement} */
   const error = document.querySelector("#errorPosts");
 
@@ -85,7 +86,7 @@ function displayError(visible, text) {
 /**
  * @param {boolean} spinnerVisible
  */
-function displaySpinner(spinnerVisible) {
+export function displaySpinner(spinnerVisible) {
   /** @type {HTMLDivElement} */
   const spinner = document.querySelector("#spinnerPosts");
 
@@ -98,37 +99,6 @@ function displaySpinner(spinnerVisible) {
 }
 
 displaySpinner(false);
-
-// -------------------------------------------------------------------------//
-
-// class ErrorHandler {
-//   _response;
-
-//   /** @param {Response} response */
-//   constructor(response) {
-//     this._response = response;
-//   }
-
-//   async getErrorMessage() {
-//     if (this._response.ok) {
-//       return "";
-//     }
-
-//     let errorMessage = "";
-
-//     if (this._response.status === 400) {
-//       /** @type {BadRequestResponse} */
-//       const data = await this._response.json();
-//       errorMessage = data.errors[0].message;
-//     } else if (this._response.status === 401) {
-//       errorMessage = "Invalid username or password or you do not have an account yet!";
-//     } else {
-//       errorMessage = "Unknown error! Please retry later.";
-//     }
-
-//     return errorMessage;
-//   }
-// }
 
 // -------------5. Function to display posts -------------------------
 
@@ -186,57 +156,65 @@ export async function displayPosts() {
 /**
  * @param {GetSocialPostsResponse["data"]} data
 */
-async function updatePosts(data) {
+export async function updatePosts(data) {
 
   /** @type {HTMLDivElement} */
   const posts = document.querySelector("#posts");
   posts.innerHTML = "";
 
-  for (let i = 0; i < data.length; i++) {
-    const item = data[i];
+  if (data.length === 0) {
+    posts.innerHTML = "No posts found!";
+  } else {
+    for (let i = 0; i < data.length; i++) {
+      const item = data[i];
 
-    /** @type {HTMLTemplateElement} */
-    const template = document.querySelector("#post");
 
-    const post = /** @type {HTMLDivElement} */ (template.content.cloneNode(true));
+      /** @type {HTMLTemplateElement} */
+      const template = document.querySelector("#post");
 
-    post.querySelector("h5").innerText = item.author.name + item.id; // + item.id
+      const post = /** @type {HTMLDivElement} */ (template.content.cloneNode(true));
 
-    /** @type {HTMLImageElement} */
-    const authorImg = post.querySelector("#authorImg");
-    authorImg.src = item.author.avatar.url;
+      post.querySelector("h5").innerText = item.author.name + item.id; // + item.id
 
-    /** @type {HTMLImageElement} */
-    const img = post.querySelector("#postImg");
-    if (item.media) {
-      img.src = item.media.url;
-      img.alt = item.media.alt;
-    } else {
-      img.style.display = "none";
+      /** @type {HTMLImageElement} */
+      const authorImg = post.querySelector("#authorImg");
+      authorImg.src = item.author.avatar.url;
+
+      /** @type {HTMLImageElement} */
+      const img = post.querySelector("#postImg");
+      if (item.media) {
+        img.src = item.media.url;
+        img.alt = item.media.alt;
+      } else {
+        img.style.display = "none";
+      }
+
+      post.querySelector("#bodyTitle").innerHTML = sanitize(item.title);
+      post.querySelector("#bodyPost").innerHTML = sanitize(item.body);
+
+      let date = new Date(item.created);
+
+      /** @type Intl.DateTimeFormatOptions */
+      const options = {
+        // weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      };
+      // `BCP 47 language tag` => no-NO
+      let dateString = date.toLocaleDateString("no-NO", options);
+
+      post.querySelector("#datePost").innerHTML = dateString;
+
+      posts.appendChild(post);
     }
-
-    post.querySelector("#bodyTitle").innerHTML = sanitize(item.title);
-    post.querySelector("#bodyPost").innerHTML = sanitize(item.body);
-
-    let date = new Date(item.created);
-
-    /** @type Intl.DateTimeFormatOptions */
-    const options = {
-      // weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    };
-    // `BCP 47 language tag` => no-NO
-    let dateString = date.toLocaleDateString("no-NO", options);
-
-    post.querySelector("#datePost").innerHTML = dateString;
-
-    posts.appendChild(post);
   }
+
+
 }
 
-displayPosts().then(console.log);
+// displayPosts().then(console.log);
+displayPosts();
 
 
 

@@ -1,7 +1,5 @@
-
-
-import { API_BASE, API_AUTH, API_REGISTER, API_LOGIN } from "../";
-import { save, ErrorHandler } from "js/shared.mjs";
+import { login } from "./login.mjs";
+import { register } from "./register.mjs";
 
 const registerForm = document.querySelector("#register-form");
 const loginForm = document.querySelector("#login-form");

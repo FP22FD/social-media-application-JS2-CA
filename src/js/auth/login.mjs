@@ -1,6 +1,5 @@
 import { API_BASE, API_AUTH, API_LOGIN } from "../settings.mjs";
 import { displayError } from "./authentication.mjs";
-import { register } from "./register.mjs";
 import { save } from "../shared/storage.mjs";
 import { ErrorHandler } from "../shared/errorHandler.mjs";
 
@@ -43,7 +42,7 @@ displaySpinnerLogin(false);
  * @param {string} password
  * @returns {Promise<LoginResponse|null>}
  */
-async function login(email, password) {
+export async function login(email, password) {
     try {
         displaySpinnerLogin(true);
 
@@ -83,53 +82,3 @@ async function login(email, password) {
         displaySpinnerLogin(false);
     }
 }
-
-// ------------------------------------------ To Do:---------------------------------------------------
-// --------------------------non ci riesco a fare lo export da pagina autothentication---------------
-
-const registerForm = document.querySelector("#register-form");
-const loginForm = document.querySelector("#login-form");
-
-registerForm?.addEventListener("submit", async (ev) => {
-    ev.preventDefault();
-
-    const form = /** @type {HTMLFormElement} */ (ev.currentTarget);
-
-    const name = form.elements["username"].value;
-    const email = form.elements["emailAddress"].value;
-    const password = form.elements["password"].value;
-    const confirmPassword = form.elements["confirmPassword"].value;
-
-    if (password !== confirmPassword) {
-        displayError(true, "The passwords have to match!");
-        return;
-    }
-    const response = await register(name, email, password);
-    if (!response) {
-        return;
-    }
-
-    const profile = await login(email, password);
-    if (profile === null) {
-        return;
-    }
-
-    window.location.href = "/profile/index.html";
-});
-
-loginForm?.addEventListener("submit", async (ev) => {
-    ev.preventDefault();
-
-    // This is called Casting or Type Casting ("force way to ignore type errors"): https://dev.to/samuel-braun/boost-your-javascript-with-jsdoc-typing-3hb3
-    const form = /** @type {HTMLFormElement} */ (ev.currentTarget);
-
-    const email = form.elements["loginEmail"].value;
-    const password = form.elements["loginPassword"].value;
-
-    const profile = await login(email, password);
-    // debugger;
-    if (profile === null) {
-        return;
-    }
-    window.location.href = "/profile/index.html";
-});

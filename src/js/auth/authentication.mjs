@@ -1,6 +1,8 @@
 import { login } from "./login.mjs";
 import { register } from "./register.mjs";
 
+// ---------------2. Register event -----------------
+
 const registerForm = document.querySelector("#register-form");
 const loginForm = document.querySelector("#login-form");
 
@@ -30,6 +32,8 @@ registerForm?.addEventListener("submit", async (ev) => {
 
     window.location.href = "/profile/index.html";
 });
+
+// ---------------3. Login event ------------------
 
 loginForm?.addEventListener("submit", async (ev) => {
     ev.preventDefault();

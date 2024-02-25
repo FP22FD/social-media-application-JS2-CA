@@ -1,4 +1,5 @@
 // ---------------------------1. settings------------------------
+
 // document.body.style.backgroundColor = "red";
 
 import { API_KEY, API_BASE, API_POSTS, API_GET_POSTS_PARAMS } from "../settings.mjs";
@@ -52,7 +53,7 @@ let data = [];
  * @property {number} statusCode
  */
 
-// -------------3. Function to handle user key -------------------------//
+// -------------3. Function to display error -------------------------
 
 // /**
 //  * @param {string} key
@@ -81,7 +82,7 @@ export function displayError(visible, text) {
   }
 }
 
-// -----------------6. Function to display spinner-------------------------//
+// -----------------4. Function to display spinner-------------------------
 
 /**
  * @param {boolean} spinnerVisible
@@ -113,12 +114,10 @@ export async function displayPosts() {
       headers: {
         Authorization: `Bearer ${load("token")}`,
         "X-Noroff-API-Key": API_KEY,
-        "Content-Type": "application/json", //https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type
+        "Content-Type": "application/json",
       },
       method: "GET",
     });
-
-    // debugger;
 
     if (response.ok) {
 
@@ -167,7 +166,6 @@ export async function updatePosts(data) {
   } else {
     for (let i = 0; i < data.length; i++) {
       const item = data[i];
-
 
       /** @type {HTMLTemplateElement} */
       const template = document.querySelector("#post");
@@ -226,24 +224,31 @@ export async function updatePosts(data) {
 
 }
 
-// displayPosts().then(console.log);
 displayPosts();
 
+// -------------7. Function to sort posts -------------------------
 
+/** @type {HTMLSelectElement} */
+const tabSort = document.querySelector("#order-By")
+tabSort.addEventListener("change", handleOrderBy);
 
+/**
+ * @param {Event} ev
+ */
+function handleOrderBy(ev) {
+  const select = /** @type {HTMLSelectElement} */ (ev.currentTarget);
+  const oby = select.value;
 
-// ----------------------to do: sort filter----------------------------
-
-// /** @type {HTMLSelectElement} */
-// const filter = document.querySelector("#orderBy")
-// filter.addEventListener("click", handleOrderBy);
-
-
-// function handleOrderBy(ev) {
-
-//   data.sort((v1, v2) => {
-//     // return -1
-//     // return 0
-//     // return 1;
-//   })
-// }
+  if (oby === "title") {
+    data.sort((a, b) => (a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1));
+  } else if (oby === "newest") {
+    data.sort(function (v1, v2) {
+      return new Date(v2.created).getTime() - new Date(v1.created).getTime();
+    });
+  } else if (oby == "oldest") {
+    data.sort(function (v1, v2) {
+      return new Date(v1.created).getTime() - new Date(v2.created).getTime();
+    });
+  }
+  updatePosts(data);
+}

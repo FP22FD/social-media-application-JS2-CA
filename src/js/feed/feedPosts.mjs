@@ -1,7 +1,5 @@
 // ---------------------------1. settings------------------------
 
-// document.body.style.backgroundColor = "red";
-
 import { API_KEY, API_BASE, API_POSTS, API_GET_POSTS_PARAMS } from "../settings.mjs";
 import { load } from "../shared/storage.mjs";
 import { ErrorHandler } from "../shared/errorHandler.mjs";
@@ -124,6 +122,7 @@ export async function displayPosts() {
       /** @type {GetSocialPostsResponse} */
       const postsData = await response.json();
       data = postsData.data;
+      console.log(data);
 
       updatePosts(data);
       return data;
@@ -188,6 +187,7 @@ export async function updatePosts(data) {
       }
 
       post.querySelector("#bodyTitle").innerHTML = sanitize(item.title);
+      // post.querySelector("#tags").innerHTML = sanitize(item.tags);
 
       const textLimit = 120;
       const bodyText = post.querySelector("#viewPost");

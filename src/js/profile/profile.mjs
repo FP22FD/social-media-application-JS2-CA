@@ -4,6 +4,7 @@ import { API_KEY } from "../settings.mjs";
 import { load } from "../shared/storage.mjs";
 import { ErrorHandler } from "../shared/errorHandler.mjs";
 // import { sanitize } from "../shared/sanitize.mjs";
+import { fetchDeletePost } from "./deletePost.mjs";
 
 // -------------------------2. types-----------------------------
 
@@ -166,6 +167,8 @@ export async function updatePosts(data) {
             const template = document.querySelector("#post");
             const post = /** @type {HTMLDivElement} */ (template.content.cloneNode(true));
 
+            post.querySelector("article").dataset.id = String(item.id);
+
             post.querySelector("h5").innerText = item.author.name + item.id;
             /** @type {HTMLImageElement} */
             const authorImg = post.querySelector("#authorImg");
@@ -216,10 +219,161 @@ export async function updatePosts(data) {
 
             post.querySelector("#datePost").innerHTML = dateString;
 
+
+
+
+
+            // ------------------------------------------------------
+
+            // post.querySelector("#edit").addEventListener("click", (ev) => {
+            //     console.log("event");
+
+            //     const editPost = document.querySelector(`article[data-id="${item.id}"] #edit-post`);
+            //     editPost.classList.remove("d-none");
+            //     editPost.classList.add("d-flex");
+
+            //     // document.querySelector(`article[data-id="${item.id}"] #buttonUpdate`).addEventListener("click", (ev) => {
+            //     //     console.log("update")
+            //     // })
+
+            //     // document.querySelector(`article[data-id="${item.id}"] #buttonDelete`).addEventListener("click", (ev) => {
+            //     //     console.log("delete")
+            //     // })
+            // });
+
+            // ------------------------------------------------------
+
+            post.querySelector("#postTitle").value = item.title;
+            post.querySelector("#postText").value = item.body;
+            // post.querySelector("#postImageUrl").value = item.media.url;
+
+            // to do: if media is underfied ...
+
+            post.querySelector(`#buttonClose`).addEventListener("click", (ev) => {
+                console.log("close");
+
+
+                const editPost = document.querySelector(`article[data-id="${item.id}"] #edit-post`);
+                editPost.classList.remove("d-flex");
+                editPost.classList.add("d-none");
+
+                const confirm = document.querySelector(`article[data-id="${item.id}"] #confirmAction`);
+                confirm.classList.remove("d-flex");
+                confirm.classList.add("d-none");
+
+                const error = document.querySelector(`article[data-id="${item.id}"] #errorMsg`);
+                error.classList.remove("d-flex");
+                error.classList.add("d-none");
+
+                const edit = document.querySelector(`article[data-id="${item.id}"] #edit`);
+                edit.classList.remove("d-none");
+                edit.classList.add("d-flex");
+
+                const buttonClose = document.querySelector(`article[data-id="${item.id}"] #buttonClose`);
+                buttonClose.classList.remove("d-flex");
+                buttonClose.classList.add("d-none");
+            })
+
+            post.querySelector(`#edit`).addEventListener("click", (ev) => {
+                console.log("edit");
+
+                const edit = document.querySelector(`article[data-id="${item.id}"] #edit`);
+                edit.classList.add("d-none");
+
+                const editPost = document.querySelector(`article[data-id="${item.id}"] #edit-post`);
+                editPost.classList.remove("d-none");
+                editPost.classList.add("d-flex");
+            })
+
+            post.querySelector(`#buttonUpdate`).addEventListener("click", (ev) => {
+                console.log("update");
+
+                const buttonUpdate = post.querySelector("#buttonUpdate");
+                console.log(buttonUpdate + " " + "This variable works");
+            })
+
+            post.querySelector(`#buttonDelete`).addEventListener("click", (ev) => {
+                console.log("delete");
+
+                // const buttonDelete = post.querySelector("#buttonDelete");
+                // const buttonDelete = post.querySelector(`article[data-id="${item.id}"] #buttonDelete`);
+                const confirm = document.querySelector(`article[data-id="${item.id}"] #confirmAction`);
+                confirm.classList.remove("d-none");
+
+            })
+
+            post.querySelector(`#buttonMsgNo`).addEventListener("click", (ev) => {
+                console.log("No. I'm not sure!");
+                // const buttonUpdate = post.querySelector(`article[data-id="${item.id}"] #buttonMsgNo`);
+
+                const confirm = document.querySelector(`article[data-id="${item.id}"] #confirmAction`);
+                console.log(confirm + " " + "This confirm button (No) works");
+                confirm.classList.remove("d-flex");
+                confirm.classList.add("d-none");
+
+                const editPost = document.querySelector(`article[data-id="${item.id}"] #edit-post`);
+                editPost.classList.remove("d-flex");
+                editPost.classList.add("d-none");
+
+
+
+                // const editPost = document.querySelector(`article[data-id="${item.id}"] #edit-post`);
+                // editPost.classList.remove("d-none");
+                // // editPost.classList.add("d-flex");
+
+                updatePosts(data);
+
+            })
+
+            post.querySelector(`#buttonMsgYes`).addEventListener("click", async (ev) => {
+                console.log("Yes, sure!");
+                // const buttonMsgYes = post.querySelector(`article[data-id="${item.id}"] #buttonMsgYes`);
+
+                const confirm = document.querySelector(`article[data-id="${item.id}"] #confirmAction`);
+                console.log(confirm + " " + "This confirm button (Yes) works");
+
+                // call API to delete post by id
+                const result = await fetchDeletePost(item.id);
+
+                if (result) {
+                    await displayPosts();
+                    return;
+                }
+
+                const buttonClose = document.querySelector(`article[data-id="${item.id}"] #buttonClose`);
+                console.log(buttonClose + " " + "This confirm button (No) works");
+                buttonClose.classList.remove("d-none");
+                buttonClose.classList.add("d-flex");
+
+                // confirm.classList.remove("d-flex");
+                // confirm.classList.add("d-none");
+
+                // const editPost = document.querySelector(`article[data-id="${item.id}"] #edit-post`);
+                // editPost.classList.remove("d-flex");
+                // editPost.classList.add("d-none");
+
+                // updatePosts(data);
+
+            })
+
+            post.querySelector(`#buttonSave`).addEventListener("click", (ev) => {
+                console.log("save");
+                const buttonSave = post.querySelector("#buttonSave");
+            })
+
             posts.appendChild(post);
         }
     }
 
 };
+
+/**
+ * 
+ * @param {number} id 
+ */
+function resetEdit(id) {
+
+    // document.getElementById("#posts").ariaValueMax.reset();
+}
 
 displayPosts();

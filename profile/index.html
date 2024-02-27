@@ -18,6 +18,7 @@
     <!-- <script defer src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script> -->
     <script defer src="/assets/lib/bootstrap.bundle.min.js"></script>
     <script defer type="module" src="/src/js/profile/profile.mjs"></script>
+    <script defer type="module" src="/src/js/profile/deletePost.mjs"></script>
 
 </head>
 
@@ -74,7 +75,7 @@
                                 <span>Following</span>
                             </div>
                         </div>
-                        <button type="button" role="button" class="btn btn-primary">Follow</button>
+                        <button id="follow" type="button" role="button" class="btn btn-primary">Follow</button>
                     </div>
                 </div>
             </div>
@@ -108,7 +109,7 @@
                     <div id="posts"></div>
 
                     <template id="post">
-                        <article class="card mb-3 border-0 shadow-sm">
+                        <article class="card mb-3 border-0 shadow-sm" data-id="">
                             <div class="card-header border-0 vstack gap-2 bg-white">
                                 <div class="hstack gap-2">
                                     <img id="authorImg" src="#" alt="User image" class="rounded-circle img-fluid me-1"
@@ -119,7 +120,10 @@
                                         </p>
                                     </div>
                                     <div>
-                                        <button type="button" class="btn btn-outline-secondary">
+                                        <button id="buttonClose" type="button" class="btn-close d-none"
+                                            aria-label="Close"></button>
+
+                                        <button id="edit" type="button" role="button" class="btn btn-outline-secondary">
                                             <span><i class="bi bi-pencil-square"></i></span>
                                             Edit
                                         </button>
@@ -144,45 +148,65 @@
                                     <i class="bi bi-send-arrow-up fs-4"></i>
                                 </div>
                             </div>
-                            <div class="card-body d-flex justify-content-end border-top border-1">
-                                <!-- <div>
-                                    <button type="button" class="btn btn-outline-secondary ms-3">
+
+                            <!-- edit mode -->
+
+                            <form id="form-edit" class="">
+                                <div class="mb-3 ">
+                                    <div class="mb-3">
+                                        <input type="text" class="form-control" id="postTitle" placeholder="Title"
+                                            required minlength="1" maxlength="45" name="email">
+                                    </div>
+                                    <textarea class="form-control" id="postText" rows="3" placeholder="Say something..."
+                                        minlength="5" maxlength="130" name="textarea"></textarea>
+
+                                </div>
+                                <div class="input-group ">
+                                    <div class="input-group-text" id="btnGroupAddon"><i class="bi bi-images"></i></div>
+                                    <input type="url" id="postImageUrl" class="form-control"
+                                        placeholder="Paste the picture url" aria-label="Input group example"
+                                        aria-describedby="btnGroupAddon">
+                                </div>
+                            </form>
+
+                            <!-- edit box -->
+                            <div id="edit-post" class="card-body d-flex justify-content-end border-top border-1 d-none">
+                                <div>
+                                    <!-- https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#form -->
+                                    <button id="buttonSave" type="submit" form="form-edit"
+                                        class="btn btn-outline-secondary ms-3 d-none">
                                         <span><i class="bi bi-floppy"></i></span>
                                         Save
                                     </button>
                                 </div>
                                 <div>
-                                    <button type="button" class="btn btn-outline-secondary ms-3">
+                                    <button id="buttonUpdate" type="button" class="btn btn-outline-secondary ms-3">
                                         <span><i class="bi bi-pencil-square"></i></span>
                                         Update
                                     </button>
                                 </div>
-                                 <div>
-                                    <button type="button" class="btn btn-outline-danger ms-3">
+                                <div>
+                                    <button id="buttonDelete" type="button" class="btn btn-outline-danger ms-3">
                                         <span><i class="bi bi-trash"></i></span>
                                         Delete
                                     </button>
-                                </div> 
-                            </div> -->
-                                <!-- <div class="alert alert-light d-flex justify-content-center text-center m-3" role="alert">
+                                </div>
+                            </div>
+
+                            <!--  confirm msg -->
+                            <div id="confirmAction"
+                                class="alert alert-light d-flex justify-content-center text-center m-3 d-none"
+                                role="alert">
                                 <div>Are you sure about this?</div>
-                                <button type="button" class="btn btn-outline-secondary ms-3" data-bs-toggle="button">
+                                <button id="buttonMsgNo" type="button" class="btn btn-outline-secondary ms-3"
+                                    data-bs-toggle="button">
                                     No
                                 </button>
-                                <button type="button" class="btn btn-outline-secondary ms-3">
+                                <button id="buttonMsgYes" type="button" class="btn btn-outline-secondary ms-3">
                                     Yes, delete it
                                 </button>
-                            </div> -->
-                                <!-- <div id="liveAlertPlaceholder">
-                                <div>
-                                    <div class="alert alert-success alert-dismissible text-center" role="alert">
-                                        <div>Nice, you triggered this alert message!</div> <button type="button"
-                                            class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                    </div>
-                                </div>
-                            </div> -->
-
-                                <!-- <button type="button" class="btn btn-primary" id="liveAlertBtn">Show live alert</button> -->
+                            </div>
+                            <div id="errorMsg" class="alert alert-danger d-none">Something went wrong, try again!</div>
                         </article>
 
                     </template>

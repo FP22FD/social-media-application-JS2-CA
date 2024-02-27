@@ -35,6 +35,7 @@ import { sanitize } from "../shared/sanitize.mjs";
 /** @type {GetSinglePostResponse["data"]} */
 let data = undefined;
 
+//https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams/get
 const queryString = document.location.search;
 const params = new URLSearchParams(queryString);
 const id = parseInt(params.get("id"), 10);
@@ -58,6 +59,7 @@ async function fetchSinglePost(id) {
         });
 
         // debugger;
+
         /** @type {GetSinglePostResponse} */
         const postData = await response.json();
         const data = postData.data;

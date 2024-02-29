@@ -30,11 +30,6 @@ import { ErrorHandler } from "../shared/errorHandler.mjs";
  * @property {number} data._count.reactions
  */
 
-// ------------------3. function to fetch single post------------------
-
-
-
-
 // ----------------------------------------------------------------------------------
 /**
  * @param {number} id
@@ -59,6 +54,8 @@ function displayError(id, visible, text) {
 /** @type {deletePostResponse["data"]} */
 let data = undefined;
 
+// ----------------------------------------------------------------------------------
+
 /**
  * @param {number} id
  */
@@ -67,7 +64,7 @@ export async function fetchDeletePost(id) {
     // displaySpinner(true);
 
     try {
-        const url = API_BASE + API_POSTS + `/${id + 555555}`;
+        const url = API_BASE + API_POSTS + `/${id}`;
         const response = await fetch(url, {
             headers: {
                 Authorization: `Bearer ${load("token")}`,

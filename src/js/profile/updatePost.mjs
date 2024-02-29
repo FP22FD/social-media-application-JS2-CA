@@ -1,6 +1,7 @@
 import { API_KEY, API_BASE, API_POSTS } from "../settings.mjs";
 import { load } from "../shared/storage.mjs";
 import { ErrorHandler } from "../shared/errorHandler.mjs";
+import { displaySpinner } from "./profile.mjs";
 
 // -------------------------2. types-----------------------------
 
@@ -71,7 +72,7 @@ let data = undefined;
  */
 export async function fetchUpdatePost(id, putData) {
 
-    // displaySpinner(true);
+    displaySpinner(true);
 
     try {
         const url = API_BASE + API_POSTS + `/${id}`;
@@ -97,8 +98,6 @@ export async function fetchUpdatePost(id, putData) {
     } catch (ev) {
         displayError(id, true, "Could not update the post! Please retry later.");
     } finally {
-        // displaySpinner(false);
+        displaySpinner(false);
     }
 }
-
-// fetchDeletePost(id);

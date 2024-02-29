@@ -1,10 +1,48 @@
 // ---------------------------1. settings------------------------
 
 import { API_KEY, API_BASE, API_POSTS } from "../settings.mjs";
-import { displayPosts } from "./feedPosts.mjs";
+import { displayPosts, updatePosts } from "./feedPosts.mjs";
 import { load } from "../shared/storage.mjs";
+import { ErrorHandler } from "../shared/errorHandler.mjs";
 
 // -------------------------2. types-----------------------------
+
+/** @typedef {object} GetSocialPostsResponse
+ * @property {object[]} data
+ * @property {number} data.id
+ * @property {string} data.title
+ * @property {string} data.body
+ * @property {string[]} data.tags
+ * @property {object} data.media // null
+ * @property {string} data.media.url
+ * @property {string} data.media.alt
+ * @property {string} data.created
+ * @property {string} data.updated
+ * @property {object} data.author
+ * @property {string} data.author.name
+ * @property {string} data.author.email
+ * @property {null|string} data.author.bio
+ * @property {object} data.author.avatar
+ * @property {string} data.author.avatar.url
+ * @property {string} data.author.avatar.alt
+ * @property {object} data.author.banner
+ * @property {string} data.author.banner.url
+ * @property {string} data.author.banner.alt
+ * @property {object} data._count
+ * @property {number} data._count.comments
+ * @property {number} data._count.reactions
+ * @property {object} meta
+ * @property {boolean} meta.isFirstPage
+ * @property {boolean} meta.isLastPage
+ * @property {number} meta.currentPage
+ * @property {null} meta.previousPage
+ * @property {null} meta.nextPage
+ * @property {number} meta.pageCount
+ * @property {number} meta.totalCount
+ */
+
+/** @type {GetSocialPostsResponse["data"]} */
+let data = [];
 
 /** @typedef {object} CreatePostRequest
  * @property {string} title
@@ -29,17 +67,6 @@ import { load } from "../shared/storage.mjs";
  * @property {number} data._count.comments
  * @property {number} data._count.reactions
  */
-
-// -------------3. Function to handle user key -------------------------
-
-// /**
-//  * @param {string} key
-//  */
-// function load(key) {
-//   const storedKey = localStorage.getItem(key);
-//   const value = storedKey ? JSON.parse(storedKey) : null;
-//   return value;
-// }
 
 // ---------------4. Function to display error messages------------------
 /**
@@ -112,12 +139,20 @@ async function createPost(postData) {
       body: JSON.stringify(postData),
     });
 
-    // TODO: add error handler
+    if (response.ok) {
 
-    // debugger;
-    const post = await response.json();
+      /** @type {post} */
+      const post = await response.json();
 
-    return post;
+      updatePosts(data); // is correct name "GetSocialPostsResponse!?"
+      return post;
+    }
+
+    const eh = new ErrorHandler(response);
+    const msg = await eh.getErrorMessage();
+    displayError(true, msg);
+
+    return null;
 
   } catch (ev) {
     displayError(true, "Something went wrong, try again!");
@@ -142,8 +177,6 @@ if (form) {
   try {
     form.addEventListener("submit", async (ev) => {
       ev.preventDefault();
-
-      // debugger;
 
       const form = /** @type {HTMLFormElement} */ (ev.currentTarget);
 

@@ -1,13 +1,13 @@
-// ---------------------------1. settings------------------------
+// --------------------------- settings------------------------
 
 import { API_BASE, API_KEY, API_POSTS_PROFILE } from "../settings.mjs";
 import { load } from "../shared/storage.mjs";
 import { ErrorHandler } from "../shared/errorHandler.mjs";
-// import { sanitize } from "../shared/sanitize.mjs";
+import { sanitize } from "../shared/sanitize.mjs";
 import { fetchDeletePost } from "./deletePost.mjs";
 import { fetchUpdatePost } from "./updatePost.mjs";
 
-// -------------------------2. types-----------------------------
+// ------------------------- types-----------------------------
 
 /** @typedef {object} GetProfilePostsResponse
  * @property {object[]} data
@@ -53,7 +53,7 @@ let data = [];
  * @property {number} statusCode
  */
 
-// ---------------4. Function to display error messages------------------//
+// --------------- Function to display error messages------------------//
 
 /**
  * @param {boolean} visible
@@ -71,7 +71,7 @@ export function displayError(visible, text) {
     }
 }
 
-// -----------------4. Function to display spinner-------------------------
+// ----------------- Function to display spinner-------------------------
 
 /**
  * @param {boolean} spinnerVisible
@@ -90,15 +90,39 @@ export function displaySpinner(spinnerVisible) {
 
 displaySpinner(false);
 
-// -------------5. Function to display posts -------------------------
+// ------------- Function to sort posts -------------------------
+
+/** @type {HTMLSelectElement} */
+const tabSort = document.querySelector("#order-By")
+tabSort.addEventListener("change", handleOrderBy);
+
+/**
+ * @param {Event} ev
+ */
+function handleOrderBy(ev) {
+    const select = /** @type {HTMLSelectElement} */ (ev.currentTarget);
+    const oby = select.value;
+
+    if (oby === "title") {
+        data.sort((a, b) => (a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1));
+    } else if (oby === "newest") {
+        data.sort(function (v1, v2) {
+            return new Date(v2.created).getTime() - new Date(v1.created).getTime();
+        });
+    } else if (oby === "oldest") {
+        data.sort(function (v1, v2) {
+            return new Date(v1.created).getTime() - new Date(v2.created).getTime();
+        });
+    }
+    updatePosts(data);
+}
+
+// ------------- Function to display posts -------------------------
 
 /** @param {string} username  */
 export async function displayPosts(username) {
     try {
         displaySpinner(true);
-
-        //To Do: change the fixed url "Fernanda"
-        // const url = `https://v2.api.noroff.dev/social/profiles/${username}/posts/?_author=true&_comments=true&_reactions=true`;
 
         const url = API_BASE + API_POSTS_PROFILE(username);
 
@@ -111,8 +135,6 @@ export async function displayPosts(username) {
             },
             method: "GET",
         });
-
-        // debugger;
 
         if (response.ok) {
 
@@ -138,20 +160,7 @@ export async function displayPosts(username) {
     }
 };
 
-
-// -------------6. Function to sanitize inputs innerHTML --------------
-
-/** @param {string} html */
-function sanitize(html) {
-    // @ts-ignore
-    return DOMPurify.sanitize(html);
-}
-
-
-// -------------6. Function to update posts -------------------------
-
-
-
+// ------------- Function to update posts -------------------------
 
 /**
  * @param {GetProfilePostsResponse["data"]} data
@@ -162,11 +171,8 @@ export async function updatePosts(data) {
     const posts = document.querySelector("#posts");
     posts.innerHTML = "";
 
-    // debugger;
-
     if (data.length === 0) {
         posts.innerHTML = "No posts available!";
-        // debugger;
     } else {
         for (let i = 0; i < data.length; i++) {
             const item = data[i];
@@ -191,26 +197,9 @@ export async function updatePosts(data) {
                 img.style.display = "none";
             }
 
-            // To do: FIX THE sanitize
-
-            // post.querySelector("#tags").innerHTML = sanitize(item.tags);
-            // post.querySelector("#bodyTitle").innerHTML = item.title;
-            // post.querySelector("#bodyPost").innerHTML = item.body;
-
             post.querySelector("#bodyTitle").innerHTML = sanitize(item.title);
             post.querySelector("#bodyPost").innerHTML = sanitize(item.body);
-            // let bodyTextSanitized = sanitize(item.body);
-            // const bodyText = post.querySelector("#viewPost");
-
-            // const textLimit = 120;
-
-            // if (bodyTextSanitized.length > textLimit) {
-            //     let htmlBody = bodyTextSanitized.substring(0, textLimit);
-            //     htmlBody += `... <br><a href="./postdetails.html?id=${item.id}" class="link-offset-2 link-underline link-underline-opacity-0">Read More<a/>`;
-            //     bodyText.innerHTML = htmlBody;
-            // } else {
-            //     bodyText.innerHTML = sanitize(item.body);
-            // }
+            // post.querySelector("#tags").innerHTML = sanitize(item.tags);
 
             let date = new Date(item.created);
             /** @type Intl.DateTimeFormatOptions */
@@ -223,26 +212,6 @@ export async function updatePosts(data) {
             // `BCP 47 language tag` => no-NO
             let dateString = date.toLocaleDateString("no-NO", options);
             post.querySelector("#datePost").innerHTML = dateString;
-
-            // ------------------------------------------------------
-
-            // post.querySelector("#edit").addEventListener("click", (ev) => {
-            //     console.log("event");
-
-            //     const editPost = document.querySelector(`article[data-id="${item.id}"] #edit-post`);
-            //     editPost.classList.remove("d-none");
-            //     editPost.classList.add("d-flex");
-
-            //     // document.querySelector(`article[data-id="${item.id}"] #buttonUpdate`).addEventListener("click", (ev) => {
-            //     //     console.log("update")
-            //     // })
-
-            //     // document.querySelector(`article[data-id="${item.id}"] #buttonDelete`).addEventListener("click", (ev) => {
-            //     //     console.log("delete")
-            //     // })
-            // });
-
-            // ------------------------------------------------------
 
             post.querySelector("#postTitle").value = item.title;
             post.querySelector("#postText").value = item.body;
@@ -271,26 +240,13 @@ export async function updatePosts(data) {
 
                 const post = await fetchUpdatePost(item.id, request);
                 if (post) {
-                    displayPosts();
+                    displayPosts(profile.name);
                     return;
                 }
-
-                // if (post) {
-                //     statusMsg(true, "Well done! You have created a new post.");
-
-                //     setTimeout(() => { //https://developer.mozilla.org/en-US/docs/Web/API/setTimeout
-                //         statusMsg(false, "");
-                //     }, 4000);
-
-                //     form.reset();
-                //     displayPosts();
-                // }
             })
 
             post.querySelector(`#buttonUpdate`).addEventListener("click", async (ev) => {
                 console.log("update");
-
-
 
                 const formEdit = document.querySelector(`article[data-id="${item.id}"] #form-edit`);
                 formEdit.classList.remove("d-none");
@@ -311,23 +267,15 @@ export async function updatePosts(data) {
                 const buttonClose = document.querySelector(`article[data-id="${item.id}"] #buttonClose`);
                 buttonClose.classList.remove("d-none");
                 buttonClose.classList.add("d-flex");
-
-
             })
 
             post.querySelector(`#buttonSave`).addEventListener("submit", async (ev) => {
                 ev.preventDefault();
                 console.log("save");
-
-                // call api
-                // const update = await fetchUpdatePost(id);
-
-
             })
 
             post.querySelector(`#buttonClose`).addEventListener("click", (ev) => {
                 console.log("close");
-
 
                 const editPost = document.querySelector(`article[data-id="${item.id}"] #edit-post`);
                 editPost.classList.remove("d-flex");
@@ -366,7 +314,6 @@ export async function updatePosts(data) {
 
                 const confirm = document.querySelector(`article[data-id="${item.id}"] #confirmAction`);
                 confirm.classList.remove("d-none");
-
             })
 
             post.querySelector(`#buttonMsgNo`).addEventListener("click", (ev) => {
@@ -387,16 +334,14 @@ export async function updatePosts(data) {
 
             post.querySelector(`#buttonMsgYes`).addEventListener("click", async (ev) => {
                 console.log("Yes, sure!");
-                // const buttonMsgYes = post.querySelector(`article[data-id="${item.id}"] #buttonMsgYes`);
 
                 const confirm = document.querySelector(`article[data-id="${item.id}"] #confirmAction`);
                 console.log(confirm + " " + "This confirm button (Yes) works");
 
-                // call API to delete post by id
                 const result = await fetchDeletePost(item.id);
 
                 if (result) {
-                    await displayPosts();
+                    await displayPosts(profile.name);
                     return;
                 }
 
@@ -404,36 +349,26 @@ export async function updatePosts(data) {
                 console.log(buttonClose + " " + "This confirm button (No) works");
                 buttonClose.classList.remove("d-none");
                 buttonClose.classList.add("d-flex");
-
-                // confirm.classList.remove("d-flex");
-                // confirm.classList.add("d-none");
-
-                // const editPost = document.querySelector(`article[data-id="${item.id}"] #edit-post`);
-                // editPost.classList.remove("d-flex");
-                // editPost.classList.add("d-none");
-
-                // updatePosts(data);
-
             })
 
             posts.appendChild(post);
         }
     }
-
 };
 
-// ---------------------------------------------------------------
-/**
- * 
- * @param {number} id 
- */
-function resetEdit(id) {
-
-    // document.getElementById("#posts").ariaValueMax.reset();
-}
-
 // ------------------------------------------------------------------
+
 const profile = load('profile');
 if (profile.name) {
     displayPosts(profile.name);
 }
+
+// ------------------------- To Do: --------------------------------------
+/**
+ *
+ * @param {number} id
+ */
+// function resetEdit(id) {
+
+//     // document.getElementById("#posts").ariaValueMax.reset();
+// }

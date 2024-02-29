@@ -92,6 +92,13 @@
                         </li>
                     </ul>
                     <div>
+                        <div id="filter" class="dropdown">
+                            <select id="order-By" class="form-select" aria-label="sort posts">
+                                <option value="title" selected>Title</option>
+                                <option value="newest">Newest</option>
+                                <option value="oldest">Oldest</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
 
@@ -122,15 +129,6 @@
                                         </p>
                                     </div>
                                     <div>
-                                        <div>
-                                            <!-- https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#form -->
-                                            <!-- <button id="buttonSave" type="submit" form="form-edit"
-                                                class="btn btn-outline-secondary ms-3 d-none">
-                                                <span><i class="bi bi-floppy"></i></span>
-                                                Save
-                                            </button> -->
-                                        </div>
-
                                         <button id="buttonClose" type="button" class="btn-close d-none"
                                             aria-label="Close"></button>
 
@@ -144,6 +142,8 @@
                                     <p id="bodyTitle"></p>
                                     <div>
                                         <p id="bodyPost" class="card-text"><span id="viewPost"></span></p>
+
+                                        <!-- ------------------------------To do: add the tags query--------------------- -->
                                         <!-- <p id="tags"></p> -->
                                     </div>
 
@@ -161,7 +161,6 @@
                             </div>
 
                             <!-- edit mode -->
-
                             <form id="form-edit" class="card-body d-flex flex-column d-none">
                                 <div class="mb-3 ">
                                     <div class="mb-3">
@@ -184,8 +183,8 @@
                             <div id="edit-post" class="card-body d-flex justify-content-end border-top border-1 d-none">
                                 <div>
                                     <!-- https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#form -->
-                                    <button id="buttonSave" type="submit" form="form-edit"
-                                        class="btn btn-outline-secondary ms-3 d-none">
+                                    <button id="buttonSave" type="button" form="form-edit"
+                                        class="btn btn-outline-secondary ms-3 gap-2 d-none">
                                         <span><i class="bi bi-floppy"></i></span>
                                         Save
                                     </button>
@@ -217,7 +216,10 @@
                                     Yes, delete it
                                 </button>
                             </div>
+
+                            <!--  error msg -->
                             <div id="errorMsg" class="alert alert-danger d-none">Something went wrong, try again!</div>
+
                         </article>
 
                     </template>

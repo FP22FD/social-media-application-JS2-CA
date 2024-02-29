@@ -141,14 +141,6 @@ export async function displayPosts() {
   }
 }
 
-// -------------6. Function to sanitize inputs innerHTML --------------
-
-// /** @param {string} html */
-// function sanitize(html) {
-//   // @ts-ignore
-//   return DOMPurify.sanitize(html);
-// }
-
 // -------------6. Function to update posts -------------------------
 
 // filter feed page
@@ -294,38 +286,6 @@ export async function updatePosts(data, searchInput) {
 
     posts.appendChild(post);
   }
-
-
-
 }
 
 displayPosts();
-
-// -------------7. Function to sort posts -------------------------
-
-// to do move to profile page
-
-/** @type {HTMLSelectElement} */
-const tabSort = document.querySelector("#order-By")
-tabSort.addEventListener("change", handleOrderBy);
-
-/**
- * @param {Event} ev
- */
-function handleOrderBy(ev) {
-  const select = /** @type {HTMLSelectElement} */ (ev.currentTarget);
-  const oby = select.value;
-
-  if (oby === "title") {
-    data.sort((a, b) => (a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1));
-  } else if (oby === "newest") {
-    data.sort(function (v1, v2) {
-      return new Date(v2.created).getTime() - new Date(v1.created).getTime();
-    });
-  } else if (oby === "oldest") {
-    data.sort(function (v1, v2) {
-      return new Date(v1.created).getTime() - new Date(v2.created).getTime();
-    });
-  }
-  updatePosts(data);
-}

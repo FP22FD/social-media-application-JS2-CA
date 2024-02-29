@@ -1,10 +1,11 @@
 // ---------------------------1. settings------------------------
 
-import { API_KEY } from "../settings.mjs";
+import { API_BASE, API_KEY, API_POSTS_PROFILE } from "../settings.mjs";
 import { load } from "../shared/storage.mjs";
 import { ErrorHandler } from "../shared/errorHandler.mjs";
 // import { sanitize } from "../shared/sanitize.mjs";
 import { fetchDeletePost } from "./deletePost.mjs";
+import { fetchUpdatePost } from "./updatePost.mjs";
 
 // -------------------------2. types-----------------------------
 
@@ -91,11 +92,15 @@ displaySpinner(false);
 
 // -------------5. Function to display posts -------------------------
 
-export async function displayPosts() {
+/** @param {string} username  */
+export async function displayPosts(username) {
     try {
         displaySpinner(true);
 
-        const url = "https://v2.api.noroff.dev/social/profiles/Fernanda/posts/?_author=true&_comments=true&_reactions=true";
+        //To Do: change the fixed url "Fernanda"
+        // const url = `https://v2.api.noroff.dev/social/profiles/${username}/posts/?_author=true&_comments=true&_reactions=true`;
+
+        const url = API_BASE + API_POSTS_PROFILE(username);
 
         const response = await fetch(url, {
 
@@ -145,6 +150,9 @@ function sanitize(html) {
 
 // -------------6. Function to update posts -------------------------
 
+
+
+
 /**
  * @param {GetProfilePostsResponse["data"]} data
 */
@@ -183,14 +191,14 @@ export async function updatePosts(data) {
                 img.style.display = "none";
             }
 
+            // To do: FIX THE sanitize
+
             // post.querySelector("#tags").innerHTML = sanitize(item.tags);
+            // post.querySelector("#bodyTitle").innerHTML = item.title;
+            // post.querySelector("#bodyPost").innerHTML = item.body;
 
-            // post.querySelector("#bodyTitle").innerHTML = sanitize(item.title);
-            post.querySelector("#bodyTitle").innerHTML = item.title;
-
-            post.querySelector("#bodyPost").innerHTML = item.body;
-
-            // post.querySelector("#bodyPost").innerHTML = sanitize(item.body);
+            post.querySelector("#bodyTitle").innerHTML = sanitize(item.title);
+            post.querySelector("#bodyPost").innerHTML = sanitize(item.body);
             // let bodyTextSanitized = sanitize(item.body);
             // const bodyText = post.querySelector("#viewPost");
 
@@ -204,9 +212,7 @@ export async function updatePosts(data) {
             //     bodyText.innerHTML = sanitize(item.body);
             // }
 
-
             let date = new Date(item.created);
-
             /** @type Intl.DateTimeFormatOptions */
             const options = {
                 // weekday: "long",
@@ -216,12 +222,7 @@ export async function updatePosts(data) {
             };
             // `BCP 47 language tag` => no-NO
             let dateString = date.toLocaleDateString("no-NO", options);
-
             post.querySelector("#datePost").innerHTML = dateString;
-
-
-
-
 
             // ------------------------------------------------------
 
@@ -245,9 +246,84 @@ export async function updatePosts(data) {
 
             post.querySelector("#postTitle").value = item.title;
             post.querySelector("#postText").value = item.body;
-            // post.querySelector("#postImageUrl").value = item.media.url;
 
-            // to do: if media is underfied ...
+            post.querySelector("#form-edit").addEventListener("submit", async (ev) => {
+                console.log("Form edit");
+                ev.preventDefault();
+
+                const form = /** @type {HTMLFormElement} */ (ev.currentTarget);
+
+                const postTitle = form.elements["postTitle"].value;
+                const postText = form.elements["postText"].value;
+                const postImageUrl = form.elements["postImageUrl"].value;
+
+                const media = postImageUrl ? {
+                    url: postImageUrl,
+                    alt: "",
+                } : undefined;
+
+                const request = {
+                    title: postTitle,
+                    body: postText,
+                    tags: [],
+                    media: media,
+                };
+
+                const post = await fetchUpdatePost(item.id, request);
+                if (post) {
+                    displayPosts();
+                    return;
+                }
+
+                // if (post) {
+                //     statusMsg(true, "Well done! You have created a new post.");
+
+                //     setTimeout(() => { //https://developer.mozilla.org/en-US/docs/Web/API/setTimeout
+                //         statusMsg(false, "");
+                //     }, 4000);
+
+                //     form.reset();
+                //     displayPosts();
+                // }
+            })
+
+            post.querySelector(`#buttonUpdate`).addEventListener("click", async (ev) => {
+                console.log("update");
+
+
+
+                const formEdit = document.querySelector(`article[data-id="${item.id}"] #form-edit`);
+                formEdit.classList.remove("d-none");
+                formEdit.classList.add("d-flex");
+
+                const buttonSave = document.querySelector(`article[data-id="${item.id}"] #buttonSave`);
+                buttonSave.classList.remove("d-none");
+                buttonSave.classList.add("d-flex");
+
+                const buttonDelete = document.querySelector(`article[data-id="${item.id}"] #buttonDelete`);
+                buttonDelete.classList.remove("d-flex");
+                buttonDelete.classList.add("d-none");
+
+                const buttonUpdate = document.querySelector(`article[data-id="${item.id}"] #buttonUpdate`);
+                buttonUpdate.classList.remove("d-flex");
+                buttonUpdate.classList.add("d-none");
+
+                const buttonClose = document.querySelector(`article[data-id="${item.id}"] #buttonClose`);
+                buttonClose.classList.remove("d-none");
+                buttonClose.classList.add("d-flex");
+
+
+            })
+
+            post.querySelector(`#buttonSave`).addEventListener("submit", async (ev) => {
+                ev.preventDefault();
+                console.log("save");
+
+                // call api
+                // const update = await fetchUpdatePost(id);
+
+
+            })
 
             post.querySelector(`#buttonClose`).addEventListener("click", (ev) => {
                 console.log("close");
@@ -285,18 +361,9 @@ export async function updatePosts(data) {
                 editPost.classList.add("d-flex");
             })
 
-            post.querySelector(`#buttonUpdate`).addEventListener("click", (ev) => {
-                console.log("update");
-
-                const buttonUpdate = post.querySelector("#buttonUpdate");
-                console.log(buttonUpdate + " " + "This variable works");
-            })
-
             post.querySelector(`#buttonDelete`).addEventListener("click", (ev) => {
                 console.log("delete");
 
-                // const buttonDelete = post.querySelector("#buttonDelete");
-                // const buttonDelete = post.querySelector(`article[data-id="${item.id}"] #buttonDelete`);
                 const confirm = document.querySelector(`article[data-id="${item.id}"] #confirmAction`);
                 confirm.classList.remove("d-none");
 
@@ -304,7 +371,6 @@ export async function updatePosts(data) {
 
             post.querySelector(`#buttonMsgNo`).addEventListener("click", (ev) => {
                 console.log("No. I'm not sure!");
-                // const buttonUpdate = post.querySelector(`article[data-id="${item.id}"] #buttonMsgNo`);
 
                 const confirm = document.querySelector(`article[data-id="${item.id}"] #confirmAction`);
                 console.log(confirm + " " + "This confirm button (No) works");
@@ -314,12 +380,6 @@ export async function updatePosts(data) {
                 const editPost = document.querySelector(`article[data-id="${item.id}"] #edit-post`);
                 editPost.classList.remove("d-flex");
                 editPost.classList.add("d-none");
-
-
-
-                // const editPost = document.querySelector(`article[data-id="${item.id}"] #edit-post`);
-                // editPost.classList.remove("d-none");
-                // // editPost.classList.add("d-flex");
 
                 updatePosts(data);
 
@@ -356,17 +416,13 @@ export async function updatePosts(data) {
 
             })
 
-            post.querySelector(`#buttonSave`).addEventListener("click", (ev) => {
-                console.log("save");
-                const buttonSave = post.querySelector("#buttonSave");
-            })
-
             posts.appendChild(post);
         }
     }
 
 };
 
+// ---------------------------------------------------------------
 /**
  * 
  * @param {number} id 
@@ -376,4 +432,8 @@ function resetEdit(id) {
     // document.getElementById("#posts").ariaValueMax.reset();
 }
 
-displayPosts();
+// ------------------------------------------------------------------
+const profile = load('profile');
+if (profile.name) {
+    displayPosts(profile.name);
+}

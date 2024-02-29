@@ -1,11 +1,11 @@
-// ---------------------------1. settings------------------------
+// --------------------------- Settings------------------------
 
 import { API_KEY, API_BASE, API_POSTS, API_GET_POSTS_PARAMS } from "../settings.mjs";
 import { load } from "../shared/storage.mjs";
 import { ErrorHandler } from "../shared/errorHandler.mjs";
 import { sanitize } from "../shared/sanitize.mjs";
 
-// -------------------------2. types-----------------------------
+// ------------------------- Types-----------------------------
 
 /** @typedef {object} GetSocialPostsResponse
  * @property {object[]} data
@@ -51,18 +51,7 @@ let data = [];
  * @property {number} statusCode
  */
 
-// -------------3. Function to display error -------------------------
-
-// /**
-//  * @param {string} key
-//  */
-// function load(key) {
-//   const storedKey = localStorage.getItem(key);
-//   const value = storedKey ? JSON.parse(storedKey) : null;
-//   return value;
-// }
-
-// ---------------4. Function to display error messages------------------//
+// --------------- Function to display error messages------------------
 
 /**
  * @param {boolean} visible
@@ -80,7 +69,7 @@ export function displayError(visible, text) {
   }
 }
 
-// -----------------4. Function to display spinner-------------------------
+// ----------------- Function to display spinner-------------------------
 
 /**
  * @param {boolean} spinnerVisible
@@ -99,7 +88,7 @@ export function displaySpinner(spinnerVisible) {
 
 displaySpinner(false);
 
-// -------------5. Function to display posts -------------------------
+// ------------- Function to display posts -------------------------
 
 export async function displayPosts() {
   try {
@@ -141,64 +130,73 @@ export async function displayPosts() {
   }
 }
 
-// -------------6. Function to update posts -------------------------
+// ------------- Function to update posts -------------------------
 
-// filter feed page
+/** @type {HTMLInputElement} */
 
-// function generateHtml(item) {
-//   /** @type {HTMLTemplateElement} */
-//   const template = document.querySelector("#post");
+/** @type {HTMLButtonElement} */
+const txtFilter = document.querySelector("#filter"); // input
+txtFilter.addEventListener("input", handleSearchInput);
 
-//   const post = /** @type {HTMLDivElement} */ (template.content.cloneNode(true));
+async function handleSearchInput(ev) {
+  const userInput = ev.currentTarget.value;
+  updatePosts(data, userInput);
+}
 
-//   post.querySelector("h5").innerText = item.author.name + item.id; // + item.id
+function generateHtml(item) {
+  /** @type {HTMLTemplateElement} */
+  const template = document.querySelector("#post");
 
-//   /** @type {HTMLImageElement} */
-//   const authorImg = post.querySelector("#authorImg");
-//   authorImg.src = item.author.avatar.url;
+  const post = /** @type {HTMLDivElement} */ (template.content.cloneNode(true));
 
-//   /** @type {HTMLImageElement} */
-//   const img = post.querySelector("#postImg");
-//   if (item.media) {
-//     img.src = item.media.url;
-//     img.alt = item.media.alt;
-//   } else {
-//     img.style.display = "none";
-//   }
+  post.querySelector("h5").innerText = item.author.name + item.id; // + item.id
 
-//   post.querySelector("#bodyTitle").innerHTML = sanitize(item.title);
-//   // post.querySelector("#tags").innerHTML = sanitize(item.tags);
+  /** @type {HTMLImageElement} */
+  const authorImg = post.querySelector("#authorImg");
+  authorImg.src = item.author.avatar.url;
 
-//   const textLimit = 120;
-//   const bodyText = post.querySelector("#viewPost");
-//   let bodyTextSanitized = sanitize(item.body);
+  /** @type {HTMLImageElement} */
+  const img = post.querySelector("#postImg");
+  if (item.media) {
+    img.src = item.media.url;
+    img.alt = item.media.alt;
+  } else {
+    img.style.display = "none";
+  }
 
-//   // post.querySelector("#bodyPost").innerHTML = sanitize(item.body);
-//   if (bodyTextSanitized.length > textLimit) {
-//     let htmlBody = bodyTextSanitized.substring(0, textLimit);
-//     htmlBody += `... <br><a href="./postdetails.html?id=${item.id}" class="link-offset-2 link-underline link-underline-opacity-0">Read More<a/>`;
-//     bodyText.innerHTML = htmlBody;
-//   } else {
-//     bodyText.innerHTML = sanitize(item.body);
-//   }
+  post.querySelector("#bodyTitle").innerHTML = sanitize(item.title);
+  // post.querySelector("#tags").innerHTML = sanitize(item.tags);
 
+  const textLimit = 120;
+  const bodyText = post.querySelector("#viewPost");
+  let bodyTextSanitized = sanitize(item.body);
 
-//   let date = new Date(item.created);
+  // post.querySelector("#bodyPost").innerHTML = sanitize(item.body);
+  if (bodyTextSanitized.length > textLimit) {
+    let htmlBody = bodyTextSanitized.substring(0, textLimit);
+    htmlBody += `... <br><a href="./postdetails.html?id=${item.id}" class="link-offset-2 link-underline link-underline-opacity-0">Read More<a/>`;
+    bodyText.innerHTML = htmlBody;
+  } else {
+    bodyText.innerHTML = sanitize(item.body);
+  }
 
-//   /** @type Intl.DateTimeFormatOptions */
-//   const options = {
-//     // weekday: "long",
-//     year: "numeric",
-//     month: "long",
-//     day: "numeric",
-//   };
-//   // `BCP 47 language tag` => no-NO
-//   let dateString = date.toLocaleDateString("no-NO", options);
+  let date = new Date(item.created);
 
-//   post.querySelector("#datePost").innerHTML = dateString;
+  /** @type Intl.DateTimeFormatOptions */
+  const options = {
+    // weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+  // `BCP 47 language tag` => no-NO
+  let dateString = date.toLocaleDateString("no-NO", options);
 
-//   return post;
-// }
+  post.querySelector("#datePost").innerHTML = dateString;
+
+  return post;
+}
+
 
 /**
  * @param {GetSocialPostsResponse["data"]} data
@@ -214,78 +212,19 @@ export async function updatePosts(data, searchInput) {
     return;
   }
 
-  // to do: filter for feed page 
+  data
+    .filter(posts => {
+      if (posts.title.startsWith(searchInput)) {
+        return true;
+      }
+      return false;
+    })
+    .map(x => generateHtml(x))
+    .forEach(x => {
+      posts.appendChild(x);
+    });
 
-  // data
-  //   .filter(posts => {
-  //     if (posts.title.startsWith(searchInput)) {
-  //       return true;
-  //     }
-  //     return false;
-  //   })
-  //   .forEach(x => {
-  //     const post = generateHtml(x);
-  //     posts.appendChild(post);
-  //   });
-
-  // return;
-
-  for (let i = 0; i < data.length; i++) {
-    const item = data[i];
-
-    /** @type {HTMLTemplateElement} */
-    const template = document.querySelector("#post");
-
-    const post = /** @type {HTMLDivElement} */ (template.content.cloneNode(true));
-
-    post.querySelector("h5").innerText = item.author.name + item.id; // + item.id
-
-    /** @type {HTMLImageElement} */
-    const authorImg = post.querySelector("#authorImg");
-    authorImg.src = item.author.avatar.url;
-
-    /** @type {HTMLImageElement} */
-    const img = post.querySelector("#postImg");
-    if (item.media) {
-      img.src = item.media.url;
-      img.alt = item.media.alt;
-    } else {
-      img.style.display = "none";
-    }
-
-    post.querySelector("#bodyTitle").innerHTML = sanitize(item.title);
-    // post.querySelector("#tags").innerHTML = sanitize(item.tags);
-
-    const textLimit = 120;
-    const bodyText = post.querySelector("#viewPost");
-    let bodyTextSanitized = sanitize(item.body);
-
-    // post.querySelector("#bodyPost").innerHTML = sanitize(item.body);
-    if (bodyTextSanitized.length > textLimit) {
-      let htmlBody = bodyTextSanitized.substring(0, textLimit);
-      htmlBody += `... <br><a href="./postdetails.html?id=${item.id}" class="link-offset-2 link-underline link-underline-opacity-0">Read More<a/>`;
-      bodyText.innerHTML = htmlBody;
-    } else {
-      bodyText.innerHTML = sanitize(item.body);
-    }
-
-
-    let date = new Date(item.created);
-
-    /** @type Intl.DateTimeFormatOptions */
-    const options = {
-      // weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    };
-    // `BCP 47 language tag` => no-NO
-    let dateString = date.toLocaleDateString("no-NO", options);
-
-    post.querySelector("#datePost").innerHTML = dateString;
-
-    posts.appendChild(post);
-  }
+  return;
 }
 
 displayPosts();

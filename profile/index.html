@@ -17,6 +17,8 @@
 
     <!-- <script defer src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script> -->
     <script defer src="/assets/lib/bootstrap.bundle.min.js"></script>
+
+    <script defer type="module" src="/src/js/shared/logout.mjs"></script>
     <script defer type="module" src="/src/js/profile/profile.mjs"></script>
     <script defer type="module" src="/src/js/profile/updatePost.mjs"></script>
     <script defer type="module" src="/src/js/profile/deletePost.mjs"></script>
@@ -26,7 +28,6 @@
 
 <body>
     <div class="container bg-white">
-
         <header class="border-bottom border-1">
             <nav class="navbar navbar-expand-lg bg-body-tertiary bg-light sticky-top">
                 <div class="container-fluid d-flex">
@@ -36,7 +37,10 @@
                         <div class="navbar-nav">
                             <a class="nav-link  active" aria-current="page" href="#">Profile page</a>
                             <a class="nav-link " href="/feed/index.html">Feed page</a>
-                            <a class="nav-link" href="/">Logout</a>
+
+                            <button type="button" id="logout"
+                                class="btn nav-link text-start shadow-none">Logout</button>
+                            <!-- <a class="nav-link" href="/">Logout</a> -->
                         </div>
                     </div>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -48,15 +52,17 @@
             </nav>
             <div class="row align-items-center py-4">
                 <div class="col-md-4 d-flex justify-content-center">
-                    <img src="/assets/img/profile-img.jpg" class="img-fluid rounded-circle d-block me-1"
-                        alt="User image" width="200">
+                    <img id="author-image" src="" class="img-fluid rounded-circle d-block me-1" alt="User image"
+                        width="200">
                 </div>
                 <div class="col-md-4">
                     <div class="vstack justify-content-end text-center">
-                        <h1 class="h3">Fernanda Gomes</h1>
+                        <h1 class="h3">Fernanda</h1>
+                        <p class="mb-0">Digital creator</p>
+                        <p class="mb-0">Unveiling everyday tech mysteries</p>
+                        <p class="mb-0">Front-end student @Noroff</p>
                         <div>
-                            Lorem ipsum dolor sit amet,
-                            eiusmod tempor incididunt ut labore et dolore magna aliqua.
+
                         </div>
                     </div>
                 </div>
@@ -77,7 +83,8 @@
                                 <span>Following</span>
                             </div>
                         </div>
-                        <button id="follow" type="button" role="button" class="btn btn-primary">Follow</button>
+                        <button id="follow" type="button" role="button"
+                            class="btn btn-primary fw-semibold">Follow</button>
                     </div>
                 </div>
             </div>
@@ -85,7 +92,7 @@
 
         <main class="row my-4">
             <div class="col-md-6 order-2 order-md-1">
-                <div class="d-flex justify-content-between">
+                <div class="d-flex justify-content-between mb-3">
                     <ul class="nav my-1">
                         <li class="nav-item">
                             <span class="border-bottom border-primary border-5 px-1">Posts</span>
@@ -121,8 +128,8 @@
                         <article class="card mb-3 border-0 shadow-sm" data-id="">
                             <div class="card-header border-0 vstack gap-2 bg-white">
                                 <div class="hstack gap-2">
-                                    <img id="authorImg" src="#" alt="User image" class="rounded-circle img-fluid me-1"
-                                        width="50">
+                                    <img id="authorImg" src="#" alt="User image"
+                                        class="rounded-circle mw-100 object-fit-cover me-1" width="50" height="50">
                                     <div class="flex-fill">
                                         <h5 class="mb-1"></h5>
                                         <p id="datePost" class="card-text"><small class="text-body-secondary"></small>
@@ -132,25 +139,26 @@
                                         <button id="buttonClose" type="button" class="btn-close d-none"
                                             aria-label="Close"></button>
 
-                                        <button id="edit" type="button" role="button" class="btn btn-outline-secondary">
+                                        <button id="edit" type="button" role="button"
+                                            class="btn btn-outline-primary shadow-sm">
                                             <span><i class="bi bi-pencil-square"></i></span>
                                             Edit
                                         </button>
                                     </div>
                                 </div>
-                                <div>
+                                <div id="containerPost">
                                     <p id="bodyTitle"></p>
                                     <div>
                                         <p id="bodyPost" class="card-text"><span id="viewPost"></span></p>
-
-                                        <!-- ------------------------------To do: add the tags query--------------------- -->
-                                        <!-- <p id="tags"></p> -->
+                                        <a>
+                                            <img id="postImg" src="#"
+                                                class="card-img-top rounded-bottom-1 max-vh-50 object-fit-cover"
+                                                alt="Post image">
+                                        </a>
                                     </div>
-
                                 </div>
                             </div>
-                            <a><img id="postImg" src="#" class="card-img-top" alt="Post image"></a>
-                            <div class="card-body d-flex justify-content-between">
+                            <div id="reactToPost" class="card-body d-flex justify-content-between">
                                 <div>
                                     <i class="bi bi-heart fs-4 pe-2"></i>
                                     <i class="bi bi-chat-square fs-4 pe-2"></i>
@@ -162,33 +170,31 @@
 
                             <!-- edit mode -->
                             <form id="form-edit" class="card-body d-flex flex-column d-none">
-                                <div class="mb-3 ">
+                                <div class="mb-3">
                                     <div class="mb-3">
                                         <input type="text" class="form-control" id="postTitle" placeholder="Title"
-                                            required minlength="1" maxlength="45" name="email">
+                                            required minlength="1" maxlength="45" name="postTitle">
                                     </div>
                                     <textarea class="form-control" id="postText" rows="3" placeholder="Say something..."
-                                        minlength="5" maxlength="130" name="textarea"></textarea>
+                                        minlength="5" maxlength="130" name="postText"></textarea>
 
                                 </div>
-                                <div class="input-group ">
+                                <div class="input-group mb-3">
                                     <div class="input-group-text" id="btnGroupAddon"><i class="bi bi-images"></i></div>
                                     <input type="url" id="postImageUrl" class="form-control"
                                         placeholder="Paste the picture url" aria-label="Input group example"
                                         aria-describedby="btnGroupAddon">
                                 </div>
+
+                                <button id="buttonSave" type="submit"
+                                    class="btn btn-outline-secondary ms-3 gap-2 align-self-center d-none">
+                                    <span><i class="bi bi-floppy"></i></span>
+                                    Save
+                                </button>
                             </form>
 
                             <!-- edit box -->
                             <div id="edit-post" class="card-body d-flex justify-content-end border-top border-1 d-none">
-                                <div>
-                                    <!-- https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#form -->
-                                    <button id="buttonSave" type="button" form="form-edit"
-                                        class="btn btn-outline-secondary ms-3 gap-2 d-none">
-                                        <span><i class="bi bi-floppy"></i></span>
-                                        Save
-                                    </button>
-                                </div>
                                 <div>
                                     <button id="buttonUpdate" type="button" class="btn btn-outline-secondary ms-3">
                                         <span><i class="bi bi-pencil-square"></i></span>

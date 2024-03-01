@@ -18,6 +18,7 @@
     <!-- <script defer src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script> -->
     <script defer src="/assets/lib/bootstrap.bundle.min.js"></script>
 
+    <script defer type="module" src="/src/js/shared/logout.mjs"></script>
     <script defer type="module" src="/src/js/feed/feedPosts.mjs"></script>
     <script defer type="module" src="/src/js/feed/createPost.mjs"></script>
     <script defer type="module" src="/src/js/feed/search.mjs"></script>
@@ -37,7 +38,10 @@
                         <div class="navbar-nav">
                             <a class="nav-link" aria-current="page" href="/profile/index.html">Profile page</a>
                             <a class="nav-link active" href="/feed/index.html">Feed page</a>
-                            <a class="nav-link" href="/">Logout</a>
+
+                            <button type="button" id="logout"
+                                class="btn nav-link text-start shadow-none">Logout</button>
+                            <!-- <a class="nav-link" href="/">Logout</a> -->
                         </div>
                     </div>
 
@@ -65,8 +69,7 @@
         </header>
         <main class="row my-5">
             <div class="col-md-6 order-2 order-md-1">
-
-                <div class="d-flex justify-content-between mb-1">
+                <div class="d-flex justify-content-between mb-3">
                     <ul class=" nav my-1">
                         <li class="nav-item">
                             <span class="border-bottom border-primary border-5 px-1">Posts</span>
@@ -79,6 +82,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div id="spinnerPosts" class="gap-1 text-center my-5 py-5">
                     <div class="spinner-grow spinner-grow-sm spinner-border-sm text-secondary" role="status">
                     </div>
@@ -99,8 +103,8 @@
                         <article class="card mb-3 border-0 shadow-sm">
                             <div class="card-header border-0 vstack gap-2 bg-white">
                                 <div class="hstack gap-2">
-                                    <img id="authorImg" src="#" alt="User image" class="rounded-circle img-fluid me-1"
-                                        width="50">
+                                    <img id="authorImg" src="#" alt="User image"
+                                        class="rounded-circle mw-100 object-fit-cover me-1" width="50" height="50">
                                     <div>
                                         <h5 class="mb-1"></h5>
                                         <p id="datePost" class="card-text"><small class="text-body-secondary"></small>
@@ -111,13 +115,14 @@
                                     <p id="bodyTitle"></p>
                                     <div>
                                         <p id="bodyPost" class="card-text"><span id="viewPost"></span></p>
-                                        <!-- ------------------------------To do: add the tags query--------------------- -->
-                                        <!-- <p id="tags"></p> -->
+                                        <a>
+                                            <img id="postImg" src="#"
+                                                class="card-img-top rounded-bottom-1 max-vh-50 object-fit-cover"
+                                                alt="Post image">
+                                        </a>
                                     </div>
-
                                 </div>
                             </div>
-                            <a><img id="postImg" src="#" class="card-img-top" alt="Post image"></a>
                             <div class="card-body d-flex justify-content-between">
                                 <div>
                                     <i class="bi bi-heart fs-4 pe-2"></i>
@@ -133,13 +138,12 @@
                 </div>
             </div>
             <aside class="col-md-5 order-1 order-md-2 offset-md-1">
-
                 <form action="#" method="post" id="createPost">
                     <div class="card mb-3 border-0 shadow-sm">
                         <h1 class="card-title text-center h2">Create a new post</h1>
                         <div class="card-header hstack border-0 gap-2 bg-white">
-                            <img src="/assets/img/profile-img.jpg" alt="User image"
-                                class="rounded-circle img-fluid me-1" width="50">
+                            <img id="author-image" src="" alt="User image" class="rounded-circle img-fluid me-1"
+                                width="50">
                             <h5 class="mb-1 h6">Fernanda Gomes</h5>
                         </div>
                         <div class="card-body d-flex flex-column">
@@ -176,7 +180,7 @@
                         </div>
                         <div class="card-footer border-0 hstack gap-3 justify-content-end bg-white">
                             <button type="reset" class="btn btn-light">Cancel</button>
-                            <button type="submit" class="btn btn-primary">Post</button>
+                            <button type="submit" class="btn btn-primary fw-semibold">Post</button>
                         </div>
                     </div>
                 </form>

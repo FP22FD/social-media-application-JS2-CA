@@ -19,6 +19,5 @@ export function save(key, value) {
  * @param {string} key
  */
 export function remove(key) {
-
     localStorage.removeItem(key);
 }

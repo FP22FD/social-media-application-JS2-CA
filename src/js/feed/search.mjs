@@ -75,6 +75,10 @@ async function handleSearch(ev) {
     try {
         displaySpinner(true);
 
+        /** @type {HTMLInputElement} */
+        const txtFilter = document.querySelector("#filter");
+        txtFilter.value = '';
+
         const text = search.value;
 
         if (text !== "") {
@@ -85,7 +89,7 @@ async function handleSearch(ev) {
                 // updatePosts([]);
                 return;
             }
-            updatePosts(results);
+            updatePosts(results, '');
         }
 
     } catch (ev) {

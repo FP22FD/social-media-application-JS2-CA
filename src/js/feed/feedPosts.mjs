@@ -213,10 +213,15 @@ export async function updatePosts(data, searchInput) {
 
   data
     .filter(post => {
-      // const title = post.title;
-      // const body = post.body;
-      const results = post.title || post.body;
-      if (results.includes(searchInput)) {
+      const searchText = searchInput.toLowerCase();
+      const title = (post.title || '').toLowerCase();
+      const body = (post.body || '').toLowerCase();
+
+      // const results = post.title || post.body;
+      // if (results.includes(searchInput)) {
+      // if (post.title.includes(searchInput) || post.body?.includes(searchInput)) {
+
+      if (title.includes(searchText) || body.includes(searchText)) {
         return true;
       }
       return false;

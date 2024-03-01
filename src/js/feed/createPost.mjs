@@ -4,7 +4,7 @@ import { API_KEY, API_BASE, API_POSTS } from "../settings.mjs";
 import { displayPosts, updatePosts } from "./feedPosts.mjs";
 import { load } from "../shared/storage.mjs";
 import { ErrorHandler } from "../shared/errorHandler.mjs";
-import { getProfileImage } from "../shared/profile-image.mjs";
+import { getProfileInfo } from "../shared/profile-info.mjs";
 
 // -------------------------2. types-----------------------------
 
@@ -71,7 +71,11 @@ let data = [];
 
 /** @type {HTMLImageElement} */
 const img = document.querySelector('#author-image');
-img.src = getProfileImage();
+img.src = getProfileInfo().avatarUrl
+
+/** @type {HTMLHeadingElement} */
+const authorName = document.querySelector('#author-name');
+authorName.innerText = getProfileInfo().name
 
 // ---------------4. Function to display error messages------------------
 /**

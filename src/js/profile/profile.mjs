@@ -6,7 +6,7 @@ import { ErrorHandler } from "../shared/errorHandler.mjs";
 import { sanitize } from "../shared/sanitize.mjs";
 import { fetchDeletePost } from "./deletePost.mjs";
 import { fetchUpdatePost } from "./updatePost.mjs";
-import { getProfileImage } from "../shared/profile-image.mjs";
+import { getProfileInfo } from "../shared/profile-info.mjs";
 
 // ------------------------- types-----------------------------
 
@@ -56,7 +56,15 @@ let data = [];
 
 /** @type {HTMLImageElement} */
 const img = document.querySelector('#author-image');
-img.src = getProfileImage();
+img.src = getProfileInfo().avatarUrl;
+
+/** @type {HTMLHeadingElement} */
+const authorInfoName = document.querySelector('#author-info h1');
+authorInfoName.innerText = getProfileInfo().name;
+
+/** @type {HTMLParagraphElement} */
+const authorInfoBio = document.querySelector('#author-info p');
+authorInfoBio.innerHTML = getProfileInfo().bio;
 
 // --------------- Function to display error messages------------------//
 
@@ -204,7 +212,6 @@ export async function updatePosts(data) {
 
             post.querySelector("#bodyTitle").innerHTML = sanitize(item.title);
             post.querySelector("#bodyPost").innerHTML = sanitize(item.body);
-            // post.querySelector("#tags").innerHTML = sanitize(item.tags);
 
             let date = new Date(item.created);
             /** @type Intl.DateTimeFormatOptions */
@@ -218,9 +225,20 @@ export async function updatePosts(data) {
             let dateString = date.toLocaleDateString("no-NO", options);
             post.querySelector("#datePost").innerHTML = dateString;
 
-            post.querySelector("#postTitle").value = item.title;
-            post.querySelector("#postText").value = item.body;
-            post.querySelector("#postImageUrl").value = item.media ? item.media.url : '';
+            /** @type {HTMLInputElement} */
+            const txtTitle = post.querySelector("#postTitle");
+            txtTitle.value = item.title;
+            // post.querySelector("#postTitle").value = item.title;
+
+            /** @type {HTMLTextAreaElement} */
+            const txtBody = post.querySelector("#postText");
+            txtBody.value = item.body;
+            // post.querySelector("#postText").value = item.body;
+
+            /** @type {HTMLInputElement} */
+            const txtImgUrl = post.querySelector("#postImageUrl");
+            txtImgUrl.value = item.media ? item.media.url : '';
+            // post.querySelector("#postImageUrl").value = item.media ? item.media.url : '';
 
             post.querySelector("#form-edit").addEventListener("submit", async (ev) => {
                 console.log("Form edit");

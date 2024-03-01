@@ -51,10 +51,8 @@ let data = [];
  * @property {number} statusCode
  */
 
-
-// --------------- Function to display error messages------------------
-
 /**
+ * @description Function to display error messages
  * @param {boolean} visible
  * @param {string} text
  */

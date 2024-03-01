@@ -4,6 +4,7 @@ import { API_KEY, API_BASE, API_POSTS } from "../settings.mjs";
 import { displayPosts, updatePosts } from "./feedPosts.mjs";
 import { load } from "../shared/storage.mjs";
 import { ErrorHandler } from "../shared/errorHandler.mjs";
+import { getProfileImage } from "../shared/profile-image.mjs";
 
 // -------------------------2. types-----------------------------
 
@@ -67,6 +68,10 @@ let data = [];
  * @property {number} data._count.comments
  * @property {number} data._count.reactions
  */
+
+/** @type {HTMLImageElement} */
+const img = document.querySelector('#author-image');
+img.src = getProfileImage();
 
 // ---------------4. Function to display error messages------------------
 /**

@@ -51,6 +51,7 @@ let data = [];
  * @property {number} statusCode
  */
 
+
 // --------------- Function to display error messages------------------
 
 /**
@@ -149,7 +150,7 @@ function generateHtml(item) {
 
   const post = /** @type {HTMLDivElement} */ (template.content.cloneNode(true));
 
-  post.querySelector("h5").innerText = item.author.name + item.id; // + item.id
+  post.querySelector("h5").innerText = item.author.name; // + item.id
 
   /** @type {HTMLImageElement} */
   const authorImg = post.querySelector("#authorImg");
@@ -174,7 +175,7 @@ function generateHtml(item) {
   // post.querySelector("#bodyPost").innerHTML = sanitize(item.body);
   if (bodyTextSanitized.length > textLimit) {
     let htmlBody = bodyTextSanitized.substring(0, textLimit);
-    htmlBody += `... <br><a href="./postdetails.html?id=${item.id}" class="link-offset-2 link-underline link-underline-opacity-0">Read More<a/>`;
+    htmlBody += `... <br><a href="./postdetails.html?id=${item.id}" class="link-offset-2 link-underline link-underline-opacity-0 blue-500 fw-semibold">Read More<a/>`;
     bodyText.innerHTML = htmlBody;
   } else {
     bodyText.innerHTML = sanitize(item.body);
@@ -213,8 +214,11 @@ export async function updatePosts(data, searchInput) {
   }
 
   data
-    .filter(posts => {
-      if (posts.title.startsWith(searchInput)) {
+    .filter(post => {
+      // const title = post.title;
+      // const body = post.body;
+      const results = post.title || post.body;
+      if (results.includes(searchInput)) {
         return true;
       }
       return false;

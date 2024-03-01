@@ -6,6 +6,7 @@ import { ErrorHandler } from "../shared/errorHandler.mjs";
 import { sanitize } from "../shared/sanitize.mjs";
 import { fetchDeletePost } from "./deletePost.mjs";
 import { fetchUpdatePost } from "./updatePost.mjs";
+import { getProfileImage } from "../shared/profile-image.mjs";
 
 // ------------------------- types-----------------------------
 
@@ -52,6 +53,10 @@ let data = [];
  * @property {string} status
  * @property {number} statusCode
  */
+
+/** @type {HTMLImageElement} */
+const img = document.querySelector('#author-image');
+img.src = getProfileImage();
 
 // --------------- Function to display error messages------------------//
 
@@ -183,7 +188,7 @@ export async function updatePosts(data) {
 
             post.querySelector("article").dataset.id = String(item.id);
 
-            post.querySelector("h5").innerText = item.author.name + item.id;
+            post.querySelector("h5").innerText = item.author.name;
             /** @type {HTMLImageElement} */
             const authorImg = post.querySelector("#authorImg");
             authorImg.src = item.author.avatar.url;
@@ -215,6 +220,7 @@ export async function updatePosts(data) {
 
             post.querySelector("#postTitle").value = item.title;
             post.querySelector("#postText").value = item.body;
+            post.querySelector("#postImageUrl").value = item.media ? item.media.url : '';
 
             post.querySelector("#form-edit").addEventListener("submit", async (ev) => {
                 console.log("Form edit");
@@ -267,11 +273,14 @@ export async function updatePosts(data) {
                 const buttonClose = document.querySelector(`article[data-id="${item.id}"] #buttonClose`);
                 buttonClose.classList.remove("d-none");
                 buttonClose.classList.add("d-flex");
-            })
 
-            post.querySelector(`#buttonSave`).addEventListener("submit", async (ev) => {
-                ev.preventDefault();
-                console.log("save");
+                const containerPost = document.querySelector(`article[data-id="${item.id}"] #containerPost`);
+                containerPost.classList.remove("d-flex");
+                containerPost.classList.add("d-none");
+
+                const reactToPost = document.querySelector(`article[data-id="${item.id}"] #reactToPost`);
+                reactToPost.classList.remove("d-flex");
+                reactToPost.classList.add("d-none");
             })
 
             post.querySelector(`#buttonClose`).addEventListener("click", (ev) => {
@@ -296,6 +305,24 @@ export async function updatePosts(data) {
                 const buttonClose = document.querySelector(`article[data-id="${item.id}"] #buttonClose`);
                 buttonClose.classList.remove("d-flex");
                 buttonClose.classList.add("d-none");
+
+                const formEdit = document.querySelector(`article[data-id="${item.id}"] #form-edit`);
+                formEdit.classList.remove("d-flex");
+                formEdit.classList.add("d-none");
+
+                const buttonSave = document.querySelector(`article[data-id="${item.id}"] #buttonSave`);
+                buttonSave.classList.remove("d-flex");
+                buttonSave.classList.add("d-none");
+
+                const buttonDelete = document.querySelector(`article[data-id="${item.id}"] #buttonDelete`);
+                buttonDelete.classList.remove("d-none");
+                buttonDelete.classList.add("d-flex");
+
+                const buttonUpdate = document.querySelector(`article[data-id="${item.id}"] #buttonUpdate`);
+                buttonUpdate.classList.remove("d-none");
+                buttonUpdate.classList.add("d-flex");
+
+                updatePosts(data);
             })
 
             post.querySelector(`#edit`).addEventListener("click", (ev) => {
@@ -363,7 +390,7 @@ if (profile.name) {
     displayPosts(profile.name);
 }
 
-// ------------------------- To Do: --------------------------------------
+// ------------------------- To Do: ---------------------------------
 /**
  *
  * @param {number} id

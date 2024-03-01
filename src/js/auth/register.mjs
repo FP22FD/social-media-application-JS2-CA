@@ -2,7 +2,6 @@ import { API_BASE, API_AUTH, API_REGISTER } from "../settings.mjs";
 import { ErrorHandler } from "../shared/errorHandler.mjs";
 import { displayError } from "./authentication.mjs";
 
-// -------------------------2. types-----------------------------
 
 // generated via https://transform.tools/json-to-jsdoc
 
@@ -19,13 +18,12 @@ import { displayError } from "./authentication.mjs";
  * @property {string} data.banner.alt
  */
 
-// -----------------5. Function to display spinner-------------------------
 
 /**
  * @param {boolean} spinnerRegister
  */
 function displaySpinnerRegister(spinnerRegister) {
-    /** @type {HTMLDivElement} */ //To avoid msg error -> "Property "style" does not exist on type "Element".
+    /** @type {HTMLDivElement} */
     const sr = document.querySelector("#spinnerRegister");
 
     if (spinnerRegister === true) {
@@ -37,7 +35,6 @@ function displaySpinnerRegister(spinnerRegister) {
 
 displaySpinnerRegister(false);
 
-// ------------------------7. register------------------------------
 
 /**
  * @async

@@ -2,7 +2,6 @@ import { API_BASE, API_POSTS, API_GET_POSTS_PARAMS, API_KEY } from "../settings.
 import { load } from "../shared/storage.mjs";
 import { sanitize } from "../shared/sanitize.mjs";
 
-// -------------------------2. types-----------------------------
 
 /** @typedef {object} GetSinglePostResponse
  * @property {object} data
@@ -30,7 +29,6 @@ import { sanitize } from "../shared/sanitize.mjs";
  * @property {number} data._count.reactions
  */
 
-// ------------------3. function to fetch single post------------------
 
 /** @type {GetSinglePostResponse["data"]} */
 let data = undefined;
@@ -112,7 +110,6 @@ async function fetchSinglePost(id) {
 
 fetchSinglePost(id);
 
-// ---------------4. Function to display error messages------------------//
 
 /**
  * @param {boolean} visible
@@ -130,7 +127,6 @@ export function displayError(visible, text) {
     }
 }
 
-// -----------------5. Function to display spinner-------------------------//
 
 /**
  * @param {boolean} spinnerVisible

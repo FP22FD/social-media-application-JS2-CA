@@ -4,7 +4,6 @@ import { load } from "../shared/storage.mjs";
 import { displaySpinner } from "./feedPosts.mjs";
 import { ErrorHandler } from "../shared/errorHandler.mjs";
 
-// -------------------------2. types-----------------------------
 
 /** @typedef {object} GetSocialPostsResponse
 //  * @property {object[]} data
@@ -39,7 +38,6 @@ import { ErrorHandler } from "../shared/errorHandler.mjs";
 //  * @property {number} meta.pageCount
 //  * @property {number} meta.totalCount
  */
-// -------------------------3. function to handle error-----------------------------
 
 /**
  * @param {boolean} visible
@@ -57,7 +55,6 @@ function displayError(visible, text) {
     }
 }
 
-// -------------------------4. function to handle searchbar-----------------------------
 
 let data = [];
 
@@ -99,7 +96,6 @@ async function handleSearch(ev) {
     }
 }
 
-// -------------------------5. function to fetch search-----------------------------
 
 /**
  * @description Returns all posts that does match the search text.

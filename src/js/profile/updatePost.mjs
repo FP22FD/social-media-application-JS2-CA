@@ -3,7 +3,6 @@ import { load } from "../shared/storage.mjs";
 import { ErrorHandler } from "../shared/errorHandler.mjs";
 import { displaySpinner } from "./profile.mjs";
 
-// -------------------------2. types-----------------------------
 
 /** @typedef {object} deletePostResponse
  * @property {object} data
@@ -40,7 +39,6 @@ import { displaySpinner } from "./profile.mjs";
  * @property {string} media.alt
  */
 
-// ----------------------------------------------------------------------------------
 /**
  * @param {number} id
  * @param {boolean} visible
@@ -64,7 +62,6 @@ function displayError(id, visible, text) {
 /** @type {deletePostResponse["data"]} */
 let data = undefined;
 
-// ----------------------------------------------------------------------------------
 
 /**
  * @param {number} id

@@ -1,11 +1,8 @@
-// --------------------------- Settings------------------------
-
 import { API_KEY, API_BASE, API_POSTS, API_GET_POSTS_PARAMS } from "../settings.mjs";
 import { load } from "../shared/storage.mjs";
 import { ErrorHandler } from "../shared/errorHandler.mjs";
 import { sanitize } from "../shared/sanitize.mjs";
 
-// ------------------------- Types-----------------------------
 
 /** @typedef {object} GetSocialPostsResponse
  * @property {object[]} data
@@ -68,7 +65,6 @@ export function displayError(visible, text) {
   }
 }
 
-// ----------------- Function to display spinner-------------------------
 
 /**
  * @param {boolean} spinnerVisible
@@ -87,7 +83,6 @@ export function displaySpinner(spinnerVisible) {
 
 displaySpinner(false);
 
-// ------------- Function to display posts -------------------------
 
 export async function displayPosts() {
   try {
@@ -129,7 +124,6 @@ export async function displayPosts() {
   }
 }
 
-// ------------- Function to update posts -------------------------
 
 /** @type {HTMLInputElement} */
 
@@ -216,10 +210,6 @@ export async function updatePosts(data, searchInput) {
       const searchText = searchInput.toLowerCase();
       const title = (post.title || '').toLowerCase();
       const body = (post.body || '').toLowerCase();
-
-      // const results = post.title || post.body;
-      // if (results.includes(searchInput)) {
-      // if (post.title.includes(searchInput) || post.body?.includes(searchInput)) {
 
       if (title.includes(searchText) || body.includes(searchText)) {
         return true;

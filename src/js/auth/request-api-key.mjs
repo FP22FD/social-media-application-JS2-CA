@@ -1,7 +1,6 @@
 import { API_KEY, API_BASE, API_AUTH, API_REGISTER, API_LOGIN, API_POSTS } from "../settings.mjs";
-import { load } from "../shared.mjs";
+import { load } from "../shared/storage.mjs";
 
-// -------------------function to request API key | Made with Postman ----------------------
 
 async function requestAPIKey() {
   const response = await fetch(API_BASE + API_AUTH + API_KEY, {

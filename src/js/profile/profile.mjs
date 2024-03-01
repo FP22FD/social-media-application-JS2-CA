@@ -1,5 +1,3 @@
-// --------------------------- settings------------------------
-
 import { API_BASE, API_KEY, API_POSTS_PROFILE } from "../settings.mjs";
 import { load } from "../shared/storage.mjs";
 import { ErrorHandler } from "../shared/errorHandler.mjs";
@@ -8,7 +6,6 @@ import { fetchDeletePost } from "./deletePost.mjs";
 import { fetchUpdatePost } from "./updatePost.mjs";
 import { getProfileInfo } from "../shared/profile-info.mjs";
 
-// ------------------------- types-----------------------------
 
 /** @typedef {object} GetProfilePostsResponse
  * @property {object[]} data
@@ -66,8 +63,6 @@ authorInfoName.innerText = getProfileInfo().name;
 const authorInfoBio = document.querySelector('#author-info p');
 authorInfoBio.innerHTML = getProfileInfo().bio;
 
-// --------------- Function to display error messages------------------//
-
 /**
  * @param {boolean} visible
  * @param {string} text
@@ -84,7 +79,6 @@ export function displayError(visible, text) {
     }
 }
 
-// ----------------- Function to display spinner-------------------------
 
 /**
  * @param {boolean} spinnerVisible
@@ -103,7 +97,6 @@ export function displaySpinner(spinnerVisible) {
 
 displaySpinner(false);
 
-// ------------- Function to sort posts -------------------------
 
 /** @type {HTMLSelectElement} */
 const tabSort = document.querySelector("#order-By")
@@ -130,7 +123,6 @@ function handleOrderBy(ev) {
     updatePosts(data);
 }
 
-// ------------- Function to display posts -------------------------
 
 /** @param {string} username  */
 export async function displayPosts(username) {
@@ -173,7 +165,6 @@ export async function displayPosts(username) {
     }
 };
 
-// ------------- Function to update posts -------------------------
 
 /**
  * @param {GetProfilePostsResponse["data"]} data
@@ -228,17 +219,14 @@ export async function updatePosts(data) {
             /** @type {HTMLInputElement} */
             const txtTitle = post.querySelector("#postTitle");
             txtTitle.value = item.title;
-            // post.querySelector("#postTitle").value = item.title;
 
             /** @type {HTMLTextAreaElement} */
             const txtBody = post.querySelector("#postText");
             txtBody.value = item.body;
-            // post.querySelector("#postText").value = item.body;
 
             /** @type {HTMLInputElement} */
             const txtImgUrl = post.querySelector("#postImageUrl");
             txtImgUrl.value = item.media ? item.media.url : '';
-            // post.querySelector("#postImageUrl").value = item.media ? item.media.url : '';
 
             post.querySelector("#form-edit").addEventListener("submit", async (ev) => {
                 console.log("Form edit");
@@ -401,19 +389,8 @@ export async function updatePosts(data) {
     }
 };
 
-// ------------------------------------------------------------------
 
 const profile = load('profile');
 if (profile.name) {
     displayPosts(profile.name);
 }
-
-// ------------------------- To Do: ---------------------------------
-/**
- *
- * @param {number} id
- */
-// function resetEdit(id) {
-
-//     // document.getElementById("#posts").ariaValueMax.reset();
-// }

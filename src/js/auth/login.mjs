@@ -18,13 +18,12 @@ import { ErrorHandler } from "../shared/errorHandler.mjs";
  * @property {string} data.accessToken
  */
 
-// -----------------5. Function to display spinner-------------------------
 
 /**
  * @param {boolean} spinnerLogin
  */
 function displaySpinnerLogin(spinnerLogin) {
-    /** @type {HTMLDivElement} */ //To avoid msg error -> "Property "style" does not exist on type "Element".
+    /** @type {HTMLDivElement} */ //To set the element type -> "Property "style" does not exist on type "Element".
     const sl = document.querySelector("#spinnerLogin");
 
     if (spinnerLogin === true) {
@@ -36,7 +35,6 @@ function displaySpinnerLogin(spinnerLogin) {
 
 displaySpinnerLogin(false);
 
-// -----------------------------8. login | Master function-------------------------------
 /**
  * @param {string} email
  * @param {string} password

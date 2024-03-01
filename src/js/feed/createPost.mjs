@@ -1,12 +1,9 @@
-// ---------------------------1. settings------------------------
-
 import { API_KEY, API_BASE, API_POSTS } from "../settings.mjs";
 import { displayPosts, updatePosts } from "./feedPosts.mjs";
 import { load } from "../shared/storage.mjs";
 import { ErrorHandler } from "../shared/errorHandler.mjs";
 import { getProfileInfo } from "../shared/profile-info.mjs";
 
-// -------------------------2. types-----------------------------
 
 /** @typedef {object} GetSocialPostsResponse
  * @property {object[]} data
@@ -77,7 +74,6 @@ img.src = getProfileInfo().avatarUrl
 const authorName = document.querySelector('#author-name');
 authorName.innerText = getProfileInfo().name
 
-// ---------------4. Function to display error messages------------------
 /**
  * @param {boolean} visible
  * @param {string|null} text
@@ -94,7 +90,6 @@ function displayError(visible, text) {
   }
 }
 
-// ---------------5. Function to display status messages------------------
 /**
  * @param {boolean} visible
  * @param {string} text
@@ -111,7 +106,6 @@ function statusMsg(visible, text) {
   }
 }
 
-// -----------------6. Function to display spinner-------------------------
 
 /**
  * @param {boolean} spinnerVisible
@@ -129,7 +123,6 @@ function displaySpinner(spinnerVisible) {
 
 displaySpinner(false);
 
-// --------------7. function to create a post request | Master child----------
 
 /** @param {CreatePostRequest} postData */
 async function createPost(postData) {
@@ -224,20 +217,3 @@ if (form) {
     displaySpinner(false);
   }
 }
-
-// ----------------------10. To Do: a class for handle ----------------------------
-
-// const htmlForm = document.querySelector("#createPost");
-// cont fp = new FormPost(htmlForm);
-// const title = fp.Title;
-
-// class FormPost {
-//    let form;
-//   constructor(form) {
-//     this.form = form;
-//   }
-//
-//   get Title() {
-//     return this.form.elements["postTitle"].value;
-//   }
-// }

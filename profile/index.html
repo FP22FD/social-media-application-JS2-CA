@@ -53,12 +53,12 @@
 
             <div class="row align-items-center py-4">
                 <div class="col-md-4 d-flex justify-content-center">
-                    <img id="author-image" src="/" class="img-fluid rounded-circle d-block me-1" alt="User image"
+                    <img id="author-image" src="#" class="img-fluid rounded-circle d-block me-1" alt="User image"
                         width="200">
                 </div>
                 <div class="col-md-4">
                     <div id="author-info" class="vstack justify-content-end text-center">
-                        <h1 class="h3"></h1>
+                        <h2 class="h3"></h2>
                         <p class="mb-0"></p>
                     </div>
                 </div>
@@ -75,12 +75,12 @@
                                 <span>Followers</span>
                             </div>
                             <div class="d-flex flex-column">
-                                <span is="totFollowing"></span>
+                                <span id="totFollowing"></span>
                                 <span>Following</span>
                             </div>
                         </div>
-                        <button id="editProfile" type="button" role="button"
-                            class="btn btn-primary fw-bold">Edit</button>
+                        <button id="editProfile" type="button" role="button" class="btn btn-primary fw-bold"
+                            disabled>Edit</button>
                     </div>
                 </div>
             </div>
@@ -92,7 +92,7 @@
                 <div class="d-flex justify-content-between mb-3">
                     <ul class="nav my-1">
                         <li class="nav-item">
-                            <span class="border-bottom border-primary border-5 px-1">Posts</span>
+                            <h1 class="fs-6 border-bottom border-primary border-5 px-1">Posts</h1>
                         </li>
                     </ul>
                     <div>
@@ -125,7 +125,7 @@
                         <article class="card mb-3 border-0 shadow-sm" data-id="">
                             <div class="card-header border-0 vstack gap-2 bg-white">
                                 <div class="hstack gap-2">
-                                    <img id="authorImg" src="/" alt="User image"
+                                    <img id="authorImg" src="#" alt="User image"
                                         class="rounded-circle mw-100 object-fit-cover me-1" width="50" height="50">
                                     <div class="flex-fill">
                                         <h5 class="mb-1"></h5>
@@ -148,7 +148,7 @@
                                     <div>
                                         <p id="bodyPost" class="card-text"><span id="viewPost"></span></p>
                                         <a>
-                                            <img id="postImg" src="/"
+                                            <img id="postImg" src="#"
                                                 class="card-img-top rounded-bottom-1 max-vh-50 object-fit-cover"
                                                 alt="Post image">
                                             <span id="alt-img"></span>
@@ -171,17 +171,16 @@
                                 <div class="mb-3">
                                     <div class="mb-3">
                                         <input type="text" class="form-control" id="postTitle" placeholder="Title"
-                                            required minlength="1" maxlength="45" name="postTitle">
+                                            aria-label="Title" required minlength="1" maxlength="45" name="postTitle">
                                     </div>
                                     <textarea class="form-control" id="postText" rows="3" placeholder="Say something..."
-                                        minlength="5" maxlength="130" name="postText"></textarea>
+                                        aria-label="Body" minlength="5" maxlength="130" name="postText"></textarea>
 
                                 </div>
                                 <div class="input-group mb-3">
-                                    <div class="input-group-text" id="btnGroupAddon"><i class="bi bi-images"></i></div>
+                                    <div class="input-group-text"><i class="bi bi-images"></i></div>
                                     <input type="url" id="postImageUrl" class="form-control"
-                                        placeholder="Paste the picture url" aria-label="Input group example"
-                                        aria-describedby="btnGroupAddon">
+                                        placeholder="Paste the picture url" aria-label="Image url">
                                 </div>
 
                                 <button id="buttonSave" type="submit"

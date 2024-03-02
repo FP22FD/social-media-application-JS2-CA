@@ -56,7 +56,7 @@ const img = document.querySelector('#author-image');
 img.src = getProfileInfo().avatarUrl;
 
 /** @type {HTMLHeadingElement} */
-const authorInfoName = document.querySelector('#author-info h1');
+const authorInfoName = document.querySelector('#author-info h2');
 authorInfoName.innerText = getProfileInfo().name;
 
 /** @type {HTMLParagraphElement} */
@@ -181,6 +181,8 @@ export async function updatePosts(data) {
         for (let i = 0; i < data.length; i++) {
             const item = data[i];
 
+            // debugger;
+
             /** @type {HTMLTemplateElement} */
             const template = document.querySelector("#post");
             const post = /** @type {HTMLDivElement} */ (template.content.cloneNode(true));
@@ -196,12 +198,11 @@ export async function updatePosts(data) {
             const img = post.querySelector("#postImg");
             if (item.media) {
                 img.src = item.media.url;
-                img.alt = item.media.alt;
+                img.alt = item.media.alt || 'Post image';
             } else {
                 img.style.display = "none";
             }
 
-            // post.querySelector("#alt-img").innerHTML = sanitize(item.media.alt);
             post.querySelector("#bodyTitle").innerHTML = sanitize(item.title);
             post.querySelector("#bodyPost").innerHTML = sanitize(item.body);
 

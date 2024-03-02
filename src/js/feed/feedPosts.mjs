@@ -152,14 +152,13 @@ function generateHtml(item) {
   const img = post.querySelector("#postImg");
   if (item.media) {
     img.src = item.media.url;
-    img.alt = item.media.alt;
+    img.alt = item.media.alt || 'Post image';
   } else {
-    img.style.display = "none";
+    img.remove();
+    // img.style.display = "none";
   }
 
-  // post.querySelector("#alt-img").innerHTML = sanitize(item.media.alt);
   post.querySelector("#bodyTitle").innerHTML = sanitize(item.title);
-  // post.querySelector("#tags").innerHTML = sanitize(item.tags);
 
   const textLimit = 120;
   const bodyText = post.querySelector("#viewPost");

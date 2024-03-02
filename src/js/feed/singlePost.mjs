@@ -98,6 +98,8 @@ async function fetchSinglePost(id) {
             img.style.display = "none";
         }
 
+        post.querySelector("#alt-img").innerHTML = sanitize(data.media.alt);
+
         const posts = document.querySelector("#posts");
         posts.appendChild(post);
 

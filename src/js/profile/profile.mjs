@@ -201,6 +201,7 @@ export async function updatePosts(data) {
                 img.style.display = "none";
             }
 
+            // post.querySelector("#alt-img").innerHTML = sanitize(item.media.alt);
             post.querySelector("#bodyTitle").innerHTML = sanitize(item.title);
             post.querySelector("#bodyPost").innerHTML = sanitize(item.body);
 

@@ -157,6 +157,7 @@ function generateHtml(item) {
     img.style.display = "none";
   }
 
+  // post.querySelector("#alt-img").innerHTML = sanitize(item.media.alt);
   post.querySelector("#bodyTitle").innerHTML = sanitize(item.title);
   // post.querySelector("#tags").innerHTML = sanitize(item.tags);
 
@@ -167,7 +168,7 @@ function generateHtml(item) {
   // post.querySelector("#bodyPost").innerHTML = sanitize(item.body);
   if (bodyTextSanitized.length > textLimit) {
     let htmlBody = bodyTextSanitized.substring(0, textLimit);
-    htmlBody += `... <br><a href="./postdetails.html?id=${item.id}" class="link-offset-2 link-underline link-underline-opacity-0 blue-500 fw-semibold">Read More<a/>`;
+    htmlBody += `... <br><a href="./postdetails.html?id=${item.id}" class="link-offset-2 link-underline link-underline-opacity-0 blue-500 fw-bold">Read More<a/>`;
     bodyText.innerHTML = htmlBody;
   } else {
     bodyText.innerHTML = sanitize(item.body);

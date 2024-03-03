@@ -30,7 +30,7 @@ import { sanitize } from "../shared/sanitize.mjs";
  * @property {number} _count.reactions
  */
 
-/** @typedef  SocialPostMetaResponse
+/** @typedef  GetSocialPostMetaResponse
  * @type {object}
  * @property {boolean} isFirstPage
  * @property {boolean} isLastPage
@@ -43,7 +43,7 @@ import { sanitize } from "../shared/sanitize.mjs";
 
 /** @typedef {object} GetSocialPostsResponse
  * @property {Array<GetSocialPostDataResponse>} data
- * @property {SocialPostMetaResponse} meta
+ * @property {GetSocialPostMetaResponse} meta
  */
 
 /** @type {Array<GetSocialPostDataResponse>} */

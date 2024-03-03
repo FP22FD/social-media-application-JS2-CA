@@ -47,8 +47,15 @@ import { ErrorHandler } from "../shared/errorHandler.mjs";
  */
 
 /**
+ * @description Show or hide a error message in the UI. 
  * @param {boolean} visible
- * @param {string|null} text
+ * @param {string|undefined} text
+ * @example
+ * // Hide the error message
+ * displayError(false);
+ * @example
+ * // Show the error message
+ * displayError(true, 'Error message');
  */
 function displayError(visible, text) {
     /** @type {HTMLDivElement} */
@@ -87,10 +94,8 @@ async function handleSearch(ev) {
 
         if (text !== "") {
             const results = await searchPosts(text);
-            console.log(results);
 
             if (!results) {
-                // updatePosts([]);
                 return;
             }
             updatePosts(results, '');
@@ -103,11 +108,13 @@ async function handleSearch(ev) {
     }
 }
 
-
 /**
- * @description Returns all posts that does match the search text.
- * @param {string} text 
- * @returns {Promise<Array<GetSocialPostDataResponse|null|undefined>>}
+ * @description Returns all posts that does match the search text
+ * @param {string} text The string to search for
+ * @return {Promise<Array<GetSocialPostDataResponse> |null | undefined>} Returns an array if the fetch is successful, otherwise it returns null for response not ok. It returns undefined for unexpected errors.
+ * @example 
+ * // returns a Promise with an array of posts
+ * const posts = await searchPosts("Travel");
  */
 async function searchPosts(text) {
 
@@ -117,7 +124,6 @@ async function searchPosts(text) {
         const url = API_BASE + API_SEARCH + encodeURIComponent(text);// text
 
         const response = await fetch(url, {
-
             headers: {
                 Authorization: `Bearer ${load("token")}`,
                 "X-Noroff-API-Key": API_KEY,
@@ -125,8 +131,6 @@ async function searchPosts(text) {
             },
             method: "GET",
         });
-
-        debugger;
 
         if (response.ok) {
 
@@ -143,7 +147,7 @@ async function searchPosts(text) {
 
         return null;
 
-    } catch (ev) {
+    } catch (error) {
         displayError(true, "Could not show the posts!");
     } finally {
         displaySpinner(false);

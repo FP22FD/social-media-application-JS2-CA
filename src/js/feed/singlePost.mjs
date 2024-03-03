@@ -58,13 +58,9 @@ async function fetchSinglePost(id) {
             method: "GET",
         });
 
-        // debugger;
-
         /** @type {GetSinglePostResponse} */
         const postData = await response.json();
         const data = postData.data;
-
-        console.log(data);
 
         /** @type {HTMLTemplateElement} */
         const template = document.querySelector("#post");

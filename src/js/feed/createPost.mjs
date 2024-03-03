@@ -82,6 +82,7 @@ const authorName = document.querySelector('#author-name');
 authorName.innerText = getProfileInfo().name
 
 /**
+ * @description display a message error
  * @param {boolean} visible
  * @param {string|null} text
  */
@@ -153,7 +154,7 @@ async function createPost(postData) {
       /** @type {CreatePostResponse} */
       const post = await response.json();
 
-      // updatePosts(data); // TODO: is correct name "GetSocialPostsResponse!?"
+      // updatePosts(data);
       return post;
     }
 

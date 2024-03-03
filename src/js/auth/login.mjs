@@ -35,7 +35,7 @@ function displaySpinnerLogin(spinnerLogin) {
 
 displaySpinnerLogin(false);
 
-/**
+/** 
  * @param {string} email
  * @param {string} password
  * @returns {Promise<LoginResponse|null>}

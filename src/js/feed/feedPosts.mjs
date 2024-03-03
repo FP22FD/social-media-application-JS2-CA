@@ -113,7 +113,6 @@ export async function displayPosts() {
       /** @type {GetSocialPostsResponse} */
       const postsData = await response.json();
       data = postsData.data;
-      console.log(data);
 
       updatePosts(data, '');
       return data;

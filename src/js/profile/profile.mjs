@@ -111,7 +111,12 @@ const tabSort = document.querySelector("#order-By")
 tabSort.addEventListener("change", handleOrderBy);
 
 /**
- * @param {Event} ev
+ * @description Sort the user array posts by a specified key
+ * @param {Event} ev The event from the `select` element.
+ * @example 
+ * // if the select value is 'title', it return the posts sorted alphabetically a-z.
+ * // if the select value is 'newest', it returns the newest posts first.
+ * // if the select value is 'oldest', it returns the oldest posts first.
  */
 function handleOrderBy(ev) {
     const select = /** @type {HTMLSelectElement} */ (ev.currentTarget);
@@ -154,7 +159,6 @@ export async function displayPosts(username) {
             /** @type {GetProfilePostsResponse} */
             const postsData = await response.json();
             data = postsData.data;
-            console.log(data);
 
             updatePosts(data);
             return data;
@@ -188,8 +192,6 @@ export async function updatePosts(data) {
     } else {
         for (let i = 0; i < data.length; i++) {
             const item = data[i];
-
-            // debugger;
 
             /** @type {HTMLTemplateElement} */
             const template = document.querySelector("#post");
@@ -239,7 +241,6 @@ export async function updatePosts(data) {
             txtImgUrl.value = item.media ? item.media.url : '';
 
             post.querySelector("#form-edit").addEventListener("submit", async (ev) => {
-                console.log("Form edit");
                 ev.preventDefault();
 
                 const form = /** @type {HTMLFormElement} */ (ev.currentTarget);
@@ -268,8 +269,6 @@ export async function updatePosts(data) {
             })
 
             post.querySelector(`#buttonUpdate`).addEventListener("click", async (ev) => {
-                console.log("update");
-
                 const formEdit = document.querySelector(`article[data-id="${item.id}"] #form-edit`);
                 formEdit.classList.remove("d-none");
                 formEdit.classList.add("d-flex");
@@ -300,8 +299,6 @@ export async function updatePosts(data) {
             })
 
             post.querySelector(`#buttonClose`).addEventListener("click", (ev) => {
-                console.log("close");
-
                 const editPost = document.querySelector(`article[data-id="${item.id}"] #edit-post`);
                 editPost.classList.remove("d-flex");
                 editPost.classList.add("d-none");
@@ -342,8 +339,6 @@ export async function updatePosts(data) {
             })
 
             post.querySelector(`#edit`).addEventListener("click", (ev) => {
-                console.log("edit");
-
                 const edit = document.querySelector(`article[data-id="${item.id}"] #edit`);
                 edit.classList.add("d-none");
 
@@ -353,17 +348,12 @@ export async function updatePosts(data) {
             })
 
             post.querySelector(`#buttonDelete`).addEventListener("click", (ev) => {
-                console.log("delete");
-
                 const confirm = document.querySelector(`article[data-id="${item.id}"] #confirmAction`);
                 confirm.classList.remove("d-none");
             })
 
             post.querySelector(`#buttonMsgNo`).addEventListener("click", (ev) => {
-                console.log("No. I'm not sure!");
-
                 const confirm = document.querySelector(`article[data-id="${item.id}"] #confirmAction`);
-                console.log(confirm + " " + "This confirm button (No) works");
                 confirm.classList.remove("d-flex");
                 confirm.classList.add("d-none");
 
@@ -376,11 +366,7 @@ export async function updatePosts(data) {
             })
 
             post.querySelector(`#buttonMsgYes`).addEventListener("click", async (ev) => {
-                console.log("Yes, sure!");
-
-                const confirm = document.querySelector(`article[data-id="${item.id}"] #confirmAction`);
-                console.log(confirm + " " + "This confirm button (Yes) works");
-
+                // const confirm = document.querySelector(`article[data-id="${item.id}"] #confirmAction`);
                 const result = await fetchDeletePost(item.id);
 
                 if (result) {
@@ -389,7 +375,6 @@ export async function updatePosts(data) {
                 }
 
                 const buttonClose = document.querySelector(`article[data-id="${item.id}"] #buttonClose`);
-                console.log(buttonClose + " " + "This confirm button (No) works");
                 buttonClose.classList.remove("d-none");
                 buttonClose.classList.add("d-flex");
             })

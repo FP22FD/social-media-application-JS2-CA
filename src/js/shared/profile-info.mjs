@@ -7,7 +7,7 @@ import { load } from "./storage.mjs";
  */
 
 /**
- * It returns the profile information.
+ * @description It returns the profile information.
  * @returns {ProfileInfo}
  */
 export function getProfileInfo() {

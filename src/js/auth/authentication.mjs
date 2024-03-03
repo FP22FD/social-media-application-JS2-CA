@@ -42,7 +42,6 @@ loginForm?.addEventListener("submit", async (ev) => {
     const password = form.elements["loginPassword"].value;
 
     const profile = await login(email, password);
-    // debugger;
     if (profile === null) {
         return;
     }

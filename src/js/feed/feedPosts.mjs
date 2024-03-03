@@ -126,8 +126,6 @@ export async function displayPosts() {
 
 
 /** @type {HTMLInputElement} */
-
-/** @type {HTMLButtonElement} */
 const txtFilter = document.querySelector("#filter"); // input
 txtFilter.addEventListener("input", handleSearchInput);
 
@@ -136,44 +134,49 @@ async function handleSearchInput(ev) {
   updatePosts(data, userInput);
 }
 
+/**
+ * @description Map a post to html content
+ */
 function generateHtml(item) {
+  const { id, title, author, media, body, created } = item;
+
   /** @type {HTMLTemplateElement} */
   const template = document.querySelector("#post");
 
   const post = /** @type {HTMLDivElement} */ (template.content.cloneNode(true));
 
-  post.querySelector("h5").innerText = item.author.name; // + item.id
+  post.querySelector("h5").innerText = author.name; // + item.id
 
   /** @type {HTMLImageElement} */
   const authorImg = post.querySelector("#authorImg");
-  authorImg.src = item.author.avatar.url;
+  authorImg.src = author.avatar.url;
 
   /** @type {HTMLImageElement} */
   const img = post.querySelector("#postImg");
-  if (item.media) {
-    img.src = item.media.url;
-    img.alt = item.media.alt || 'Post image';
+  if (media) {
+    img.src = media.url;
+    img.alt = media.alt || 'Post image';
   } else {
     img.remove();
     // img.style.display = "none";
   }
 
-  post.querySelector("#bodyTitle").innerHTML = sanitize(item.title);
+  post.querySelector("#bodyTitle").innerHTML = sanitize(title);
 
   const textLimit = 120;
   const bodyText = post.querySelector("#viewPost");
-  let bodyTextSanitized = sanitize(item.body);
+  let bodyTextSanitized = sanitize(body);
 
   // post.querySelector("#bodyPost").innerHTML = sanitize(item.body);
   if (bodyTextSanitized.length > textLimit) {
     let htmlBody = bodyTextSanitized.substring(0, textLimit);
-    htmlBody += `... <br><a href="./postdetails.html?id=${item.id}" class="link-offset-2 link-underline link-underline-opacity-0 blue-500 fw-bold">Read More<a/>`;
+    htmlBody += `... <br><a href="./postdetails.html?id=${id}" class="link-offset-2 link-underline link-underline-opacity-0 blue-500 fw-bold">Read More<a/>`;
     bodyText.innerHTML = htmlBody;
   } else {
-    bodyText.innerHTML = sanitize(item.body);
+    bodyText.innerHTML = sanitize(body);
   }
 
-  let date = new Date(item.created);
+  let date = new Date(created);
 
   /** @type Intl.DateTimeFormatOptions */
   const options = {

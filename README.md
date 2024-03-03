@@ -1,6 +1,6 @@
 # css-frameworks-ca | CrochetME
 
-`CrochetME` is a responsive web application which goal is to keep in contact lovers of handmade crochet.
+`PostaME` is a responsive web application which goal is to keep connected with others people.
 
 ![figma](https://github.com/FP22FD/css-frameworks-ca/assets/112474910/f04e6456-9af3-435d-a9a4-f6fbad42f1e8)
 
@@ -9,52 +9,70 @@
 
 ## Live app
 
-This project is deployed on [Netlify](https://luminous-pothos-3e9a98.netlify.app/).
+This project is deployed on [Netlify](https://js2--postame.netlify.app/).
+
+## Local development
+
+> npm install
+> npm run dev
 
 ## CA goals
 
 The goal of this Course Assignment was to learn:
 
-- `NodeJs` and `npm` environment
-- `Bootstrap` features like grids, components, utility, etc avoiding custom `css` and `javascript`
-- `sass` used to customize `Bootstrap`
+- REST API advanced features like POST, PUT, DELETE
+- documentation via `JsDocs`
+- array functions: `filter`, `map`, `forEach`
+- destructuring
+- `JWT` token and API authorization concepts
+- usage of `local storage`
 
-### Authentication page (/index.html)
+## API
 
-The `authentication page` should have a form to login or register to the application. Ensure to include HTML form validation and use /profile as the action attribute. Password must have a minimum length of 8 characters.
+- The API used in this project can be found under Social Endpoints in the Noroff API documentation. [v2](https://docs.noroff.dev/docs/v2).
+- Social API routes require both a JWT token and an API Key.
 
-### Feed Page (/feed/index.html)
+## Feature implemented
 
-The `feed page` should have a list of posts thumbnails, a search bar, sort options and a form to create a new post. You may add additional design features beyond these requirements.
+- user can register (only @noroff.no or @stud.noroff.no email can register a new profile)
+- user can login
+- a logged-in user can:
+  - view the user content feed
+  - filter the content feed
+  - search the content feed
+  - view a post content by ID
+  - create a new post
+  - update a post
+  - delete a post
 
-### Profile page (/profile/index.html)
+## Optional features that have not been implemented
 
-The `profile page` should have a profile image, username, list of user posts, follow button and an area to display following/followers.
+- a logged-in user can:
+  - create a comment on a post
+  - edit his profile
+  - follow/unfollow a profile
+  - react to a post
 
-## How to run locally
+## Development task management
 
-- Ensure you have [Node.js](https://nodejs.org/) > 20.x installed.
-- Clone/Fork the repository: <https://github.com/FP22FD/css-frameworks-ca>
-- Navigate to the project directory
-- Install npm dependencies
-  > `npm install`
-- Run in `watch` mode
-  > `npm run dev`
-
-## Customization
-
-The `Bootstrap` customization is restricted to the `$primary` color and other few variables.
+- [GitHub Projects](https://github.com/users/FP22FD/projects/3).
 
 <!-- - Describe any prerequisites, libraries, OS version, etc., needed before installing the program.
 - ex. Windows 10 -->
 
 ## JSDOC
 
-The javascript code is typed check using JsDoc via [jsconfig](https://code.visualstudio.com/docs/languages/jsconfig).
+The code is documented using `JsDocs`.
+
+The javascript code is typed-checked using JsDoc via [jsconfig](https://code.visualstudio.com/docs/languages/jsconfig).
 
 To include the DOM and modern `types`, DOM (for example `document`, `fetch`) and ES2015 (for example `Promise<T>`) has been included.
 
 `node_modules` and `assets` has been excluded.
+
+The documentation can be generated in `/out/index` using:
+
+> npm run docs
 
 ## Validation
 

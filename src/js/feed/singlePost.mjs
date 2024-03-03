@@ -2,35 +2,37 @@ import { API_BASE, API_POSTS, API_GET_POSTS_PARAMS, API_KEY } from "../settings.
 import { load } from "../shared/storage.mjs";
 import { sanitize } from "../shared/sanitize.mjs";
 
-
-/** @typedef {object} GetSinglePostResponse
- * @property {object} data
- * @property {number} data.id
- * @property {string} data.title
- * @property {string} data.body
- * @property {string[]} data.tags
- * @property {object} data.media
- * @property {string} data.media.url
- * @property {string} data.media.alt
- * @property {string} data.created
- * @property {string} data.updated
- * @property {object} data.author
- * @property {string} data.author.name
- * @property {string} data.author.email
- * @property {null} data.author.bio
- * @property {object} data.author.avatar
- * @property {string} data.author.avatar.url
- * @property {string} data.author.avatar.alt
- * @property {object} data.author.banner
- * @property {string} data.author.banner.url
- * @property {string} data.author.banner.alt
- * @property {object} data._count
- * @property {number} data._count.comments
- * @property {number} data._count.reactions
+/** @typedef GetSinglePostDataResponse
+ * @type {object} 
+ * @property {number} id
+ * @property {string} title
+ * @property {string} body
+ * @property {string[]} tags
+ * @property {object} media
+ * @property {string} media.url
+ * @property {string} media.alt
+ * @property {string} created
+ * @property {string} updated
+ * @property {object} author
+ * @property {string} author.name
+ * @property {string} author.email
+ * @property {null} author.bio
+ * @property {object} author.avatar
+ * @property {string} author.avatar.url
+ * @property {string} author.avatar.alt
+ * @property {object} author.banner
+ * @property {string} author.banner.url
+ * @property {string} author.banner.alt
+ * @property {object} _count
+ * @property {number} _count.comments
+ * @property {number} _count.reactions
  */
 
+/** @typedef {object} GetSinglePostResponse
+ * @property {GetSinglePostDataResponse} data
+ */
 
-/** @type {GetSinglePostResponse["data"]} */
+/** @type {Array<GetSinglePostDataResponse>} */
 let data = undefined;
 
 //https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams/get

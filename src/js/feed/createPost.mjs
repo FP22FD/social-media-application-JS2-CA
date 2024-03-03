@@ -4,43 +4,50 @@ import { load } from "../shared/storage.mjs";
 import { ErrorHandler } from "../shared/errorHandler.mjs";
 import { getProfileInfo } from "../shared/profile-info.mjs";
 
+// /** @typedef SocialPostDataResponse
+//  * @type {object} 
+//  * @property {number} id
+//  * @property {string} title
+//  * @property {string} body
+//  * @property {string[]} tags
+//  * @property {object} media // null
+//  * @property {string} media.url
+//  * @property {string} media.alt
+//  * @property {string} created
+//  * @property {string} updated
+//  * @property {object} author
+//  * @property {string} author.name
+//  * @property {string} author.email
+//  * @property {null|string} author.bio
+//  * @property {object} author.avatar
+//  * @property {string} author.avatar.url
+//  * @property {string} author.avatar.alt
+//  * @property {object} author.banner
+//  * @property {string} author.banner.url
+//  * @property {string} author.banner.alt
+//  * @property {object} _count
+//  * @property {number} _count.comments
+//  * @property {number} _count.reactions
+//  */
 
-/** @typedef {object} GetSocialPostsResponse
- * @property {object[]} data
- * @property {number} data.id
- * @property {string} data.title
- * @property {string} data.body
- * @property {string[]} data.tags
- * @property {object} data.media // null
- * @property {string} data.media.url
- * @property {string} data.media.alt
- * @property {string} data.created
- * @property {string} data.updated
- * @property {object} data.author
- * @property {string} data.author.name
- * @property {string} data.author.email
- * @property {null|string} data.author.bio
- * @property {object} data.author.avatar
- * @property {string} data.author.avatar.url
- * @property {string} data.author.avatar.alt
- * @property {object} data.author.banner
- * @property {string} data.author.banner.url
- * @property {string} data.author.banner.alt
- * @property {object} data._count
- * @property {number} data._count.comments
- * @property {number} data._count.reactions
- * @property {object} meta
- * @property {boolean} meta.isFirstPage
- * @property {boolean} meta.isLastPage
- * @property {number} meta.currentPage
- * @property {null} meta.previousPage
- * @property {null} meta.nextPage
- * @property {number} meta.pageCount
- * @property {number} meta.totalCount
- */
+// /** @typedef  SocialPostMetaResponse
+//  * @type {object} 
+//  * @property {boolean} isFirstPage
+//  * @property {boolean} isLastPage
+//  * @property {number} currentPage
+//  * @property {null} previousPage
+//  * @property {null} nextPage
+//  * @property {number} pageCount
+//  * @property {number} totalCount
+//  */
 
-/** @type {GetSocialPostsResponse["data"]} */
-let data = [];
+// /** @typedef {object} GetSocialPostsResponse
+//  * @property {Array<SocialPostDataResponse>} data
+//  * @property {SocialPostMetaResponse} meta
+//  */
+
+// /** @type {Array<SocialPostDataResponse>} */
+// // let data = [];
 
 /** @typedef {object} CreatePostRequest
  * @property {string} title
@@ -52,7 +59,7 @@ let data = [];
  */
 
 
-/** @typedef {object} post
+/** @typedef {object} CreatePostResponse
  * @property {object} data
  * @property {number} data.id
  * @property {string} data.title
@@ -143,10 +150,10 @@ async function createPost(postData) {
 
     if (response.ok) {
 
-      /** @type {post} */
+      /** @type {CreatePostResponse} */
       const post = await response.json();
 
-      updatePosts(data); // is correct name "GetSocialPostsResponse!?"
+      // updatePosts(data); // TODO: is correct name "GetSocialPostsResponse!?"
       return post;
     }
 

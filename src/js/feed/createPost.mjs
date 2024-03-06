@@ -1,53 +1,8 @@
 import { API_KEY, API_BASE, API_POSTS } from "../settings.mjs";
-import { displayPosts, updatePosts } from "./feedPosts.mjs";
+import { displayPosts } from "./feedPosts.mjs";
 import { load } from "../shared/storage.mjs";
 import { ErrorHandler } from "../shared/errorHandler.mjs";
 import { getProfileInfo } from "../shared/profile-info.mjs";
-
-// /** @typedef SocialPostDataResponse
-//  * @type {object} 
-//  * @property {number} id
-//  * @property {string} title
-//  * @property {string} body
-//  * @property {string[]} tags
-//  * @property {object} media // null
-//  * @property {string} media.url
-//  * @property {string} media.alt
-//  * @property {string} created
-//  * @property {string} updated
-//  * @property {object} author
-//  * @property {string} author.name
-//  * @property {string} author.email
-//  * @property {null|string} author.bio
-//  * @property {object} author.avatar
-//  * @property {string} author.avatar.url
-//  * @property {string} author.avatar.alt
-//  * @property {object} author.banner
-//  * @property {string} author.banner.url
-//  * @property {string} author.banner.alt
-//  * @property {object} _count
-//  * @property {number} _count.comments
-//  * @property {number} _count.reactions
-//  */
-
-// /** @typedef  SocialPostMetaResponse
-//  * @type {object} 
-//  * @property {boolean} isFirstPage
-//  * @property {boolean} isLastPage
-//  * @property {number} currentPage
-//  * @property {null} previousPage
-//  * @property {null} nextPage
-//  * @property {number} pageCount
-//  * @property {number} totalCount
-//  */
-
-// /** @typedef {object} GetSocialPostsResponse
-//  * @property {Array<SocialPostDataResponse>} data
-//  * @property {SocialPostMetaResponse} meta
-//  */
-
-// /** @type {Array<SocialPostDataResponse>} */
-// // let data = [];
 
 /** @typedef {object} CreatePostRequest
  * @property {string} title
@@ -57,7 +12,6 @@ import { getProfileInfo } from "../shared/profile-info.mjs";
  * @property {string} media.url
  * @property {string} media.alt
  */
-
 
 /** @typedef {object} CreatePostResponse
  * @property {object} data
@@ -82,9 +36,10 @@ const authorName = document.querySelector('#author-name');
 authorName.innerText = getProfileInfo().name
 
 /**
- * @description display a message error
- * @param {boolean} visible
- * @param {string|null} text
+ * @description Display a message error
+ * @method displayError
+ * @param {boolean} visible If true, shows the msg error, otherwise hides it.
+ * @param {string} [text]  The message to show, or `undefined` if `visible` is false.
  */
 function displayError(visible, text) {
   /** @type {HTMLDivElement} */
@@ -99,8 +54,10 @@ function displayError(visible, text) {
 }
 
 /**
- * @param {boolean} visible
- * @param {string} text
+ * @description Shows or hides a info message.
+ * @method statusMsg
+ * @param {boolean} visible If true, shows the msg, otherwise hides it.
+ * @param {string} [text] The message to show, or `undefined` if `visible` is false.
  */
 function statusMsg(visible, text) {
   /** @type {HTMLDivElement} */
@@ -114,9 +71,10 @@ function statusMsg(visible, text) {
   }
 }
 
-
 /**
- * @param {boolean} spinnerVisible
+ * @description Show and hide the spinner element
+ * @method displaySpinner
+ * @param {boolean} spinnerVisible If true, shows the spinner, otherwise hides it.
  */
 function displaySpinner(spinnerVisible) {
   /** @type {HTMLDivElement} */
@@ -131,11 +89,17 @@ function displaySpinner(spinnerVisible) {
 
 displaySpinner(false);
 
-
-/** @param {CreatePostRequest} postData */
+/** 
+ * @description Create a new user post.
+ * @async JSON response
+ * @function createPost
+ * @param {CreatePostRequest} postData The post properties to send to the API
+ * @returns {Promise<CreatePostResponse|null|undefined>} If response is ok, return posts. If response is not ok, return null. Returns undefined for unexpected errors.
+ */
 async function createPost(postData) {
   try {
     displaySpinner(true);
+    displayError(false);
 
     const url = API_BASE + API_POSTS;
 
@@ -180,44 +144,48 @@ async function createPost(postData) {
 
 // -------------9. function to display a post request-----------------------------
 
+/** @type {HTMLFormElement} */
 const form = document.querySelector("#createPost");
+form.addEventListener("submit", handleSubmit);
 
+/**
+ * @description Handle the form submit.
+ * @method handleSubmit
+ * @param {Event} ev
+ */
+async function handleSubmit(ev) {
+  ev.preventDefault();
 
-if (form) {
   try {
-    form.addEventListener("submit", async (ev) => {
-      ev.preventDefault();
+    const form = /** @type {HTMLFormElement} */ (ev.currentTarget);
 
-      const form = /** @type {HTMLFormElement} */ (ev.currentTarget);
+    const postTitle = form.elements["postTitle"].value;
+    const postText = form.elements["postText"].value;
+    const postImageUrl = form.elements["postImageUrl"].value;
 
-      const postTitle = form.elements["postTitle"].value;
-      const postText = form.elements["postText"].value;
-      const postImageUrl = form.elements["postImageUrl"].value;
+    const media = postImageUrl ? {
+      url: postImageUrl,
+      alt: "",
+    } : undefined;
 
-      const media = postImageUrl ? {
-        url: postImageUrl,
-        alt: "",
-      } : undefined;
+    const request = {
+      title: postTitle,
+      body: postText,
+      tags: [],
+      media: media,
+    };
 
-      const request = {
-        title: postTitle,
-        body: postText,
-        tags: [],
-        media: media,
-      };
+    const post = await createPost(request);
+    if (post) {
+      statusMsg(true, "Well done! You have created a new post.");
 
-      const post = await createPost(request);
-      if (post) {
-        statusMsg(true, "Well done! You have created a new post.");
+      setTimeout(() => { //https://developer.mozilla.org/en-US/docs/Web/API/setTimeout
+        statusMsg(false, "");
+      }, 4000);
 
-        setTimeout(() => { //https://developer.mozilla.org/en-US/docs/Web/API/setTimeout
-          statusMsg(false, "");
-        }, 4000);
-
-        form.reset();
-        displayPosts();
-      }
-    });
+      form.reset();
+      displayPosts();
+    }
 
   } catch (ev) {
     displayError(true, "Could not create a post!");

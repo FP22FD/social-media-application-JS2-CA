@@ -20,7 +20,9 @@ import { ErrorHandler } from "../shared/errorHandler.mjs";
 
 
 /**
- * @param {boolean} spinnerLogin
+ * @description Show and hide the spinner element
+ * @method displaySpinnerLogin
+ * @param {boolean} spinnerLogin If true, shows the spinner, otherwise hides it.
  */
 function displaySpinnerLogin(spinnerLogin) {
     /** @type {HTMLDivElement} */ //To set the element type -> "Property "style" does not exist on type "Element".
@@ -36,9 +38,12 @@ function displaySpinnerLogin(spinnerLogin) {
 displaySpinnerLogin(false);
 
 /** 
- * @param {string} email
- * @param {string} password
- * @returns {Promise<LoginResponse|null>}
+ * @description Send a request to login the user
+ * @async
+ * @function login
+ * @param {string} email User email
+ * @param {string} password User password
+ * @returns {Promise<LoginResponse|null|undefined>} If response is ok, return the user info. If response is not ok, return null. Returns undefined for unexpected errors.
  */
 export async function login(email, password) {
     try {
@@ -68,6 +73,7 @@ export async function login(email, password) {
             return userInfo;
         }
 
+        // handle http response codes
         const eh = new ErrorHandler(response);
         const msg = await eh.getErrorMessage();
 

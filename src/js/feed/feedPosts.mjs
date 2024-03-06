@@ -3,7 +3,6 @@ import { load } from "../shared/storage.mjs";
 import { ErrorHandler } from "../shared/errorHandler.mjs";
 import { sanitize } from "../shared/sanitize.mjs";
 
-
 /** @typedef GetSocialPostDataResponse
  * @type {object} 
  * @property {number} id
@@ -42,7 +41,7 @@ import { sanitize } from "../shared/sanitize.mjs";
  */
 
 /** @typedef {object} GetSocialPostsResponse
- * @property {Array<GetSocialPostDataResponse>} data
+ * @property {GetSocialPostDataResponse[]} data
  * @property {GetSocialPostMetaResponse} meta
  */
 
@@ -57,9 +56,10 @@ let data = [];
  */
 
 /**
- * @description Function to display error messages
- * @param {boolean} visible
- * @param {string} text
+ * @description Display a message error
+ * @method displayError
+ * @param {boolean} visible If true, shows the msg error, otherwise hides it.
+ * @param {string} [text]  The message to show, or `undefined` if `visible` is false.
  */
 export function displayError(visible, text) {
   /** @type {HTMLDivElement} */
@@ -73,14 +73,14 @@ export function displayError(visible, text) {
   }
 }
 
-
 /**
- * @param {boolean} spinnerVisible
+ * @description Show and hide the spinner element
+ * @method displaySpinner
+ * @param {boolean} spinnerVisible If true, shows the spinner, otherwise hides it.
  */
 export function displaySpinner(spinnerVisible) {
   /** @type {HTMLDivElement} */
   const spinner = document.querySelector("#spinnerPosts");
-
 
   if (spinnerVisible === true) {
     spinner.style.display = "block";
@@ -91,10 +91,16 @@ export function displaySpinner(spinnerVisible) {
 
 displaySpinner(false);
 
-
+/**
+ * @description Send a request to get the user posts
+ * @async JSON response
+ * @function displayPosts
+ * @returns {Promise<GetSocialPostDataResponse[]|null|undefined>} If response is ok, return posts data. If response is not ok, return null. Returns undefined for unexpected errors.
+ */
 export async function displayPosts() {
   try {
     displaySpinner(true);
+    displayError(false);
 
     const url = API_BASE + API_POSTS + API_GET_POSTS_PARAMS;
 
@@ -131,7 +137,6 @@ export async function displayPosts() {
   }
 }
 
-
 /** @type {HTMLInputElement} */
 const txtFilter = document.querySelector("#filter"); // input
 txtFilter.addEventListener("input", handleSearchInput);
@@ -143,6 +148,9 @@ async function handleSearchInput(ev) {
 
 /**
  * @description Map a post to html content
+ * @function generateHtml
+ * @param {object} item The post properties
+ * @returns {Object} Return the object post
  */
 function generateHtml(item) {
   const { id, title, author, media, body, created } = item;
@@ -200,9 +208,11 @@ function generateHtml(item) {
   return post;
 }
 
-
 /**
- * @param {Array<GetSocialPostDataResponse>} data
+ * @description Display posts, filtered by searchInput.
+ * @method updatePosts
+ * @param {Array<GetSocialPostDataResponse|undefined>} data Posts to be shown.
+ * @param {string} searchInput The text to be found. If empty returns all posts.
 */
 export async function updatePosts(data, searchInput) {
 

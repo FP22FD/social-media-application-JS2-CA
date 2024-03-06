@@ -6,7 +6,6 @@ import { fetchDeletePost } from "./deletePost.mjs";
 import { fetchUpdatePost } from "./updatePost.mjs";
 import { getProfileInfo } from "../shared/profile-info.mjs";
 
-
 /** @typedef {object} GetProfilePostDataResponse
  * @type {object} 
  * @property {number} id
@@ -72,8 +71,10 @@ const authorInfoBio = document.querySelector('#author-info p');
 authorInfoBio.innerHTML = getProfileInfo().bio;
 
 /**
- * @param {boolean} visible
- * @param {string} text
+ * @description Display a message error
+ * @method displayError
+ * @param {boolean} visible If true, shows the msg error, otherwise hides it.
+ * @param {string} [text]  The message to show, or `undefined` if `visible` is false.
  */
 export function displayError(visible, text) {
     /** @type {HTMLDivElement} */
@@ -87,9 +88,10 @@ export function displayError(visible, text) {
     }
 }
 
-
 /**
- * @param {boolean} spinnerVisible
+ * @description Show and hide the spinner element
+ * @method displaySpinner
+ * @param {boolean} spinnerVisible If true, shows the spinner, otherwise hides it.
  */
 export function displaySpinner(spinnerVisible) {
     /** @type {HTMLDivElement} */
@@ -105,13 +107,12 @@ export function displaySpinner(spinnerVisible) {
 
 displaySpinner(false);
 
-
 /** @type {HTMLSelectElement} */
 const tabSort = document.querySelector("#order-By")
 tabSort.addEventListener("change", handleOrderBy);
-
 /**
  * @description Sort the user array posts by a specified key
+ * @method handleOrderBy
  * @param {Event} ev The event from the `select` element.
  * @example 
  * // if the select value is 'title', it return the posts sorted alphabetically a-z.
@@ -136,11 +137,18 @@ function handleOrderBy(ev) {
     updatePosts(data);
 }
 
-
-/** @param {string} username  */
+/** 
+ * @description Send a request to API
+ * @async JSON response
+ * @function displayPosts
+ * @param {string} username  The user name
+ * @returns {Promise<GetProfilePostDataResponse[]|null|undefined>} If response is ok, return posts info. If response is not ok, return null. Returns undefined for unexpected errors.
+ * 
+ * */
 export async function displayPosts(username) {
     try {
         displaySpinner(true);
+        displayError(false);
 
         const url = API_BASE + API_POSTS_PROFILE(username);
 
@@ -177,9 +185,10 @@ export async function displayPosts(username) {
     }
 };
 
-
 /**
- * @param {Array<GetProfilePostDataResponse>} data
+ * @description Map a post to html content
+ * @method updatePosts
+ * @param {Array<GetProfilePostDataResponse>} data The user posts info.
 */
 export async function updatePosts(data) {
 
@@ -383,7 +392,6 @@ export async function updatePosts(data) {
         }
     }
 };
-
 
 const profile = load('profile');
 if (profile.name) {

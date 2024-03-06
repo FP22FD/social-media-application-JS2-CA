@@ -48,8 +48,9 @@ import { ErrorHandler } from "../shared/errorHandler.mjs";
 
 /**
  * @description Show or hide a error message in the UI. 
- * @param {boolean} visible
- * @param {string|undefined} text
+ * @method displayError
+ * @param {boolean} visible If true, shows the msg error, otherwise hides it.
+ * @param {string} [text] The message to show, or `undefined` if `visible` is false.
  * @example
  * // Hide the error message
  * displayError(false);
@@ -79,13 +80,15 @@ const search = document.querySelector("#search");//input
 const btn = document.querySelector("#btn"); // button
 btn.addEventListener("click", handleSearch);
 
-
-
+/**
+ * @description Handle the button search click.
+ * @method handleSearch
+ * @param {Event} ev
+ */
 async function handleSearch(ev) {
     ev.preventDefault();
-    try {
-        displaySpinner(true);
 
+    try {
         /** @type {HTMLInputElement} */
         const txtFilter = document.querySelector("#filter");
         txtFilter.value = '';
@@ -110,6 +113,8 @@ async function handleSearch(ev) {
 
 /**
  * @description Returns all posts that does match the search text
+ * @async
+ * @function searchPosts
  * @param {string} text The string to search for
  * @return {Promise<Array<GetSocialPostDataResponse> |null | undefined>} Returns an array if the fetch is successful, otherwise it returns null for response not ok. It returns undefined for unexpected errors.
  * @example 
@@ -120,6 +125,7 @@ async function searchPosts(text) {
 
     try {
         displaySpinner(true);
+        displayError(false);
 
         const url = API_BASE + API_SEARCH + encodeURIComponent(text);// text
 

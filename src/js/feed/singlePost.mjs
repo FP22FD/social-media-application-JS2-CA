@@ -32,8 +32,8 @@ import { sanitize } from "../shared/sanitize.mjs";
  * @property {GetSinglePostDataResponse} data
  */
 
-/** @type {Array<GetSinglePostDataResponse>} */
-let data = undefined;
+// /** @type {Array<GetSinglePostDataResponse>} */
+// let data = undefined;
 
 //https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams/get
 const queryString = document.location.search;
@@ -41,11 +41,15 @@ const params = new URLSearchParams(queryString);
 const id = parseInt(params.get("id"), 10);
 
 /**
- * @param {number} id
+ * @description Send a request to show a post details to the user.
+ * @async
+ * @method fetchSinglePost
+ * @param {number} id Post ID
  */
 async function fetchSinglePost(id) {
 
     displaySpinner(true);
+    displayError(false);
 
     try {
         const url = API_BASE + API_POSTS + `/${id}` + API_GET_POSTS_PARAMS;
@@ -112,8 +116,10 @@ fetchSinglePost(id);
 
 
 /**
- * @param {boolean} visible
- * @param {string} text
+ * @description Show or hide a error message in the UI. 
+ * @method displayError
+ * @param {boolean} visible If true, shows the msg error, otherwise hides it.
+ * @param {string} [text] The message to show, or `undefined` if `visible` is false.
  */
 export function displayError(visible, text) {
     /** @type {HTMLDivElement} */
@@ -129,12 +135,13 @@ export function displayError(visible, text) {
 
 
 /**
- * @param {boolean} spinnerVisible
+ * @description Show and hide the spinner element
+ * @method displaySpinner
+ * @param {boolean} spinnerVisible If true, shows the spinner, otherwise hides it.
  */
 export function displaySpinner(spinnerVisible) {
     /** @type {HTMLDivElement} */
     const spinner = document.querySelector("#spinnerPosts");
-
 
     if (spinnerVisible === true) {
         spinner.style.display = "block";

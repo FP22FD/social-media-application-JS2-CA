@@ -4,9 +4,11 @@ import { ErrorHandler } from "../shared/errorHandler.mjs";
 import { displaySpinner } from "./profile.mjs";
 
 /**
- * @param {number} id
- * @param {boolean} visible
- * @param {string|null} text
+ * @description Show or hide a error message in the UI.
+ * @method displayError
+ * @param {number} id Post id
+ * @param {boolean} visible If true, shows the msg error, otherwise hides it.
+ * @param {string} [text] The message to show, or null if `visible` is false.
  */
 function displayError(id, visible, text) {
     /** @type {HTMLDivElement} */
@@ -24,11 +26,16 @@ function displayError(id, visible, text) {
 }
 
 /**
- * @param {number} id
+ * @description Delete user post
+ * @async
+ * @function fetchDeletePost
+ * @param {number} id The post ID to be deleted.
+ * @returns {Promise<boolean|null|undefined>} If response is ok, delete the post and return true. If response is not ok, return null. Returns undefined for unexpected errors.
  */
 export async function fetchDeletePost(id) {
 
     displaySpinner(true);
+    displayError(id, false);
 
     try {
         const url = API_BASE + API_POSTS + `/${id}`;
@@ -50,6 +57,7 @@ export async function fetchDeletePost(id) {
         displayError(id, true, msg);
 
         return null;
+
     } catch (ev) {
         displayError(id, true, "Could not show the post! Please retry later.");
     } finally {

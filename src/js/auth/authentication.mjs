@@ -58,8 +58,10 @@ loginForm?.addEventListener("submit", async (ev) => {
 });
 
 /**
- * @param {boolean} visible
- * @param {string} text
+ * @description Display a message error
+ * @method displayError
+ * @param {boolean} visible If true, shows the msg error, otherwise hides it.
+ * @param {string} [text] The message to show, or `undefined` if `visible` is false.
  */
 export function displayError(visible, text) {
     /** @type {HTMLDivElement} */
@@ -80,7 +82,8 @@ const hidePws = document.querySelector("#hidePassword");
 hidePws.addEventListener("click", displayLoginPassword);
 
 /** 
- * @description Show and hide login password
+ * @description Set the input type text<=>password.
+ * @method displayLoginPassword
  */
 function displayLoginPassword() {
     /** @type {HTMLInputElement} */

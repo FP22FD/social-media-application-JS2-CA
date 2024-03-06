@@ -1,5 +1,6 @@
 /** 
  * @description Sanitize a html string to be safe to use 
+ * @function sanitize
  * @param {string} html The html string to be sanitized.
  * @returns {string} Returns the result of html sanitization.
  * @example

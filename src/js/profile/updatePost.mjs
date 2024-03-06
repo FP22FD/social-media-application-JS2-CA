@@ -13,9 +13,11 @@ import { displaySpinner } from "./profile.mjs";
  */
 
 /**
- * @param {number} id
- * @param {boolean} visible
- * @param {string|null} text
+ * @description Show or hide a error message in the UI.
+ * @method displayError
+ * @param {number} id Retrieves a single post by ID to display error
+ * @param {boolean} visible If true, shows the msg error, otherwise hides it.
+ * @param {string} [text] The message to show, or `undefined` if `visible` is false.
  */
 function displayError(id, visible, text) {
     /** @type {HTMLDivElement} */

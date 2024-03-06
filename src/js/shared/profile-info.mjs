@@ -7,8 +7,9 @@ import { load } from "./storage.mjs";
  */
 
 /**
- * @description It returns the profile information.
- * @returns {ProfileInfo}
+ * @description It returns the profile information from local storage.
+ * @function getProfileInfo
+ * @returns {ProfileInfo} Returns the profile info.
  */
 export function getProfileInfo() {
     const profile = load("profile");

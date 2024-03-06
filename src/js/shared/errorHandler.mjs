@@ -5,6 +5,10 @@
  * @property {number} statusCode
  */
 
+/**
+ * @description Handle the API response errors.
+ * @class ErrorHandler
+ */
 export class ErrorHandler {
     _response;
 
@@ -13,6 +17,11 @@ export class ErrorHandler {
         this._response = response;
     }
 
+    /**
+     * @description Convert the API response errors msg in a human readable way.
+     * @function getErrorMessage
+     * @returns {Promise<string>} If the response is ok, return a empty string. Otherwise return a string msg.
+     */
     async getErrorMessage() {
         if (this._response.ok) {
             return "";
@@ -31,7 +40,6 @@ export class ErrorHandler {
         } else {
             errorMessage = "Unknown error! Please retry later.";
         }
-
         return errorMessage;
     }
 }

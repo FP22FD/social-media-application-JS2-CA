@@ -20,7 +20,9 @@ import { displayError } from "./authentication.mjs";
 
 
 /**
- * @param {boolean} spinnerRegister
+ * @description Show and hide the spinner element
+ * @method displaySpinnerRegister
+ * @param {boolean} spinnerRegister If true, shows the spinner, otherwise hides it.
  */
 function displaySpinnerRegister(spinnerRegister) {
     /** @type {HTMLDivElement} */
@@ -37,11 +39,13 @@ displaySpinnerRegister(false);
 
 
 /**
- * @async
- * @param {string} name
- * @param {string} email
- * @param {string} psw
- * @return {Promise<RegisterResponse|null>}
+* @description This function send a request to register a new user return
+ * @async JSON request
+ * @function register
+ * @param {string} name user name
+ * @param {string} email user email
+ * @param {string} psw user password
+ * @return {Promise<RegisterResponse|null|undefined>} If response is ok, return the user info. If response is not ok, return null. Returns undefined for unexpected errors.
  */
 export async function register(name, email, psw) {
     try {

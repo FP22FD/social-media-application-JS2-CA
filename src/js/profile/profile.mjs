@@ -139,7 +139,7 @@ function handleOrderBy(ev) {
 
 /** 
  * @description Send a request to API
- * @async JSON response
+ * @async
  * @function displayPosts
  * @param {string} username  The user name
  * @returns {Promise<GetProfilePostDataResponse[]|null|undefined>} If response is ok, return posts info. If response is not ok, return null. Returns undefined for unexpected errors.

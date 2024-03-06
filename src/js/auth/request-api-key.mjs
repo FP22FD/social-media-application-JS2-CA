@@ -3,7 +3,7 @@ import { load } from "../shared/storage.mjs";
 
 /**
 * @description This function send a request to register a new tenant. Should be used only once per user.
- * @async JSON request
+ * @async
  * @function requestAPIKey
  * @return {Promise<any|undefined>} If response is ok, return the tenant key. Otherwise it throws.
  */

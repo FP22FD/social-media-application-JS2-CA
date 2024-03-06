@@ -93,7 +93,7 @@ displaySpinner(false);
 
 /**
  * @description Send a request to get the user posts
- * @async JSON response
+ * @async
  * @function displayPosts
  * @returns {Promise<GetSocialPostDataResponse[]|null|undefined>} If response is ok, return posts data. If response is not ok, return null. Returns undefined for unexpected errors.
  */

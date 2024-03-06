@@ -91,7 +91,7 @@ displaySpinner(false);
 
 /** 
  * @description Create a new user post.
- * @async JSON response
+ * @async
  * @function createPost
  * @param {CreatePostRequest} postData The post properties to send to the API
  * @returns {Promise<CreatePostResponse|null|undefined>} If response is ok, return posts. If response is not ok, return null. Returns undefined for unexpected errors.

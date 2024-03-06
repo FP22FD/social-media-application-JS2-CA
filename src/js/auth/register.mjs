@@ -40,7 +40,7 @@ displaySpinnerRegister(false);
 
 /**
 * @description This function send a request to register a new user return
- * @async JSON request
+ * @async
  * @function register
  * @param {string} name user name
  * @param {string} email user email

@@ -193,3 +193,25 @@ async function handleSubmit(ev) {
     displaySpinner(false);
   }
 }
+
+let area = document.querySelector("#postText");
+area.addEventListener("input", showPostChar);
+
+/**
+ * @description Show many characters remaining
+ * @method showPostChar
+ * @param {Event} ev
+ */
+function showPostChar(ev) {
+
+  const textArea = /** @type {HTMLTextAreaElement} */ (ev.currentTarget);
+
+  /**@type {HTMLSpanElement}*/
+  let characters = document.querySelector("#char");
+
+  let content = textArea.value;
+  characters.textContent = `${content.length}/280`;
+
+  content.trim();
+  console.log(content);
+}

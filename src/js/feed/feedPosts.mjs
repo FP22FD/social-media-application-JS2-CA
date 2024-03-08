@@ -2,6 +2,7 @@ import { API_KEY, API_BASE, API_POSTS, API_GET_POSTS_PARAMS } from "../settings.
 import { load } from "../shared/storage.mjs";
 import { ErrorHandler } from "../shared/errorHandler.mjs";
 import { sanitize } from "../shared/sanitize.mjs";
+import { checkUserAuth } from "../shared/checkUserAuth.mjs";
 
 /** @typedef GetSocialPostDataResponse
  * @type {object} 
@@ -54,6 +55,8 @@ let data = [];
  * @property {string} status
  * @property {number} statusCode
  */
+
+checkUserAuth();
 
 /**
  * @description Display a message error
@@ -141,9 +144,16 @@ export async function displayPosts() {
 const txtFilter = document.querySelector("#filter"); // input
 txtFilter.addEventListener("input", handleSearchInput);
 
+/**
+ * @description Handle the search submit.
+ * @method handleSearchInput
+ * @param {*} ev 
+ */
 async function handleSearchInput(ev) {
-  const userInput = ev.currentTarget.value;
+
+  const userInput = /** @type {HTMLInputElement} */ ev.currentTarget.value;
   updatePosts(data, userInput);
+
 }
 
 /**
@@ -243,5 +253,3 @@ export async function updatePosts(data, searchInput) {
 
   return;
 }
-
-displayPosts();

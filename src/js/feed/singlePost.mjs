@@ -1,6 +1,7 @@
 import { API_BASE, API_POSTS, API_GET_POSTS_PARAMS, API_KEY } from "../settings.mjs";
 import { load } from "../shared/storage.mjs";
 import { sanitize } from "../shared/sanitize.mjs";
+import { checkUserAuth } from "../shared/checkUserAuth.mjs";
 
 /** @typedef GetSinglePostDataResponse
  * @type {object} 
@@ -34,6 +35,8 @@ import { sanitize } from "../shared/sanitize.mjs";
 
 // /** @type {Array<GetSinglePostDataResponse>} */
 // let data = undefined;
+
+checkUserAuth();
 
 //https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams/get
 const queryString = document.location.search;
@@ -114,7 +117,6 @@ async function fetchSinglePost(id) {
 
 fetchSinglePost(id);
 
-
 /**
  * @description Show or hide a error message in the UI. 
  * @method displayError
@@ -132,7 +134,6 @@ export function displayError(visible, text) {
         error.style.display = "none";
     }
 }
-
 
 /**
  * @description Show and hide the spinner element

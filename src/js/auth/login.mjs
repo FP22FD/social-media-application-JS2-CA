@@ -3,7 +3,6 @@ import { displayError } from "./authentication.mjs";
 import { save } from "../shared/storage.mjs";
 import { ErrorHandler } from "../shared/errorHandler.mjs";
 
-
 /** @typedef {object} LoginResponse
  * @property {object} data
  * @property {string} data.name
@@ -17,7 +16,6 @@ import { ErrorHandler } from "../shared/errorHandler.mjs";
  * @property {string} data.banner.alt
  * @property {string} data.accessToken
  */
-
 
 /**
  * @description Show and hide the spinner element

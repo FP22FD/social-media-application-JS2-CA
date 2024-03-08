@@ -2,7 +2,7 @@ import { API_KEY, API_BASE, API_POSTS } from "../settings.mjs";
 import { displayPosts } from "./feedPosts.mjs";
 import { load } from "../shared/storage.mjs";
 import { ErrorHandler } from "../shared/errorHandler.mjs";
-import { getProfileInfo } from "../shared/profile-info.mjs";
+import { getProfileInfo } from "../shared/profileInfo.mjs";
 
 /** @typedef {object} CreatePostRequest
  * @property {string} title

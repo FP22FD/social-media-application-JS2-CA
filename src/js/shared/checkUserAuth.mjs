@@ -1,7 +1,8 @@
 import { load } from "./storage.mjs";
 
 /**
- * @description
+ * @description check if the user is logged, otherwise redirect to login page
+ * @method checkUserAuth
  */
 export function checkUserAuth() {
     // debugger;

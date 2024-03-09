@@ -479,7 +479,6 @@ export async function fetchUserMetaData(username) {
     }
 };
 
-
 const userInfo = getProfileInfo();
 const username = userInfo.name;
 fetchUserMetaData(username);

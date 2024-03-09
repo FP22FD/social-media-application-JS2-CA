@@ -144,6 +144,7 @@ export async function displayPosts() {
 const txtFilter = document.querySelector("#filter"); // input
 txtFilter.addEventListener("input", handleSearchInput);
 
+
 /**
  * @description Handle the search submit.
  * @method handleSearchInput

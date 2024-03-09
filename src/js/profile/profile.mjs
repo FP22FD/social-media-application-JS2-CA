@@ -1,10 +1,13 @@
-import { API_BASE, API_KEY, API_POSTS_PROFILE } from "../settings.mjs";
+import { API_BASE, API_KEY, API_POSTS_PROFILE, API_POST_FOLLOWERS_PROFILE } from "../settings.mjs";
 import { load } from "../shared/storage.mjs";
 import { ErrorHandler } from "../shared/errorHandler.mjs";
 import { sanitize } from "../shared/sanitize.mjs";
 import { fetchDeletePost } from "./deletePost.mjs";
 import { fetchUpdatePost } from "./updatePost.mjs";
-import { getProfileInfo } from "../shared/profile-info.mjs";
+import { getProfileInfo } from "../shared/profileInfo.mjs";
+import { checkUserAuth } from "../shared/checkUserAuth.mjs";
+
+checkUserAuth();
 
 /** @typedef {object} GetProfilePostDataResponse
  * @type {object} 
@@ -48,6 +51,8 @@ import { getProfileInfo } from "../shared/profile-info.mjs";
  * @property {GetProfilePostMetaResponse} meta
  */
 
+// -------------------------------------------------
+
 /** @type {Array<GetProfilePostDataResponse>} */
 let data = [];
 
@@ -57,6 +62,35 @@ let data = [];
  * @property {string} status
  * @property {number} statusCode
  */
+
+// --------------------------------------------------
+
+/** @typedef {object} GetProfileDataResponse
+ * @type {object} 
+ * @property {string} email
+ * @property {string} bio
+ * @property {object} avatar
+ * @property {string} avatar.url
+ * @property {string} avatar.alt
+ * @property {object} banner
+ * @property {string} banner.url
+ * @property {string} banner.alt
+ * @property {object} _count
+ * @property {number} _count.posts
+ * @property {number} _count.followers
+ * @property {number} _count.following
+ */
+
+/** @typedef  GetProfileMetaResponse
+ * @type {object}
+ */
+
+/** @typedef {object} GetProfileResponse
+ * @property {GetProfileDataResponse} data
+ * @property {GetProfileMetaResponse} meta
+ */
+
+// -----------------------------------------------------
 
 /** @type {HTMLImageElement} */
 const img = document.querySelector('#author-image');
@@ -396,4 +430,80 @@ export async function updatePosts(data) {
 const profile = load('profile');
 if (profile.name) {
     displayPosts(profile.name);
+}
+
+/** 
+ * @description Send a request to API
+ * @async
+ * @function fetchUserMetaData
+ * @param {string} username  The user name
+ * @returns {Promise<GetProfileDataResponse|null|undefined>} 
+ * */
+export async function fetchUserMetaData(username) {
+    try {
+
+        //TODO: Make a custom spinner and error function for this function
+        displaySpinner(true);
+        displayError(false);
+
+        const url = API_BASE + API_POST_FOLLOWERS_PROFILE(username);
+
+        const response = await fetch(url, {
+
+            headers: {
+                Authorization: `Bearer ${load("token")}`,
+                "X-Noroff-API-Key": API_KEY,
+                "Content-Type": "application/json",
+            },
+            method: "GET",
+        });
+
+        if (response.ok) {
+
+            /** @type {GetProfileResponse} */
+            const profileData = await response.json();
+            const profileInfo = profileData.data;
+            displayUserMetaData(profileInfo);
+            return profileInfo;
+        }
+
+        const eh = new ErrorHandler(response);
+        const msg = await eh.getErrorMessage();
+        displayError(true, msg);
+        return null;
+
+    } catch (ev) {
+        displayError(true, "Could not show the posts!");
+    } finally {
+        displaySpinner(false);
+    }
+};
+
+
+const userInfo = getProfileInfo();
+const username = userInfo.name;
+fetchUserMetaData(username);
+
+
+/**
+ * @description Displays the number of posts, the number of followers and the number of following.
+ * @method displayUserMetaData
+ * @param {GetProfileDataResponse} profileInfo user profile info
+*/
+async function displayUserMetaData(profileInfo) {
+
+    /** @type {GetProfileDataResponse} */
+    profileInfo;
+
+    /** @type {HTMLDivElement} */
+    const totPosts = document.querySelector("#totPosts");
+    totPosts.innerText = String(profileInfo._count.posts);
+
+    /** @type {HTMLDivElement} */
+    const totFollowers = document.querySelector("#totFollowers");
+    totFollowers.innerText = String(profileInfo._count.followers);
+
+    /** @type {HTMLDivElement} */
+    const totFollowing = document.querySelector("#totFollowing");
+    totFollowing.innerText = String(profileInfo._count.following);
 }

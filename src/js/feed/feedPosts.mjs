@@ -254,3 +254,5 @@ export async function updatePosts(data, searchInput) {
 
   return;
 }
+
+displayPosts();

@@ -6,6 +6,8 @@ import { fetchDeletePost } from "./deletePost.mjs";
 import { fetchUpdatePost } from "./updatePost.mjs";
 import { getProfileInfo } from "../shared/profileInfo.mjs";
 import { checkUserAuth } from "../shared/checkUserAuth.mjs";
+import { displaySpinner } from "../shared/displaySpinner.mjs";
+import { displayError } from "../shared/displayErrorMsg.mjs";
 
 checkUserAuth();
 
@@ -90,8 +92,6 @@ let data = [];
  * @property {GetProfileMetaResponse} meta
  */
 
-// -----------------------------------------------------
-
 /** @type {HTMLImageElement} */
 const img = document.querySelector('#author-image');
 img.src = getProfileInfo().avatarUrl;
@@ -104,42 +104,6 @@ authorInfoName.innerText = getProfileInfo().name;
 const authorInfoBio = document.querySelector('#author-info p');
 authorInfoBio.innerHTML = getProfileInfo().bio;
 
-/**
- * @description Display a message error
- * @method displayError
- * @param {boolean} visible If true, shows the msg error, otherwise hides it.
- * @param {string} [text]  The message to show, or `undefined` if `visible` is false.
- */
-export function displayError(visible, text) {
-    /** @type {HTMLDivElement} */
-    const error = document.querySelector("#errorPosts");
-
-    if (visible === true) {
-        error.style.display = "block";
-        error.innerHTML = text;
-    } else {
-        error.style.display = "none";
-    }
-}
-
-/**
- * @description Show and hide the spinner element
- * @method displaySpinner
- * @param {boolean} spinnerVisible If true, shows the spinner, otherwise hides it.
- */
-export function displaySpinner(spinnerVisible) {
-    /** @type {HTMLDivElement} */
-    const spinner = document.querySelector("#spinnerPosts");
-
-
-    if (spinnerVisible === true) {
-        spinner.style.display = "block";
-    } else {
-        spinner.style.display = "none";
-    }
-}
-
-displaySpinner(false);
 
 /** @type {HTMLSelectElement} */
 const tabSort = document.querySelector("#order-By")
@@ -181,8 +145,8 @@ function handleOrderBy(ev) {
  * */
 export async function displayPosts(username) {
     try {
-        displaySpinner(true);
-        displayError(false);
+        displaySpinner(true, "#spinnerPosts");
+        displayError(false, "#errorPosts");
 
         const url = API_BASE + API_POSTS_PROFILE(username);
 
@@ -208,14 +172,14 @@ export async function displayPosts(username) {
 
         const eh = new ErrorHandler(response);
         const msg = await eh.getErrorMessage();
-        displayError(true, msg);
+        displayError(true, "#errorPosts", msg);
 
         return null;
 
     } catch (ev) {
-        displayError(true, "Could not show the posts!");
+        displayError(true, "#errorPosts", "Could not show the posts!");
     } finally {
-        displaySpinner(false);
+        displaySpinner(false, "#spinnerPosts");
     }
 };
 
@@ -442,9 +406,8 @@ if (profile.name) {
 export async function fetchUserMetaData(username) {
     try {
 
-        //TODO: Make a custom spinner and error function for this function
-        displaySpinner(true);
-        displayError(false);
+        displaySpinner(true, "#spinnerProfileData");
+        displayError(false, "#errorProfileData");
 
         const url = API_BASE + API_POST_FOLLOWERS_PROFILE(username);
 
@@ -469,13 +432,13 @@ export async function fetchUserMetaData(username) {
 
         const eh = new ErrorHandler(response);
         const msg = await eh.getErrorMessage();
-        displayError(true, msg);
+        displayError(true, "#errorProfileData", msg);
         return null;
 
     } catch (ev) {
-        displayError(true, "Could not show the posts!");
+        displayError(true, "#errorProfileData", "Could not show the profile data!");
     } finally {
-        displaySpinner(false);
+        displaySpinner(false, "#spinnerProfileData");
     }
 };
 

@@ -1,7 +1,8 @@
 import { API_BASE, API_AUTH, API_LOGIN } from "../settings.mjs";
-import { displayError } from "./authentication.mjs";
 import { save } from "../shared/storage.mjs";
 import { ErrorHandler } from "../shared/errorHandler.mjs";
+import { displaySpinner } from "../shared/displaySpinner.mjs";
+import { displayError } from "../shared/displayErrorMsg.mjs";
 
 /** @typedef {object} LoginResponse
  * @property {object} data
@@ -17,24 +18,6 @@ import { ErrorHandler } from "../shared/errorHandler.mjs";
  * @property {string} data.accessToken
  */
 
-/**
- * @description Show and hide the spinner element
- * @method displaySpinnerLogin
- * @param {boolean} spinnerLogin If true, shows the spinner, otherwise hides it.
- */
-function displaySpinnerLogin(spinnerLogin) {
-    /** @type {HTMLDivElement} */ //To set the element type -> "Property "style" does not exist on type "Element".
-    const sl = document.querySelector("#spinnerLogin");
-
-    if (spinnerLogin === true) {
-        sl.style.display = "block";
-    } else {
-        sl.style.display = "none";
-    }
-}
-
-displaySpinnerLogin(false);
-
 /** 
  * @description Send a request to login the user
  * @async
@@ -45,7 +28,8 @@ displaySpinnerLogin(false);
  */
 export async function login(email, password) {
     try {
-        displaySpinnerLogin(true);
+        displaySpinner(true, "#spinnerLogin");
+        displayError(false, "#error");
 
         const url = API_BASE + API_AUTH + API_LOGIN;
         const request = {
@@ -75,12 +59,12 @@ export async function login(email, password) {
         const eh = new ErrorHandler(response);
         const msg = await eh.getErrorMessage();
 
-        displayError(true, msg);
+        displayError(true, "#error", msg);
         return null;
 
     } catch (ev) {
-        displayError(true, "Could not login! Please retry later.");
+        displayError(true, "#error", "Could not login! Please retry later.");
     } finally {
-        displaySpinnerLogin(false);
+        displaySpinner(false, "#spinnerLogin");
     }
 }

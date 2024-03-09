@@ -2,6 +2,8 @@ import { API_BASE, API_POSTS, API_GET_POSTS_PARAMS, API_KEY } from "../settings.
 import { load } from "../shared/storage.mjs";
 import { sanitize } from "../shared/sanitize.mjs";
 import { checkUserAuth } from "../shared/checkUserAuth.mjs";
+import { displaySpinner } from "../shared/displaySpinner.mjs";
+import { displayError } from "../shared/displayErrorMsg.mjs";
 
 /** @typedef GetSinglePostDataResponse
  * @type {object} 
@@ -51,8 +53,8 @@ const id = parseInt(params.get("id"), 10);
  */
 async function fetchSinglePost(id) {
 
-    displaySpinner(true);
-    displayError(false);
+    displaySpinner(true, "#spinnerPosts");
+    displayError(false, "#errorPosts");
 
     try {
         const url = API_BASE + API_POSTS + `/${id}` + API_GET_POSTS_PARAMS;
@@ -109,46 +111,10 @@ async function fetchSinglePost(id) {
         posts.appendChild(post);
 
     } catch (ev) {
-        displayError(true, "Could not show the post! Please retry later.");
+        displayError(true, "#errorPosts", "Could not show the post! Please retry later.");
     } finally {
-        displaySpinner(false);
+        displaySpinner(false, "#spinnerPosts");
     }
 }
 
 fetchSinglePost(id);
-
-/**
- * @description Show or hide a error message in the UI. 
- * @method displayError
- * @param {boolean} visible If true, shows the msg error, otherwise hides it.
- * @param {string} [text] The message to show, or `undefined` if `visible` is false.
- */
-export function displayError(visible, text) {
-    /** @type {HTMLDivElement} */
-    const error = document.querySelector("#errorPosts");
-
-    if (visible === true) {
-        error.style.display = "block";
-        error.innerHTML = text;
-    } else {
-        error.style.display = "none";
-    }
-}
-
-/**
- * @description Show and hide the spinner element
- * @method displaySpinner
- * @param {boolean} spinnerVisible If true, shows the spinner, otherwise hides it.
- */
-export function displaySpinner(spinnerVisible) {
-    /** @type {HTMLDivElement} */
-    const spinner = document.querySelector("#spinnerPosts");
-
-    if (spinnerVisible === true) {
-        spinner.style.display = "block";
-    } else {
-        spinner.style.display = "none";
-    }
-}
-
-displaySpinner(false);

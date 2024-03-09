@@ -1,7 +1,7 @@
 import { API_BASE, API_AUTH, API_REGISTER } from "../settings.mjs";
+import { displayError } from "../shared/displayErrorMsg.mjs";
+import { displaySpinner } from "../shared/displaySpinner.mjs";
 import { ErrorHandler } from "../shared/errorHandler.mjs";
-import { displayError } from "./authentication.mjs";
-
 
 // generated via https://transform.tools/json-to-jsdoc
 
@@ -18,26 +18,6 @@ import { displayError } from "./authentication.mjs";
  * @property {string} data.banner.alt
  */
 
-
-/**
- * @description Show and hide the spinner element
- * @method displaySpinnerRegister
- * @param {boolean} spinnerRegister If true, shows the spinner, otherwise hides it.
- */
-function displaySpinnerRegister(spinnerRegister) {
-    /** @type {HTMLDivElement} */
-    const sr = document.querySelector("#spinnerRegister");
-
-    if (spinnerRegister === true) {
-        sr.style.display = "block";
-    } else {
-        sr.style.display = "none";
-    }
-}
-
-displaySpinnerRegister(false);
-
-
 /**
 * @description This function send a request to register a new user return
  * @async
@@ -49,7 +29,8 @@ displaySpinnerRegister(false);
  */
 export async function register(name, email, psw) {
     try {
-        displaySpinnerRegister(true);
+        displaySpinner(true, "#spinnerRegister");
+        displayError(false, "#error")
 
         const url = API_BASE + API_AUTH + API_REGISTER;
         const request = {
@@ -75,13 +56,13 @@ export async function register(name, email, psw) {
 
         const eh = new ErrorHandler(response);
         const msg = await eh.getErrorMessage();
-        displayError(true, msg);
+        displayError(true, "#error", msg);
 
         return null;
 
     } catch (ev) {
-        displayError(true, "Could not register the account!");
+        displayError(true, "#error", "Could not register the account!");
     } finally {
-        displaySpinnerRegister(false);
+        displaySpinner(false, "#spinnerRegister");
     }
 }

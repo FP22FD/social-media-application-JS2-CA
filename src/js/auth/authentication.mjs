@@ -1,3 +1,4 @@
+import { displayError } from "../shared/displayErrorMsg.mjs";
 import { login } from "./login.mjs";
 import { register } from "./register.mjs";
 
@@ -19,7 +20,7 @@ registerForm?.addEventListener("submit", async (ev) => {
     const confirmPassword = form.elements["confirmPassword"].value;
 
     if (password !== confirmPassword) {
-        displayError(true, "The passwords have to match!");
+        displayError(true, "#error", "The passwords have to match!");
         return;
     }
     const response = await register(name, email, password);
@@ -56,24 +57,6 @@ loginForm?.addEventListener("submit", async (ev) => {
     }
     window.location.href = "/profile/index.html";
 });
-
-/**
- * @description Display a message error
- * @method displayError
- * @param {boolean} visible If true, shows the msg error, otherwise hides it.
- * @param {string} [text] The message to show, or `undefined` if `visible` is false.
- */
-export function displayError(visible, text) {
-    /** @type {HTMLDivElement} */
-    const error = document.querySelector("#error");
-
-    if (visible === true) {
-        error.style.display = "block";
-        error.innerHTML = text;
-    } else {
-        error.style.display = "none";
-    }
-}
 
 const showPws = document.querySelector("#showPassword");
 showPws.addEventListener("click", displayLoginPassword);

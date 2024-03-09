@@ -1,7 +1,7 @@
 import { API_KEY, API_BASE, API_POSTS } from "../settings.mjs";
 import { load } from "../shared/storage.mjs";
 import { ErrorHandler } from "../shared/errorHandler.mjs";
-import { displaySpinner } from "./profile.mjs";
+import { displaySpinner } from "../shared/displaySpinner.mjs";
 
 /** @typedef {object} UpdatePostRequest
  * @property {string} title
@@ -40,7 +40,7 @@ function displayError(id, visible, text) {
  */
 export async function fetchUpdatePost(id, putData) {
 
-    displaySpinner(true);
+    displaySpinner(true, "#spinnerPosts");
 
     try {
         const url = API_BASE + API_POSTS + `/${id}`;
@@ -66,6 +66,6 @@ export async function fetchUpdatePost(id, putData) {
     } catch (ev) {
         displayError(id, true, "Could not update the post! Please retry later.");
     } finally {
-        displaySpinner(false);
+        displaySpinner(false, "#spinnerPosts");
     }
 }

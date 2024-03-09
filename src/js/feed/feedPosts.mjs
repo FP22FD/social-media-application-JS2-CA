@@ -3,6 +3,7 @@ import { load } from "../shared/storage.mjs";
 import { ErrorHandler } from "../shared/errorHandler.mjs";
 import { sanitize } from "../shared/sanitize.mjs";
 import { checkUserAuth } from "../shared/checkUserAuth.mjs";
+import { displaySpinner } from "../shared/displaySpinner.mjs";
 
 /** @typedef GetSocialPostDataResponse
  * @type {object} 
@@ -77,24 +78,6 @@ export function displayError(visible, text) {
 }
 
 /**
- * @description Show and hide the spinner element
- * @method displaySpinner
- * @param {boolean} spinnerVisible If true, shows the spinner, otherwise hides it.
- */
-export function displaySpinner(spinnerVisible) {
-  /** @type {HTMLDivElement} */
-  const spinner = document.querySelector("#spinnerPosts");
-
-  if (spinnerVisible === true) {
-    spinner.style.display = "block";
-  } else {
-    spinner.style.display = "none";
-  }
-}
-
-displaySpinner(false);
-
-/**
  * @description Send a request to get the user posts
  * @async
  * @function displayPosts
@@ -102,7 +85,7 @@ displaySpinner(false);
  */
 export async function displayPosts() {
   try {
-    displaySpinner(true);
+    displaySpinner(true, "#spinnerPosts");
     displayError(false);
 
     const url = API_BASE + API_POSTS + API_GET_POSTS_PARAMS;
@@ -136,7 +119,7 @@ export async function displayPosts() {
   } catch (ev) {
     displayError(true, "Could not show the posts!");
   } finally {
-    displaySpinner(false);
+    displaySpinner(false, "#spinnerPosts");
   }
 }
 

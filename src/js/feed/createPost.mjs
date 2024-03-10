@@ -3,6 +3,8 @@ import { displayPosts } from "./feedPosts.mjs";
 import { load } from "../shared/storage.mjs";
 import { ErrorHandler } from "../shared/errorHandler.mjs";
 import { getProfileInfo } from "../shared/profileInfo.mjs";
+import { displaySpinner } from "../shared/displaySpinner.mjs";
+import { displayError } from "../shared/displayErrorMsg.mjs";
 
 /** @typedef {object} CreatePostRequest
  * @property {string} title
@@ -27,32 +29,6 @@ import { getProfileInfo } from "../shared/profileInfo.mjs";
  * @property {number} data._count.reactions
  */
 
-/** @type {HTMLImageElement} */
-const img = document.querySelector('#author-image');
-img.src = getProfileInfo().avatarUrl
-
-/** @type {HTMLHeadingElement} */
-const authorName = document.querySelector('#author-name');
-authorName.innerText = getProfileInfo().name
-
-/**
- * @description Display a message error
- * @method displayError
- * @param {boolean} visible If true, shows the msg error, otherwise hides it.
- * @param {string} [text]  The message to show, or `undefined` if `visible` is false.
- */
-function displayError(visible, text) {
-  /** @type {HTMLDivElement} */
-  const error = document.querySelector("#errorCreatePost");
-
-  if (visible === true) {
-    error.style.display = "block";
-    error.innerHTML = text;
-  } else {
-    error.style.display = "none";
-  }
-}
-
 /**
  * @description Shows or hides a info message.
  * @method statusMsg
@@ -71,24 +47,6 @@ function statusMsg(visible, text) {
   }
 }
 
-/**
- * @description Show and hide the spinner element
- * @method displaySpinner
- * @param {boolean} spinnerVisible If true, shows the spinner, otherwise hides it.
- */
-function displaySpinner(spinnerVisible) {
-  /** @type {HTMLDivElement} */
-  const spinner = document.querySelector("#spinnerCreatePost");
-
-  if (spinnerVisible === true) {
-    spinner.style.display = "block";
-  } else {
-    spinner.style.display = "none";
-  }
-}
-
-displaySpinner(false);
-
 /** 
  * @description Create a new user post.
  * @async
@@ -98,8 +56,8 @@ displaySpinner(false);
  */
 async function createPost(postData) {
   try {
-    displaySpinner(true);
-    displayError(false);
+    displaySpinner(true, "#spinnerCreatePost");
+    displayError(false, "#errorCreatePost");
 
     const url = API_BASE + API_POSTS;
 
@@ -124,14 +82,14 @@ async function createPost(postData) {
 
     const eh = new ErrorHandler(response);
     const msg = await eh.getErrorMessage();
-    displayError(true, msg);
+    displayError(true, "#errorCreatePost", msg);
 
     return null;
 
   } catch (ev) {
-    displayError(true, "Something went wrong, try again!");
+    displayError(true, "#errorCreatePost", "Something went wrong, try again!");
   } finally {
-    displaySpinner(false);
+    displaySpinner(false, "#spinnerCreatePost");
   }
 }
 
@@ -155,6 +113,9 @@ form.addEventListener("submit", handleSubmit);
  */
 async function handleSubmit(ev) {
   ev.preventDefault();
+
+  displaySpinner(true, "#spinnerCreatePost")
+  displayError(false, "#errorCreatePost");
 
   try {
     const form = /** @type {HTMLFormElement} */ (ev.currentTarget);
@@ -188,9 +149,9 @@ async function handleSubmit(ev) {
     }
 
   } catch (ev) {
-    displayError(true, "Could not create a post!");
+    displayError(true, "#errorCreatePost", "Could not create a post!");
   } finally {
-    displaySpinner(false);
+    displaySpinner(false, "#spinnerCreatePost");
   }
 }
 
@@ -214,4 +175,16 @@ function showPostChar(ev) {
 
   content.trim();
   console.log(content);
+}
+
+const { avatarUrl, name, bio } = getProfileInfo();
+
+if (name) {
+  /** @type {HTMLImageElement} */
+  const img = document.querySelector('#author-image');
+  img.src = avatarUrl;
+
+  /** @type {HTMLHeadingElement} */
+  const authorName = document.querySelector('#author-name');
+  authorName.innerText = name;
 }

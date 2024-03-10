@@ -4,6 +4,12 @@
  * @param {boolean} visible If true, shows the msg error, otherwise hides it.
  * @param {string} id Show error msg by id
  * @param {string} [text]  The message to show, or `undefined` if `visible` is false.
+ * * @example
+ * // Hide the error message
+ * displayError(false);
+ * @example
+ * // Show the error message
+ * displayError(true, "#errorPosts", 'Error message');
  */
 export function displayError(visible, id, text) {
     /** @type {HTMLDivElement} */

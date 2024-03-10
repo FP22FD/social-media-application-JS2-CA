@@ -41,6 +41,7 @@ function displayError(id, visible, text) {
 export async function fetchUpdatePost(id, putData) {
 
     displaySpinner(true, "#spinnerPosts");
+    displayError(id, false);
 
     try {
         const url = API_BASE + API_POSTS + `/${id}`;

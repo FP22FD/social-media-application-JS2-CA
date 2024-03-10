@@ -35,9 +35,6 @@ import { displayError } from "../shared/displayErrorMsg.mjs";
  * @property {GetSinglePostDataResponse} data
  */
 
-// /** @type {Array<GetSinglePostDataResponse>} */
-// let data = undefined;
-
 checkUserAuth();
 
 //https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams/get

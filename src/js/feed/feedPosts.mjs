@@ -4,6 +4,7 @@ import { ErrorHandler } from "../shared/errorHandler.mjs";
 import { sanitize } from "../shared/sanitize.mjs";
 import { checkUserAuth } from "../shared/checkUserAuth.mjs";
 import { displaySpinner } from "../shared/displaySpinner.mjs";
+import { displayError } from "../shared/displayErrorMsg.mjs";
 
 /** @typedef GetSocialPostDataResponse
  * @type {object} 
@@ -60,24 +61,6 @@ let data = [];
 checkUserAuth();
 
 /**
- * @description Display a message error
- * @method displayError
- * @param {boolean} visible If true, shows the msg error, otherwise hides it.
- * @param {string} [text]  The message to show, or `undefined` if `visible` is false.
- */
-export function displayError(visible, text) {
-  /** @type {HTMLDivElement} */
-  const error = document.querySelector("#errorPosts");
-
-  if (visible === true) {
-    error.style.display = "block";
-    error.innerHTML = text;
-  } else {
-    error.style.display = "none";
-  }
-}
-
-/**
  * @description Send a request to get the user posts
  * @async
  * @function displayPosts
@@ -86,7 +69,7 @@ export function displayError(visible, text) {
 export async function displayPosts() {
   try {
     displaySpinner(true, "#spinnerPosts");
-    displayError(false);
+    displayError(false, "#errorPosts");
 
     const url = API_BASE + API_POSTS + API_GET_POSTS_PARAMS;
 
@@ -112,12 +95,12 @@ export async function displayPosts() {
 
     const eh = new ErrorHandler(response);
     const msg = await eh.getErrorMessage();
-    displayError(true, msg);
+    displayError(true, "#errorPosts", msg);
 
     return null;
 
   } catch (ev) {
-    displayError(true, "Could not show the posts!");
+    displayError(true, "#errorPosts", "Could not show the posts!");
   } finally {
     displaySpinner(false, "#spinnerPosts");
   }
@@ -126,7 +109,6 @@ export async function displayPosts() {
 /** @type {HTMLInputElement} */
 const txtFilter = document.querySelector("#filter"); // input
 txtFilter.addEventListener("input", handleSearchInput);
-
 
 /**
  * @description Handle the search submit.

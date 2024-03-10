@@ -6,7 +6,7 @@
  */
 export function displaySpinner(spinnerVisible, id) {
 
-    const spinner = document.querySelector(id);//#spinnerPosts
+    const spinner = document.querySelector(id);//es: #spinnerPosts, and others
 
     if (!spinner) {
         return;

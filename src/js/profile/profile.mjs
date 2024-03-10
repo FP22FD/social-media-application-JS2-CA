@@ -92,19 +92,6 @@ let data = [];
  * @property {GetProfileMetaResponse} meta
  */
 
-/** @type {HTMLImageElement} */
-const img = document.querySelector('#author-image');
-img.src = getProfileInfo().avatarUrl;
-
-/** @type {HTMLHeadingElement} */
-const authorInfoName = document.querySelector('#author-info h2');
-authorInfoName.innerText = getProfileInfo().name;
-
-/** @type {HTMLParagraphElement} */
-const authorInfoBio = document.querySelector('#author-info p');
-authorInfoBio.innerHTML = getProfileInfo().bio;
-
-
 /** @type {HTMLSelectElement} */
 const tabSort = document.querySelector("#order-By")
 tabSort.addEventListener("change", handleOrderBy);
@@ -391,11 +378,6 @@ export async function updatePosts(data) {
     }
 };
 
-const profile = load('profile');
-if (profile.name) {
-    displayPosts(profile.name);
-}
-
 /** 
  * @description Send a request to API
  * @async
@@ -442,11 +424,6 @@ export async function fetchUserMetaData(username) {
     }
 };
 
-const userInfo = getProfileInfo();
-const username = userInfo.name;
-fetchUserMetaData(username);
-
-
 /**
  * @description Displays the number of posts, the number of followers and the number of following.
  * @method displayUserMetaData
@@ -468,4 +445,23 @@ async function displayUserMetaData(profileInfo) {
     /** @type {HTMLDivElement} */
     const totFollowing = document.querySelector("#totFollowing");
     totFollowing.innerText = String(profileInfo._count.following);
+}
+
+const { avatarUrl, name, bio } = getProfileInfo();
+
+if (name) {
+    /** @type {HTMLImageElement} */
+    const img = document.querySelector('#author-image');
+    img.src = avatarUrl;
+
+    /** @type {HTMLHeadingElement} */
+    const authorInfoName = document.querySelector('#author-info h2');
+    authorInfoName.innerText = name;
+
+    /** @type {HTMLParagraphElement} */
+    const authorInfoBio = document.querySelector('#author-info p');
+    authorInfoBio.innerHTML = bio;
+
+    displayPosts(name);
+    fetchUserMetaData(name);
 }

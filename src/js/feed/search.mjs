@@ -1,8 +1,9 @@
 import { updatePosts } from "./feedPosts.mjs";
 import { API_BASE, API_KEY, API_SEARCH } from "../settings.mjs";
 import { load } from "../shared/storage.mjs";
-import { displaySpinner } from "./feedPosts.mjs";
 import { ErrorHandler } from "../shared/errorHandler.mjs";
+import { displayError } from "../shared/displayErrorMsg.mjs";
+import { displaySpinner } from "../shared/displaySpinner.mjs";
 
 /** @typedef GetSocialPostDataResponse
  * @type {object} 
@@ -46,31 +47,6 @@ import { ErrorHandler } from "../shared/errorHandler.mjs";
  * @property {SocialPostMetaResponse} meta
  */
 
-/**
- * @description Show or hide a error message in the UI. 
- * @method displayError
- * @param {boolean} visible If true, shows the msg error, otherwise hides it.
- * @param {string} [text] The message to show, or `undefined` if `visible` is false.
- * @example
- * // Hide the error message
- * displayError(false);
- * @example
- * // Show the error message
- * displayError(true, 'Error message');
- */
-function displayError(visible, text) {
-    /** @type {HTMLDivElement} */
-    const error = document.querySelector("#errorSearch");
-
-    if (visible === true) {
-        error.style.display = "block";
-        error.innerHTML = text;
-    } else {
-        error.style.display = "none";
-    }
-}
-
-
 let data = [];
 
 /** @type {HTMLInputElement} */
@@ -87,6 +63,9 @@ btn.addEventListener("click", handleSearch);
  */
 async function handleSearch(ev) {
     ev.preventDefault();
+
+    displaySpinner(true, "#spinnerPosts");
+    displayError(false, "#errorSearch");
 
     try {
         /** @type {HTMLInputElement} */
@@ -105,9 +84,9 @@ async function handleSearch(ev) {
         }
 
     } catch (ev) {
-        displayError(true, "Could not show the posts!");
+        displayError(true, "#errorSearch", "Could not show the posts!");
     } finally {
-        displaySpinner(false);
+        displaySpinner(false, "#spinnerPosts");
     }
 }
 
@@ -124,8 +103,8 @@ async function handleSearch(ev) {
 async function searchPosts(text) {
 
     try {
-        displaySpinner(true);
-        displayError(false);
+        displaySpinner(true, "#spinnerPosts");
+        displayError(false, "#errorSearch");
 
         const url = API_BASE + API_SEARCH + encodeURIComponent(text);// text
 
@@ -149,14 +128,14 @@ async function searchPosts(text) {
 
         const eh = new ErrorHandler(response);
         const msg = await eh.getErrorMessage();
-        displayError(true, msg);
+        displayError(true, "#errorSearch", msg);
 
         return null;
 
     } catch (error) {
-        displayError(true, "Could not show the posts!");
+        displayError(true, "#errorSearch", "Could not show the posts!");
     } finally {
-        displaySpinner(false);
+        displaySpinner(false, "#spinnerPosts");
     }
 }
 

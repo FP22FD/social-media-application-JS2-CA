@@ -1,4 +1,4 @@
-# css-frameworks-ca | CrochetME
+# css-frameworks-ca | PostaMe
 
 `PostaME` is a responsive web application which goal is to keep connected with others people.
 

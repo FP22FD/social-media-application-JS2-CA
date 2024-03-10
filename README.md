@@ -41,7 +41,7 @@ The goal of this Course Assignment was to learn:
   - view the user content feed
   - filter the content feed
   - search the content feed
-  - view a post content by ID
+  - view a post content by ID - when a post in the feed has a body with more than 120 characters
   - create a new post
   - update a post (\*)
   - delete a post

@@ -68,6 +68,8 @@ async function fetchSinglePost(id) {
         const postData = await response.json();
         const data = postData.data;
 
+        document.title = `PostaME | ${data.title}`;
+
         /** @type {HTMLTemplateElement} */
         const template = document.querySelector("#post");
         const post = /** @type {HTMLDivElement} */ (template.content.cloneNode(true));

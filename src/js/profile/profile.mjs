@@ -243,6 +243,7 @@ export async function updatePosts(data) {
                 const postText = form.elements["postText"].value;
                 const postImageUrl = form.elements["postImageUrl"].value;
 
+                // NB: I think the API has a bug because it doesn't remove the media object if is not sent.
                 const media = postImageUrl ? {
                     url: postImageUrl,
                     alt: "",
@@ -257,7 +258,7 @@ export async function updatePosts(data) {
 
                 const post = await fetchUpdatePost(item.id, request);
                 if (post) {
-                    displayPosts(profile.name);
+                    displayPosts(name);
                     return;
                 }
             })
@@ -364,7 +365,7 @@ export async function updatePosts(data) {
                 const result = await fetchDeletePost(item.id);
 
                 if (result) {
-                    await displayPosts(profile.name);
+                    await displayPosts(name);
                     return;
                 }
 

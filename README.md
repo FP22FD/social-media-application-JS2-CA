@@ -37,13 +37,16 @@ The goal of this Course Assignment was to learn:
 - user can register (only @noroff.no or @stud.noroff.no email can register a new profile)
 - user can login
 - a logged-in user can:
+  - see his stats (posts, followers, following)
   - view the user content feed
   - filter the content feed
   - search the content feed
   - view a post content by ID
   - create a new post
-  - update a post
+  - update a post (\*)
   - delete a post
+
+(\*) due to API limitation, it's not possible to remove the media object after it has been set, but only edit it.
 
 ## Optional features that have not been implemented
 

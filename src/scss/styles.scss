@@ -14,6 +14,10 @@
      max-height: 50vh;
  }
 
+ #editProfile {
+     pointer-events: none;
+ }
+
  // 2987-3002
  .btn-primary {
      --bs-btn-color: #212427;

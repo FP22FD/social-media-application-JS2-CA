@@ -48,8 +48,12 @@ import { displayError } from "../shared/displayErrorMsg.mjs";
  * @property {GetSocialPostMetaResponse} meta
  */
 
+// -------------------------------------------------
+
 /** @type {Array<GetSocialPostDataResponse>} */
 let data = [];
+
+// -------------------------------------------------
 
 /** @typedef {object} BadRequestResponse
  * @property {object[]} errors
@@ -58,7 +62,18 @@ let data = [];
  * @property {number} statusCode
  */
 
-checkUserAuth();
+export function init() {
+
+  checkUserAuth();
+
+  /** @type {HTMLInputElement} */
+  const txtFilter = document.querySelector("#filter"); // input
+  txtFilter.addEventListener("input", handleSearchInput);
+
+  displayPosts();
+}
+
+// checkUserAuth();
 
 /**
  * @description Send a request to get the user posts
@@ -106,9 +121,9 @@ export async function displayPosts() {
   }
 }
 
-/** @type {HTMLInputElement} */
-const txtFilter = document.querySelector("#filter"); // input
-txtFilter.addEventListener("input", handleSearchInput);
+// /** @type {HTMLInputElement} */
+// const txtFilter = document.querySelector("#filter"); // input
+// txtFilter.addEventListener("input", handleSearchInput);
 
 /**
  * @description Handle the search submit.
@@ -220,4 +235,4 @@ export async function updatePosts(data, searchInput) {
   return;
 }
 
-displayPosts();
+// displayPosts();

@@ -35,12 +35,26 @@ import { displayError } from "../shared/displayErrorMsg.mjs";
  * @property {GetSinglePostDataResponse} data
  */
 
-checkUserAuth();
+// -------------------------------------------------
+
+export function init() {
+
+    checkUserAuth();
+
+    //https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams/get
+    const queryString = document.location.search;
+    const params = new URLSearchParams(queryString);
+    const id = parseInt(params.get("id"), 10);
+
+    fetchSinglePost(id);
+}
+
+// checkUserAuth();
 
 //https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams/get
-const queryString = document.location.search;
-const params = new URLSearchParams(queryString);
-const id = parseInt(params.get("id"), 10);
+// const queryString = document.location.search;
+// const params = new URLSearchParams(queryString);
+// const id = parseInt(params.get("id"), 10);
 
 /**
  * @description Send a request to show a post details to the user.
@@ -48,7 +62,7 @@ const id = parseInt(params.get("id"), 10);
  * @method fetchSinglePost
  * @param {number} id Post ID
  */
-async function fetchSinglePost(id) {
+export async function fetchSinglePost(id) {
 
     displaySpinner(true, "#spinnerPosts");
     displayError(false, "#errorPosts");
@@ -116,4 +130,4 @@ async function fetchSinglePost(id) {
     }
 }
 
-fetchSinglePost(id);
+// fetchSinglePost(id);

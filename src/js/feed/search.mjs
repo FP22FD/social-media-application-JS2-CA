@@ -47,14 +47,25 @@ import { displaySpinner } from "../shared/displaySpinner.mjs";
  * @property {SocialPostMetaResponse} meta
  */
 
+// -------------------------------------------------
+
 let data = [];
 
-/** @type {HTMLInputElement} */
-const search = document.querySelector("#search");//input
 
-/** @type {HTMLButtonElement} */
-const btn = document.querySelector("#btn"); // button
-btn.addEventListener("click", handleSearch);
+export function init() {
+
+    /** @type {HTMLButtonElement} */
+    const btn = document.querySelector("#btn"); // button
+    btn.addEventListener("click", handleSearch);
+
+}
+
+// /** @type {HTMLInputElement} */
+// const search = document.querySelector("#search");//input
+
+// /** @type {HTMLButtonElement} */
+// const btn = document.querySelector("#btn"); // button
+// btn.addEventListener("click", handleSearch);
 
 /**
  * @description Handle the button search click.
@@ -71,6 +82,10 @@ async function handleSearch(ev) {
         /** @type {HTMLInputElement} */
         const txtFilter = document.querySelector("#filter");
         txtFilter.value = '';
+
+
+        /** @type {HTMLInputElement} */
+        const search = document.querySelector("#search");//input
 
         const text = search.value;
 

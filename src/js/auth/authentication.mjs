@@ -14,8 +14,6 @@ export function init() {
     hidePws.addEventListener("click", displayLoginPassword);
 }
 
-
-
 function addEventToLogin() {
     const loginForm = document.querySelector("#login-form");
     loginForm.addEventListener("submit", async (ev) => {

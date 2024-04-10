@@ -29,6 +29,31 @@ import { displayError } from "../shared/displayErrorMsg.mjs";
  * @property {number} data._count.reactions
  */
 
+// -------------------------------------------------
+
+export function init() {
+
+  /** @type {HTMLFormElement} */
+  const form = document.querySelector("#createPost");
+  form.addEventListener("submit", handleSubmit);
+
+  let area = document.querySelector("#postText");
+  area.addEventListener("input", showPostChar);
+
+  const { avatarUrl, name, bio } = getProfileInfo();
+
+  if (name) {
+    /** @type {HTMLImageElement} */
+    const img = document.querySelector('#author-image');
+    img.src = avatarUrl;
+
+    /** @type {HTMLHeadingElement} */
+    const authorName = document.querySelector('#author-name');
+    authorName.innerText = name;
+  }
+
+}
+
 /**
  * @description Shows or hides a info message.
  * @method statusMsg
@@ -102,9 +127,9 @@ async function createPost(postData) {
 
 // -------------9. function to display a post request-----------------------------
 
-/** @type {HTMLFormElement} */
-const form = document.querySelector("#createPost");
-form.addEventListener("submit", handleSubmit);
+// /** @type {HTMLFormElement} */
+// const form = document.querySelector("#createPost");
+// form.addEventListener("submit", handleSubmit);
 
 /**
  * @description Handle the form submit.
@@ -155,8 +180,8 @@ async function handleSubmit(ev) {
   }
 }
 
-let area = document.querySelector("#postText");
-area.addEventListener("input", showPostChar);
+// let area = document.querySelector("#postText");
+// area.addEventListener("input", showPostChar);
 
 /**
  * @description Show many characters remaining
@@ -177,14 +202,14 @@ function showPostChar(ev) {
   console.log(content);
 }
 
-const { avatarUrl, name, bio } = getProfileInfo();
+// const { avatarUrl, name, bio } = getProfileInfo();
 
-if (name) {
-  /** @type {HTMLImageElement} */
-  const img = document.querySelector('#author-image');
-  img.src = avatarUrl;
+// if (name) {
+//   /** @type {HTMLImageElement} */
+//   const img = document.querySelector('#author-image');
+//   img.src = avatarUrl;
 
-  /** @type {HTMLHeadingElement} */
-  const authorName = document.querySelector('#author-name');
-  authorName.innerText = name;
-}
+//   /** @type {HTMLHeadingElement} */
+//   const authorName = document.querySelector('#author-name');
+//   authorName.innerText = name;
+// }

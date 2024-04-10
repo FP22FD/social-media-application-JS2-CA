@@ -9,7 +9,8 @@ import { checkUserAuth } from "../shared/checkUserAuth.mjs";
 import { displaySpinner } from "../shared/displaySpinner.mjs";
 import { displayError } from "../shared/displayErrorMsg.mjs";
 
-checkUserAuth();
+
+// checkUserAuth();
 
 /** @typedef {object} GetProfilePostDataResponse
  * @type {object} 
@@ -92,9 +93,40 @@ let data = [];
  * @property {GetProfileMetaResponse} meta
  */
 
-/** @type {HTMLSelectElement} */
-const tabSort = document.querySelector("#order-By")
-tabSort.addEventListener("change", handleOrderBy);
+// --------------------------------------------------
+
+/** @type {string} */
+let name;
+
+export function init() {
+    checkUserAuth();
+
+    const { avatarUrl, name: username, bio } = getProfileInfo();
+
+    if (username) {
+        name = username;
+
+        /** @type {HTMLImageElement} */
+        const img = document.querySelector('#author-image');
+        img.src = avatarUrl;
+
+        /** @type {HTMLHeadingElement} */
+        const authorInfoName = document.querySelector('#author-info h2');
+        authorInfoName.innerText = username;
+
+        /** @type {HTMLParagraphElement} */
+        const authorInfoBio = document.querySelector('#author-info p');
+        authorInfoBio.innerHTML = bio;
+
+        displayPosts(username);
+        fetchUserMetaData(username);
+    }
+
+    /** @type {HTMLSelectElement} */
+    const tabSort = document.querySelector("#order-By")
+    tabSort.addEventListener("change", handleOrderBy);
+}
+
 /**
  * @description Sort the user array posts by a specified key
  * @method handleOrderBy
@@ -446,23 +478,4 @@ async function displayUserMetaData(profileInfo) {
     /** @type {HTMLDivElement} */
     const totFollowing = document.querySelector("#totFollowing");
     totFollowing.innerText = String(profileInfo._count.following);
-}
-
-const { avatarUrl, name, bio } = getProfileInfo();
-
-if (name) {
-    /** @type {HTMLImageElement} */
-    const img = document.querySelector('#author-image');
-    img.src = avatarUrl;
-
-    /** @type {HTMLHeadingElement} */
-    const authorInfoName = document.querySelector('#author-info h2');
-    authorInfoName.innerText = name;
-
-    /** @type {HTMLParagraphElement} */
-    const authorInfoBio = document.querySelector('#author-info p');
-    authorInfoBio.innerHTML = bio;
-
-    displayPosts(name);
-    fetchUserMetaData(name);
 }

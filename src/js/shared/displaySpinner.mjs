@@ -13,10 +13,10 @@ export function displaySpinner(spinnerVisible, id) {
     }
 
     if (spinnerVisible === true) {
-        spinner.classList.remove("d-none")
-        spinner.classList.add("d-flex")
+        spinner.classList.remove("d-none");
+        spinner.classList.add("d-flex");
     } else {
-        spinner.classList.remove("d-flex")
-        spinner.classList.add("d-none")
+        spinner.classList.remove("d-flex");
+        spinner.classList.add("d-none");
     }
 }

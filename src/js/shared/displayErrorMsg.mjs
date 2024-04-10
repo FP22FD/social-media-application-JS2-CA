@@ -20,9 +20,12 @@ export function displayError(visible, id, text) {
     }
 
     if (visible === true) {
-        error.style.display = "block";
         error.innerHTML = text;
+
+        error.classList.remove("d-none");
+        error.classList.add("d-flex");
     } else {
-        error.style.display = "none";
+        error.classList.remove("d-flex");
+        error.classList.add("d-none");
     }
 }

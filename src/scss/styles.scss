@@ -1,0 +1,37 @@
+ @font-face {
+     font-family: "fontdiner";
+     src: url("/assets/fonts/Fontdiner_Swanky/FontdinerSwanky-Regular.ttf") format(truetype);
+ }
+
+ .font-fontdiner {
+     font-family: "fontdiner", Verdana, Geneva, Tahoma, sans-serif;
+ }
+
+ @import "variables";
+ @import "../../node_modules/bootstrap/scss/bootstrap.scss";
+
+ .max-vh-50 {
+     max-height: 50vh;
+ }
+
+ #editProfile {
+     pointer-events: none;
+ }
+
+ // 2987-3002
+ .btn-primary {
+     --bs-btn-color: #212427;
+     --bs-btn-bg: #C3F550;
+     --bs-btn-border-color: #C3F550;
+     --bs-btn-hover-color: #ffffff;
+     --bs-btn-hover-bg: #0b5ed7;
+     --bs-btn-hover-border-color: #0a58cd;
+     --bs-btn-focus-shadow-rgb: #0a58cd;
+     --bs-btn-active-color: #0d6efd;
+     --bs-btn-active-bg: #0a58ca;
+     --bs-btn-active-border-color: #0a53be;
+     --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+     --bs-btn-disabled-color: #212427;
+     --bs-btn-disabled-bg: #C3F550;
+     --bs-btn-disabled-border-color: #C3F550;
+ }

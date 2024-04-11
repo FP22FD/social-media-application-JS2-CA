@@ -25,6 +25,7 @@ function router() {
 
         case "/profile/index.html":
             initProfile();
+
             initLogout();
             break;
 

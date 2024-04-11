@@ -1,34 +1,34 @@
 export function init() {
 
-    // addEventToLogoutBtn();
+    addEventToLogoutBtn();
 
-    const logoutBtn = document.querySelector("#logout").addEventListener("click", addEventToLogoutBtn);
+    // const logoutBtn = document.querySelector("#logout").addEventListener("click", addEventToLogoutBtn);
 }
 
-async function addEventToLogoutBtn(ev) {
+// async function addEventToLogoutBtn(ev) {
 
-    // remove("profile");
-    // remove("token");
+//     // remove("profile");
+//     // remove("token");
 
-    localStorage.clear();
+//     localStorage.clear();
 
-    window.location.href = "/";
+//     window.location.href = "/";
 
-}
-
-// function addEventToLogoutBtn() {
-//     const logoutBtn = document.querySelector("#logout");
-//     logoutBtn.addEventListener("click", async (ev) => {
-
-//         // remove("profile");
-//         // remove("token");
-
-//         localStorage.clear();
-
-//         window.location.href = "/";
-
-//     })
 // }
+
+function addEventToLogoutBtn() {
+    const logoutBtn = document.querySelector("#logout");
+    logoutBtn.addEventListener("click", async (ev) => {
+
+        // remove("profile");
+        // remove("token");
+
+        localStorage.clear();
+
+        window.location.href = "/";
+
+    })
+}
 
 // addEventToLogoutBtn();
 

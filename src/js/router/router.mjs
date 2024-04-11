@@ -10,25 +10,21 @@ import { init as initLogout } from "../shared/logout.mjs";
 function router() {
     const pathname = window.location.pathname;
 
-    console.log({ pathname });
-
-    // checkUserAuth(pathname);
-    // debugger;
-
     switch (pathname) {
         case "/":
         case "/index.html":
-            console.log('login');
 
             initAuthentication();
             break;
 
+        case "/profile/":
         case "/profile/index.html":
             initProfile();
 
             initLogout();
             break;
 
+        case "/feed/":
         case "/feed/index.html":
             initDisplayPosts();
             initCreatePost();
@@ -44,7 +40,7 @@ function router() {
             break;
 
         default:
-            // redirect to login
+            console.error(`Unknown path ${pathname}`);
             break;
     }
 }

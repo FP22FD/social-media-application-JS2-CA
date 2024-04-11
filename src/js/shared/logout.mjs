@@ -1,11 +1,11 @@
 export function init() {
 
-    addEventToLogoutBtn();
+    // addEventToLogoutBtn();
 
-    const logoutBtn = document.querySelector("#logout").addEventListener("click", handleClick);
+    const logoutBtn = document.querySelector("#logout").addEventListener("click", addEventToLogoutBtn);
 }
 
-async function handleClick(ev) {
+async function addEventToLogoutBtn(ev) {
 
     // remove("profile");
     // remove("token");
@@ -15,19 +15,20 @@ async function handleClick(ev) {
     window.location.href = "/";
 
 }
-function addEventToLogoutBtn() {
-    const logoutBtn = document.querySelector("#logout");
-    logoutBtn.addEventListener("click", async (ev) => {
 
-        // remove("profile");
-        // remove("token");
+// function addEventToLogoutBtn() {
+//     const logoutBtn = document.querySelector("#logout");
+//     logoutBtn.addEventListener("click", async (ev) => {
 
-        localStorage.clear();
+//         // remove("profile");
+//         // remove("token");
 
-        window.location.href = "/";
+//         localStorage.clear();
 
-    })
-}
+//         window.location.href = "/";
+
+//     })
+// }
 
 // addEventToLogoutBtn();
 
